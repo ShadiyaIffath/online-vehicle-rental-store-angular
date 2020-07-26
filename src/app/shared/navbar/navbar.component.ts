@@ -3,7 +3,6 @@ import { Location } from '@angular/common';
 import { AuthenticationService } from 'app/services/authentication/authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
-
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
@@ -21,6 +20,13 @@ export class NavbarComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService) {
         this.sidebarVisible = false;
+        if (this.authenticationService.currentUserValue) {
+            this.loggedIn = true;
+            console.log(this.authenticationService.currentUserValue);
+            if(this.authenticationService.currentUserValue.role =='admin'){
+                this.adminControls = true;
+            }
+        }
     }
 
     ngOnInit() {
@@ -28,7 +34,7 @@ export class NavbarComponent implements OnInit {
         this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
         this.authenticationService.getEmitter().subscribe((customObject) => {
             this.loggedIn = true;
-            if (this.authenticationService.currentUserValue.role == 'admin') {
+            if (customObject != null && customObject.role) {
                 this.adminControls = true;
             }
         });
@@ -59,7 +65,6 @@ export class NavbarComponent implements OnInit {
 
     logout() {
         this.authenticationService.logout();
-        this.router.navigate(['/components/login']);
         this.loggedIn = false;
         this.adminControls = false;
     }

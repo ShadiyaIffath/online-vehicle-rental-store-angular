@@ -5,29 +5,31 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { User } from '../../models/User';
+import { TokenClaim } from 'app/models/TokenClaims';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   @Output() userLoggedIn: EventEmitter<any> = new EventEmitter<any>();
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<TokenClaim>;
+  public currentUser: Observable<TokenClaim>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(JSON.stringify(localStorage.getItem('currentUser'))));
+    this.currentUserSubject = new BehaviorSubject<TokenClaim>(JSON.parse(JSON.stringify(localStorage.getItem('currentUser'))));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): TokenClaim {
+    console.log(this.currentUserSubject.value);
     return this.currentUserSubject.value;
   }
 
-  public getEmitter(){
+  public getEmitter() {
     return this.userLoggedIn;
   }
 
-  login(email: string, password: string){
+  login(email: string, password: string) {
     return this.http.post<any>(`${environment.apiUrl}/api/account/authenticate`, { email, password },
       {
         headers: new HttpHeaders({
@@ -35,38 +37,26 @@ export class AuthenticationService {
         }),
         responseType: 'text' as 'json'
       })
-    .pipe(map(user => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      let value = JSON.stringify(user)
-      console.log(value);
-      localStorage.setItem('currentUser', JSON.stringify(value));
-      this.userLoggedIn.emit(value);
-      this.currentUserSubject.next(user);       
-    }));
+      .pipe(map(user => {
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        let jwtData = atob(user.split('.')[1]);
+        let token = JSON.parse(jwtData);
+        token.token = JSON.stringify(user);
+
+        localStorage.setItem('currentUser', JSON.stringify(token));
+        this.userLoggedIn.emit(token);
+        this.currentUserSubject.next(token);
+      }));
   }
 
   logout() {
     // remove user from local storage to log user out
-    console.log('remove');
     localStorage.removeItem('currentUser');
     this.userLoggedIn.emit(null);
     this.currentUserSubject.next(null);
   }
 
   registerUser(user: User) {
-    return this.http.post<any>(`${environment.apiUrl}/api/account/signup`, user)
-      .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        console.log(user);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        return user;
-      }));
-  }
-
-  customerInfo(user: User) {
-    let postData = JSON.stringify(user)
-    console.log(postData);
     return this.http.post<any>(`${environment.apiUrl}/api/account/signup`, user)
       .pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes

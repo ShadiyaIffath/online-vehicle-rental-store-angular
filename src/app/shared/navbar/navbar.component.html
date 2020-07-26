@@ -4,7 +4,9 @@
             <a class="navbar-brand" [routerLink]="['/index']" placement="bottom">
                 <h2 style="margin-bottom: 3%;">Banger & Co</h2>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" (click)="sidebarToggle()">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+                (click)="sidebarToggle()">
                 <span class="navbar-toggler-bar bar1"></span>
                 <span class="navbar-toggler-bar bar2"></span>
                 <span class="navbar-toggler-bar bar3"></span>
@@ -16,30 +18,30 @@
         </div>
         <div class="collapse navbar-collapse" data-nav-image="assets/img/blurred-image-1.jpg" data-color="orange">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link" [routerLink]="['/index']">
-                      <i class="now-ui-icons transportation_bus-front-12"></i>
-                      <p>Home</p>
-                  </a>
-              </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/index']">
+                        <i class="now-ui-icons transportation_bus-front-12"></i>
+                        <p>Home</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="'/components/login'">
-                      <i class="now-ui-icons files_paper"></i>
-                      <p>Bookings</p>
+                        <i class="now-ui-icons files_paper"></i>
+                        <p>Bookings</p>
                     </a>
                 </li>
                 <li class="nav-item" *ngIf='loggedIn'>
-                  <a class="nav-link" [routerLink]="'/components/login'">
-                      <i class="now-ui-icons users_circle-08"> </i>
-                      <p>Profile</p>
-                  </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/index']">
-                    <i class="now-ui-icons travel_info"></i>
-                    <p>Help</p>
-                </a>
-            </li>
+                    <a class="nav-link" [routerLink]="'/components/login'">
+                        <i class="now-ui-icons users_circle-08"> </i>
+                        <p>Profile</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/index']">
+                        <i class="now-ui-icons travel_info"></i>
+                        <p>Help</p>
+                    </a>
+                </li>
                 <li class="nav-item" *ngIf='!loggedIn'>
                     <a class="nav-link" [routerLink]="'/components/login'">
                         <i class="now-ui-icons users_circle-08"> </i>
@@ -47,16 +49,21 @@
                     </a>
                 </li>
                 <li class="nav-item" *ngIf='!loggedIn'>
-                  <a class="nav-link btn btn-neutral" [routerLink]="['/components/register']">
-                    <p>Sign up</p>
-                  </a>
+                    <a class="nav-link btn btn-neutral" [routerLink]="['/components/register']">
+                        <p>Sign up</p>
+                    </a>
+                </li>
+                <li class="nav-item" *ngIf='loggedIn && adminControls'>
+                    <a class="nav-link" [routerLink]="['/components/register']">
+                        <p>Register Admin</p>
+                    </a>
                 </li>
                 <li class="nav-item" *ngIf='loggedIn'>
-                  <button class="nav-link btn btn-neutral" (click)="logout()">
-                      <i class="now-ui-icons"> </i>
-                      <p>Logout</p>
-                  </button>
-              </li>
+                    <button class="nav-link btn btn-neutral" (click)="logout()">
+                        <i class="now-ui-icons"> </i>
+                        <p>Logout</p>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>

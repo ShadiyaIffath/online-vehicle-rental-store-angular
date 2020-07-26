@@ -1,0 +1,61 @@
+<div class="wrapper" filter-color="orange">
+  <div class="page-header clear-filter">
+    <div class="page-header-image rellax-header" data-rellax-speed="-7"
+      style="background-image: url('assets/img/header.jpg');">
+    </div>
+    <div class="container">
+      <div class="content-center brand">
+        <img class="n-logo" src="assets/img/now-logo.png" alt="">
+        <h1 class="h1-seo"><b>Family cars for hire</b></h1>
+        <div class="navbar bg-primary col-lg-10 offset-md-1">
+          <div ngbDropdown>
+            <button class="active btn btn-primary" ngbDropdownToggle>Vehicle Type</button>
+            <div ngbDropdownMenu class="dropdown-menu">
+              <div *ngFor="let option of gear">
+                <button class="dropdown-item" on-click="changeMessage(option)">{{option}}</button>
+              </div>
+            </div>
+          </div>
+          <div ngbDropdown>
+            <button class="active btn btn-primary" ngbDropdownToggle>Gear</button>
+            <div ngbDropdownMenu class="dropdown-menu">
+              <div *ngFor="let option of gear">
+                <button class="dropdown-item" on-click="changeMessage(option)">{{option}}</button>
+              </div>
+            </div>
+          </div>
+          <div ngbDropdown>
+            <button class="active btn btn-primary" ngbDropdownToggle>Pick-up Day</button>
+            <ngb-datepicker class="dropdown-menu" (select)="onDateSelection($event)" (click)="d.toggle()"
+              [(ngModel)]="pickUpDay" [ngClass]="{'input-group-focus':focus1===true}" ngbDropdownMenu>
+            </ngb-datepicker>
+          </div>
+          <div ngbDropdown>
+            <button class="active btn btn-primary" ngbDropdownToggle>Drop-off Day</button>
+            <ngb-datepicker class="dropdown-menu" (select)="onDateSelection($event)" (click)="d.toggle()"
+              [(ngModel)]="dropOffDay" [ngClass]="{'input-group-focus':focus1===true}" ngbDropdownMenu>
+            </ngb-datepicker>
+          </div>
+          <button class="btn btn-default col-sm-3">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section section-tabs">
+      <div class="container">
+          <h2 class="h1-seo text-center">About us</h2>
+          <p class="text-center">With over 30 years of experience in the industry, we strive to offer the highest levels of customer service and a highly personalised service to all our customers who are on the lookout for Sri Lanka car rental opportunities. With one of the largest and most modern and varied fleets in Sri Lanka, our service is backed by a networked front office, fully-fledged mechanical servicing.</p>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <h2 class="h1-seo text-center">Our fleet</h2>
+        <app-fleet></app-fleet>
+      </div>
+    </div>
+  </div>
+  <footer class="footer" data-background-color="black">
+    
+  </footer>
+</div>

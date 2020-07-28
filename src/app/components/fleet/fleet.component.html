@@ -35,10 +35,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-auto mb-3">
+            <div class="col-auto mb-3" *ngFor="let vehicle of vehicleTypes">
                 <div class="card" style="width: 20rem;">
                     <div class="card-header">
-                        <img class="card-img-top img-fluid" src="http://placehold.it/750x325" alt="Card image cap">
+                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicle.image}}" alt="Card image cap">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Car type</h5>

@@ -1,68 +1,70 @@
-<div class="container">
-    <div class="card" style="background-color: #f96332; width: 25%;">
-        <br>
-        <blockquote>
-            <h5 class="text-center text-muted">Let's find your ideal vehicle</h5>
-            <p class="blockquote blockquote-white" style="margin-left: 3%; margin-right: 3%; font-size: 0.75em;">
-                <small>
-                    Type
-                    <div class="form-check">
-                        <div class="row form-group" *ngFor="let type of vehicleTypes">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="vehicleTypes" value="{{type.id}}"
-                                    [(ngModel)]="type.checked">
-                                <span class="form-check-sign"></span>
-                                {{type.type}}
-                            </label>
-                        </div>
-                    </div>
-                </small>
-            </p>
-        </blockquote>
-        <blockquote>
-            <p class="blockquote blockquote-white" style="margin-left: 3%; margin-right: 3%; font-size: 0.75em;">
-                <small>
-                    Price per day
-                    <div class="form-check">
-                        <div class="row form-group" *ngFor="let type of vehicleTypes">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="vehicleTypes" value="{{type.id}}"
-                                    [(ngModel)]="type.checked">
-                                <span class="form-check-sign"></span>
-                                £{{type.pricePerDay}}
-                            </label>
-                        </div>
-                    </div>
-                </small>
-            </p>
-        </blockquote>
-    </div>
-</div>
-<div class="container">
-    <div class="section section-tabs">
-        <h3 class="h1-seo text-center">Looking for additional equipment?</h3>
-        <div class="container">
-            <div class="card" style="background-color: #f96332; width: 25%;">
-                <br>
-                <blockquote>
-                    <h5 class="text-center text-muted">Equipment</h5>
-                    <p class="blockquote blockquote-white"
-                        style="margin-left: 3%; margin-right: 3%; font-size: 0.75em;">
-                        <small>
-                            Type
+<div class="container mt-4">
+    <div class="row">
+        <div class="card-columns">
+            <div class="col-auto mb-3">
+                <div class="card" style="background-color: #f96332; width: 18rem; height: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title">Lets find your ideal vehicle</h5>
+                        <div class="card-block">
+                            <h6 class="card-subtitle mb-2 text-muted">Type</h6>
                             <div class="form-check">
                                 <div class="row form-group" *ngFor="let type of vehicleTypes">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="vehicleTypes"
-                                            value="{{type.id}}" [(ngModel)]="type.checked">
+                                    <label class="form-check-label text-white">
+                                        <input class="form-check-input" type="checkbox" name="vehicleTypes" value="{{type.id}}"
+                                            [(ngModel)]="type.checked">
                                         <span class="form-check-sign"></span>
-                                        {{type.type}}
+                                        <p class="card-text">{{type.type}}</p>
                                     </label>
                                 </div>
                             </div>
-                        </small>
-                    </p>
-                </blockquote>
+                        </div>
+                        <hr>
+                        <div class="card-block">
+                            <h6 class="card-subtitle mb-2 text-muted">Price per day</h6>
+                            <div class="form-check">
+                                <div class="row form-group" *ngFor="let type of vehicleTypes">
+                                    <label class="form-check-label text-white">
+                                        <input class="form-check-input" type="checkbox" name="vehiclePrices" value="{{type.id}}"
+                                            [(ngModel)]="type.checked">
+                                        <span class="form-check-sign"></span>                                       
+                                        <p class="card-text">£{{type.pricePerDay}}</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto mb-3">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-header">
+                        <img class="card-img-top img-fluid" src="http://placehold.it/750x325" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Car type</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Model: ee</h6>
+                        <p class="card-text">Price Per day- 40</p>
+                        <p class="card-text text-small text-muted">description</p>
+                        <a href="#" class="card-link">View</a>
+                        <a href="#" class="card-link">Reserve</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto mb-3">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-header">
+                        <img class="card-img-top img-fluid" src="http://placehold.it/750x325" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the
+                            card's content.</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

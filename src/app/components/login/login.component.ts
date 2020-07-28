@@ -38,11 +38,8 @@ export class LoginComponent implements OnInit {
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
     });
-
-    // // get return url from route parameters or default to '/'
-    // this.returnUrl = this.route.snapshot.queryParams['components/login'] || '/';
-
   }
+  
   ngOnDestroy() {
     var body = document.getElementsByTagName('body')[0];
     body.classList.remove('login-page');

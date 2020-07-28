@@ -22,7 +22,6 @@ export class NavbarComponent implements OnInit {
         this.sidebarVisible = false;
         if (this.authenticationService.currentUserValue) {
             this.loggedIn = true;
-            console.log(this.authenticationService.currentUserValue);
             if(this.authenticationService.currentUserValue.role =='admin'){
                 this.adminControls = true;
             }

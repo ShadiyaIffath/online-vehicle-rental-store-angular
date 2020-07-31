@@ -19,4 +19,11 @@ export class InventoryService {
       return types;
     }))
   }
+
+  getVehicles(){
+    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/getVehicles`)
+    .pipe(map(types =>{
+      return types;
+    }))
+  }
 }

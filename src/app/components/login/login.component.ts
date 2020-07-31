@@ -65,11 +65,9 @@ export class LoginComponent implements OnInit {
     .pipe(first())
     .subscribe(
       data => {
-        console.log('success');
         this.router.navigate([this.returnUrl]);
       },
       error => {
-        console.log('failed');
         this.error = 'Login failed, please try again later';
         this.loading = false;
       });

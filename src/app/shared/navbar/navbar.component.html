@@ -36,10 +36,15 @@
                         <p>Profile</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf='!adminControls'>
                     <a class="nav-link" [routerLink]="['/index']">
                         <i class="now-ui-icons travel_info"></i>
                         <p>Help</p>
+                    </a>
+                </li>
+                <li class="nav-item" *ngIf='loggedIn && adminControls'>
+                    <a class="nav-link" [routerLink]="['/components/register']">
+                        <p>Register Vehicle</p>
                     </a>
                 </li>
                 <li class="nav-item" *ngIf='!loggedIn'>

@@ -50,22 +50,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-auto mb-3">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-header">
-                        <img class="card-img-top img-fluid" src="http://placehold.it/750x325" alt="Card image cap">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
+            <div *ngIf="noVehicles">
+                <h4 class="text-primary">There are no vehicles</h4>
             </div>
         </div>
     </div>
+</div>
+<div *ngIf="serviceFailed">
+ <ng-template #modal_mini let-c="close" let-d="dismiss">
+   <div class="modal-header justify-content-center">
+       <div class="modal-profile">
+           <i class="now-ui-icons loader_refresh"></i>
+       </div>
+   </div>
+   <div class="modal-body">
+       <p>Sorry our services are unavailable right now. Please try again later</p>
+   </div>
+   <div class="modal-footer">
+       <button type="button" class="btn btn-link btn-neutral text-center" (click)="c('Close click')">Close</button>
+   </div>
+ </ng-template>
 </div>

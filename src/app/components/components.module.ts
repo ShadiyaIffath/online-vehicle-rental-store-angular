@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { FleetComponent } from './fleet/fleet.component';
 import { JwtInterceptor } from '../helpers/jwt.interceptor';
 import { ErrorInterceptor } from '../helpers/error.interceptor';
+import { RegisterVehicleComponent } from './registerVehicle/register-vehicle.component';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -38,6 +39,7 @@ export function tokenGetter() {
         RegisterComponent,
         LoginComponent,
         FleetComponent,
+        RegisterVehicleComponent
     ],
     exports: [ComponentsComponent],
     providers: [

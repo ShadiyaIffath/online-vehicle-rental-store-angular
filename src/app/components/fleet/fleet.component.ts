@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
-import {InventoryService} from '../../services/inventory/inventory.service'
-import {VehicleType} from '../../models/VehicleType';
+import { InventoryService } from '../../services/inventory/inventory.service'
 
 @Component({
   selector: 'app-fleet',
@@ -11,27 +10,46 @@ import {VehicleType} from '../../models/VehicleType';
 })
 
 export class FleetComponent implements OnInit {
-  vehicleTypes: any [];
+  vehicleTypes: any[];
   filteredTypes: any[];
+  noVehicles: boolean = false;
+  serviceFailed: boolean = false;
+  closeResult: string;
 
-  constructor(private inventoryService: InventoryService) {
-    this.inventoryService.getVehicleTypes().subscribe((data: any[])=>{
-      console.log(data);
+  constructor(private inventoryService: InventoryService,
+    private modalService: NgbModal) {
+    this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
       this.vehicleTypes = data;
+      this.serviceFailed = false;
+      if (this.vehicleTypes.length === 0) {
+        this.noVehicles = true;
+      }
+      else {  
+        this.noVehicles = false;
+      }
+    },
+    (error)=>{ 
+      this.serviceFailed = true;
     });
     this.filteredTypes = this.vehicleTypes;
-   }
+  }
 
   ngOnInit(): void {
   }
 
-  typeChecked() : void{
-    this.filteredTypes.filter(item=> { return item.checked;} );
+  typeChecked(): void {
+    this.filteredTypes.filter(item => { return item.checked; });
   }
-  
-  filteredInventory(){
+
+  filteredInventory() {
     this.typeChecked();
     return this.filteredTypes;
+  }
+
+  open(content) {
+    this.modalService.open(content, { windowClass: 'modal-mini modal-primary', size: 'sm' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    });
   }
 }
 

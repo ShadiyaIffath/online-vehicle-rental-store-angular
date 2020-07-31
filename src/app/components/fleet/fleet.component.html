@@ -56,18 +56,3 @@
         </div>
     </div>
 </div>
-<div *ngIf="serviceFailed">
- <ng-template #modal_mini let-c="close" let-d="dismiss">
-   <div class="modal-header justify-content-center">
-       <div class="modal-profile">
-           <i class="now-ui-icons loader_refresh"></i>
-       </div>
-   </div>
-   <div class="modal-body">
-       <p>Sorry our services are unavailable right now. Please try again later</p>
-   </div>
-   <div class="modal-footer">
-       <button type="button" class="btn btn-link btn-neutral text-center" (click)="c('Close click')">Close</button>
-   </div>
- </ng-template>
-</div>

@@ -26,4 +26,8 @@ export class InventoryService {
       return types;
     }));
   }
+
+  createVehicle(vehicle: Vehicle){
+    this.http.post<any>(`${environment.apiUrl}/api/vehicle/addVehicle`, vehicle);
+  }
 }

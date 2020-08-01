@@ -1,12 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControlName } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { User } from '../../models/User';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { Observable } from 'rxjs';
 
 const now = new Date();
 
@@ -15,7 +16,7 @@ const now = new Date();
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit{
   registerForm: FormGroup;
   submitted = false;
   loading = false;
@@ -89,15 +90,12 @@ export class RegisterComponent implements OnInit {
         .subscribe(
           data => {
             this.router.navigate([this.returnUrl]);
-            this.alert = {
-              id: 1,
-              type: 'success',
-              strong: 'Well done!',
-              message: 'You successfully registered. Kindly login',
-              icon: 'ui-2_like'
+            if(this.adminControls == false){
+            this.authenticationService.registerSuccessful = true;
             }
           },
           error => {
+            console.log(error);
             this.error = 'Register failed, please try again later.';
             this.loading = false;
             this.alert = {
@@ -185,6 +183,7 @@ export class RegisterComponent implements OnInit {
   }
   public closeAlert(alert: IAlert) {
     this.submitted = false;
+    alert = null;
   }
 }
 

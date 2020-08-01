@@ -16,6 +16,7 @@ import { FleetComponent } from './fleet/fleet.component';
 import { JwtInterceptor } from '../helpers/jwt.interceptor';
 import { ErrorInterceptor } from '../helpers/error.interceptor';
 import { RegisterVehicleComponent } from './registerVehicle/register-vehicle.component';
+import { ChangesGuard } from 'app/helpers/popupModal';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -44,6 +45,7 @@ export function tokenGetter() {
     exports: [ComponentsComponent],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }]
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        ChangesGuard]
 })
 export class ComponentsModule { }

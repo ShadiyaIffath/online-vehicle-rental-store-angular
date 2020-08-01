@@ -126,31 +126,31 @@
                                     </div>
                                 </div>
                             </div>
-                                <div class="col-sm-5">
-                                    <label for="Identity">Who are you?</label>
-                                    <h6>Attach a utility bill(within 3 months) / council tax statement</h6>
-                                </div>
-                                <div class="col-sm-5 offset-lg-1">
-                                    <div class="input-group form-group-no-border input-lg"
-                                        [ngClass]="{'input-group-focus':focus1===true}">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fa fa-file-pdf-o"
-                                                    aria-hidden="true"></i></span>
-                                        </div>
-                                        <input type="file" placeholder="Identity" #identity class="form-control"
-                                            (focus)="focus1=true" (blur)="focus1=false"
-                                            (change)="uploadIdentityFile(identity.files)"
-                                            title="Attach evidence of your identity" accept="image/*"
-                                            formControlName="additionalIdentification"
-                                            [ngClass]="{ 'is-invalid': submitted && f.additionalIdentification.errors }" />
-                                        <div *ngIf="submitted && f.additionalIdentification.errors"
-                                            class="invalid-feedback">
-                                            <div *ngIf="f.additionalIdentification.errors.required">Additional identity
-                                                proof
-                                                is required</div>
-                                        </div>
+                            <div class="col-sm-5">
+                                <label for="Identity">Who are you?</label>
+                                <h6>Attach a utility bill(within 3 months) / council tax statement</h6>
+                            </div>
+                            <div class="col-sm-5 offset-lg-1">
+                                <div class="input-group form-group-no-border input-lg"
+                                    [ngClass]="{'input-group-focus':focus1===true}">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-file-pdf-o"
+                                                aria-hidden="true"></i></span>
+                                    </div>
+                                    <input type="file" placeholder="Identity" #identity class="form-control"
+                                        (focus)="focus1=true" (blur)="focus1=false"
+                                        (change)="uploadIdentityFile(identity.files)"
+                                        title="Attach evidence of your identity" accept="image/*"
+                                        formControlName="additionalIdentification"
+                                        [ngClass]="{ 'is-invalid': submitted && f.additionalIdentification.errors }" />
+                                    <div *ngIf="submitted && f.additionalIdentification.errors"
+                                        class="invalid-feedback">
+                                        <div *ngIf="f.additionalIdentification.errors.required">Additional identity
+                                            proof
+                                            is required</div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                     <div class="footer col-lg-4 offset-lg-4">
@@ -171,5 +171,3 @@
         </div>
     </div>
 </div>
-
-        

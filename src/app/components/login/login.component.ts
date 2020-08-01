@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router} from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
@@ -16,14 +16,17 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string = '';
   error = '';
+  title:string = '';
 
   constructor(private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['']);
+    }
+    if(this.authenticationService.registerSuccessful == true){
+      this.title = 'Registration successful';
     }
   }
 

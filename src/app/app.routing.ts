@@ -7,11 +7,15 @@ import { ComponentsComponent } from './components/components.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterVehicleComponent } from './components/registerVehicle/register-vehicle.component';
+import { ChangesGuard} from './helpers/popupModal';
 
 const routes: Routes =[
     { path: '', redirectTo: 'index', pathMatch: 'full' },
     { path: 'index',                component: ComponentsComponent },
-    { path:'components/register',   component: RegisterComponent},
+    { path:'components/register',
+       component: RegisterComponent,
+       canDeactivate:[ChangesGuard]
+    },
      { path:'components/login',      component: LoginComponent},
      { path: 'components/registerVehicle', component:RegisterVehicleComponent}
 ];

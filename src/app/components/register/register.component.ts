@@ -4,8 +4,8 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { User } from '../../models/User';
 
+import { User } from '../../models/User';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 
 const now = new Date();

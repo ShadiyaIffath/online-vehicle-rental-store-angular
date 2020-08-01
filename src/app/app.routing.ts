@@ -12,10 +12,7 @@ import { ChangesGuard} from './helpers/popupModal';
 const routes: Routes =[
     { path: '', redirectTo: 'index', pathMatch: 'full' },
     { path: 'index',                component: ComponentsComponent },
-    { path:'components/register',
-       component: RegisterComponent,
-       canDeactivate:[ChangesGuard]
-    },
+    { path:'components/register', component: RegisterComponent},
      { path:'components/login',      component: LoginComponent},
      { path: 'components/registerVehicle', component:RegisterVehicleComponent}
 ];

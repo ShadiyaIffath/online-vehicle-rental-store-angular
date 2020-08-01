@@ -1,13 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControlName } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { User } from '../../models/User';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { Observable } from 'rxjs';
 
 const now = new Date();
 
@@ -16,9 +15,10 @@ const now = new Date();
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit{
+export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
+  emailFailed = false;
   loading = false;
   returnUrl: string = '/components/login';
   error = '';
@@ -28,7 +28,6 @@ export class RegisterComponent implements OnInit{
   today: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   minDate: NgbDateStruct = { year: now.getFullYear() - 100, month: now.getMonth() + 1, day: now.getDate() };
   maxDate: NgbDateStruct = { year: now.getFullYear() - 18, month: now.getMonth() + 1, day: now.getDate() };
-  public alert: IAlert;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
@@ -73,13 +72,6 @@ export class RegisterComponent implements OnInit{
     if (this.registerForm.invalid) {
       console.log('form error');
       this.error = 'Register failed, invalid credentials';
-      this.alert = {
-        id: 3,
-        type: 'warning',
-        strong: 'Oh Snap!',
-        message: 'Registration failed. Try again',
-        icon: 'ui-1_bell-53'
-      }
       return;
     }
     else {
@@ -90,21 +82,22 @@ export class RegisterComponent implements OnInit{
         .subscribe(
           data => {
             this.router.navigate([this.returnUrl]);
-            if(this.adminControls == false){
-            this.authenticationService.registerSuccessful = true;
+            if (this.adminControls == false) {
+              this.authenticationService.registerSuccessful = true;
             }
           },
           error => {
             console.log(error);
-            this.error = 'Register failed, please try again later.';
-            this.loading = false;
-            this.alert = {
-              id: 3,
-              type: 'warning',
-              strong: 'Oh Snap!',
-              message: 'Registration failed. Try again',
-              icon: 'ui-1_bell-53'
+            if (error == "Conflict") {
+              this.error = 'Register failed! Sorry, your email is already in use.';
+              this.registerForm.controls['email'].setErrors({ 'incorrect': true });
+              this.emailFailed = true;
             }
+            else {
+              this.error = 'Register failed, please try again later.';
+              this.emailFailed = false;
+            }
+            this.loading = false;
           });
     }
   }
@@ -181,16 +174,6 @@ export class RegisterComponent implements OnInit{
     this.user.active = true;
     this.user.activatedDate = this.parserFormatter.format(this.today);
   }
-  public closeAlert(alert: IAlert) {
-    this.submitted = false;
-    alert = null;
-  }
+  
 }
 
-export interface IAlert {
-  id: number;
-  type: string;
-  strong?: string;
-  message: string;
-  icon?: string;
-}

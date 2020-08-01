@@ -68,6 +68,7 @@
                             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                                 <div *ngIf="f.email.errors.required">Email is required</div>
                                 <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                                <div *ngIf="emailFailed">Email is in use</div>
                             </div>
                         </div>
                     </div>

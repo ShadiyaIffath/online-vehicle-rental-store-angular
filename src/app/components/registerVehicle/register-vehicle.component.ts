@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -26,7 +25,6 @@ export class RegisterVehicleComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private inventoryService: InventoryService,
     private authenticationService: AuthenticationService,
-    private parserFormatter: NgbDateParserFormatter,
     private _cdr: ChangeDetectorRef,
     private router: Router) {
     this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {

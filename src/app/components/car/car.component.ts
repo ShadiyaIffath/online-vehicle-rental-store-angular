@@ -6,21 +6,22 @@ import { InventoryService } from '../../services/inventory/inventory.service'
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Vehicle } from 'app/models/Vehicle';
 
-
 const now = new Date();
 
 @Component({
-  selector: 'app-register-vehicle',
-  templateUrl: './register-vehicle.component.html',
-  styleUrls: ['./register-vehicle.component.css']
+  selector: 'app-car',
+  templateUrl: './car.component.html',
+  styleUrls: ['./car.component.css']
 })
-export class RegisterVehicleComponent implements OnInit {
+export class CarComponent implements OnInit {
   vehicleForm: FormGroup;
   engines = ['Petrol', 'Diesel', 'Hybrid'];
   submitted: boolean = false;
   vehicleTypes: any[];
   vehicle: Vehicle = new Vehicle();
   error: string = '';
+  title: string = 'New Vehicle';
+  imageUploaded: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private inventoryService: InventoryService,
@@ -51,6 +52,9 @@ export class RegisterVehicleComponent implements OnInit {
       type: ['', Validators.required],
       image: ['', Validators.required]
     });
+
+    this.engines = ['Petrol', 'Diesel', 'Hybrid'];
+    this.title = 'New Vehicle';
   }
   ngOnDestroy() {
     var body = document.getElementsByTagName('body')[0];
@@ -89,6 +93,7 @@ export class RegisterVehicleComponent implements OnInit {
         filetype: fileToUpload.type,
         value: (<string>reader.result).split(',')[1]
       }
+      this.imageUploaded = true;
     };
     // need to run CD since file load runs outside of zone
     this._cdr.markForCheck();
@@ -108,5 +113,4 @@ export class RegisterVehicleComponent implements OnInit {
     this.vehicle.active = true;
     this.vehicle.dayAdded = now.toString();
   }
-
 }

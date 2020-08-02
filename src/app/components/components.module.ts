@@ -15,9 +15,10 @@ import { LoginComponent } from './login/login.component';
 import { FleetComponent } from './fleet/fleet.component';
 import { JwtInterceptor } from '../helpers/jwt.interceptor';
 import { ErrorInterceptor } from '../helpers/error.interceptor';
-import { RegisterVehicleComponent } from './registerVehicle/register-vehicle.component';
 import { ChangesGuard } from 'app/helpers/popupModal';
-import { RegisterEquipmentComponent } from './registerEquipment/register-equipment.component';
+import { EquipmentComponent } from './equipment/equipment.component';
+import { CarComponent } from './car/car.component';
+
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -41,8 +42,8 @@ export function tokenGetter() {
         RegisterComponent,
         LoginComponent,
         FleetComponent,
-        RegisterVehicleComponent,
-        RegisterEquipmentComponent
+        EquipmentComponent,
+        CarComponent
     ],
     exports: [ComponentsComponent],
     providers: [

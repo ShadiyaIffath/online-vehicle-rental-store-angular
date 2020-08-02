@@ -5,9 +5,9 @@
             <form class="form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
                 <div class="header header-primary text-center">
                     <div class="logo-container">
-                        <img src="assets/img/now-logo.png" alt="" style="height: 80px; margin-top: 100px;">
+                        <img src="assets/img/now-logo.png" alt="" style="height: 70px; margin-top: 30px;">
                     </div>
-                    <h4 class="h3-seo"><b>New Vehicle</b></h4>
+                    <h4 class="h3-seo"><b>{{title}}</b></h4>
                 </div>
                 <div class="content">
                     <div class="input-group form-group-no-border input-lg"
@@ -82,6 +82,9 @@
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="imageUploaded">
+                        <img class="card-img img-fluid" src="data:image/png;base64,{{vehicle.image.value}}" alt="Car Image" style="height: 10%;">
+                    </div>
                 </div>
                 <div class="text-center">
                     <button [disabled]="loading" class="btn btn-primary btn-round btn-lg btn-block" type="submit">
@@ -94,3 +97,5 @@
         </div>
     </div>
 </div>
+<footer class="footer" data-background-color="black">
+</footer>

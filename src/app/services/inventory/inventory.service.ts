@@ -22,12 +22,15 @@ export class InventoryService {
 
   getVehicles(){
     return this.http.get<any>(`${environment.apiUrl}/api/vehicle/getVehicles`)
-    .pipe(map(types =>{
-      return types;
-    }));
+    .pipe(map(cars =>{
+      return cars;
+    }), shareReplay({bufferSize:1, refCount: true}));
   }
 
   createVehicle(vehicle: Vehicle){
-    this.http.post<any>(`${environment.apiUrl}/api/vehicle/addVehicle`, vehicle);
+    return this.http.post<any>(`${environment.apiUrl}/api/vehicle/addVehicle`, vehicle)
+    .pipe(map( x =>{
+      console.log(x);
+    }));
   }
 }

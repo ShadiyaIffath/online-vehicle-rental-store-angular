@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <div class="row">
-        <div class="card-columns">
+        <div class="card-columns" *ngIf="!noVehicles">
             <div class="col-auto mb-3">
                 <div class="card" style="background-color: #f96332; width: 18rem; height: auto;">
                     <div class="card-body">
@@ -35,24 +35,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-auto mb-3" *ngFor="let vehicle of vehicleTypes">
+            <div class="col-auto mb-3" *ngFor="let car of filteredCars">
                 <div class="card" style="width: 20rem;">
                     <div class="card-header">
-                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicle.image}}" alt="Card image cap">
+                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{car.image}}" alt="Card image cap">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Car type</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Model: ee</h6>
-                        <p class="card-text">Price Per day- 40</p>
-                        <p class="card-text text-small text-muted">description</p>
-                        <a href="#" class="card-link">View</a>
-                        <a href="#" class="card-link">Reserve</a>
+                        <h5 class="card-title">{{car.model}} <span style="padding-left:60px; font-size: xx-large;"><b>£ {{car.type.pricePerDay}}</b></span></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{car.type.type}} <span style="padding-left:80px; font-size: x-large;"><i class="fas fa-users"></i><b> {{car.type.passengers}}</b></span></h6>                       
+                        <p class="card-text text-small text-muted">Engine: <span style="padding-left:150px;">{{car.engine}}</span></p>
+                        <p class="card-text text-small text-muted" *ngIf="car.automatic == true">Gear: <span style="padding-left:155px;">Automatic</span></p>
+                        <p class="card-text text-small text-muted" *ngIf="car.automatic == false">Gear: <span style="padding-left:155px;">Manual</span></p>
+                        <a href="#" class="card-link pull-center"><span style="padding-left:110px;"><b>Reserve</b></span></a>
                     </div>
                 </div>
             </div>
-            <div *ngIf="noVehicles">
-                <h4 class="text-primary">There are no vehicles</h4>
-            </div>
         </div>
+    </div>
+    <div *ngIf="noVehicles">
+        <h4 class="text-primary text-center">Oops! Currently we have no vehicles</h4>
     </div>
 </div>

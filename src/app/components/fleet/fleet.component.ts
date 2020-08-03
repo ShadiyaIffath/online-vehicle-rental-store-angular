@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { InventoryService } from '../../services/inventory/inventory.service'
+import { Vehicle } from 'app/models/Vehicle';
 
 @Component({
   selector: 'app-fleet',
@@ -11,45 +12,57 @@ import { InventoryService } from '../../services/inventory/inventory.service'
 
 export class FleetComponent implements OnInit {
   vehicleTypes: any[];
-  filteredTypes: any[];
+  vehicles: Vehicle[];
+  filteredCars: Vehicle[];
   noVehicles: boolean = false;
   serviceFailed: boolean = false;
   closeResult: string;
 
   constructor(private inventoryService: InventoryService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal) {    
+  }
+
+  ngOnInit(): void {
     this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
       this.vehicleTypes = data;
       this.serviceFailed = false;
-      if (this.vehicleTypes.length === 0) {
+    },
+    (error)=>{ 
+      this.serviceFailed = true;
+    });
+    this.inventoryService.getVehicles().subscribe((data: any[]) =>{
+      this.vehicles = data;
+      this.assignTypeToCars();
+      this.filteredCars = this.vehicles;
+
+      if (this.vehicles.length === 0) {
         this.noVehicles = true;
       }
       else {  
         this.noVehicles = false;
       }
-    },
-    (error)=>{ 
-      this.serviceFailed = true;
-    });
-    this.filteredTypes = this.vehicleTypes;
-  }
-
-  ngOnInit(): void {
+    })
   }
 
   typeChecked(): void {
-    this.filteredTypes.filter(item => { return item.checked; });
+    //this.filteredCars.filter(item => { return item.checked; });
   }
 
   filteredInventory() {
     this.typeChecked();
-    return this.filteredTypes;
+    return this.filteredCars;
   }
 
-  open(content) {
-    this.modalService.open(content, { windowClass: 'modal-mini modal-primary', size: 'sm' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    });
+  getTypeById(id){
+    return this.vehicleTypes.filter(function(type){
+      return (type.id == id);
+    })[0];
+  }
+
+  assignTypeToCars(){
+    for(var index:number =0; index < this.vehicles.length; index++){
+      this.vehicles[index].type = this.getTypeById(this.vehicles[index].typeId);
+    }
   }
 }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private toastr: ToastrService) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['']);
@@ -40,6 +42,12 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
+    });
+    this.toastr.success('Successful','Logged in',
+    {
+      timeOut:6000,
+      closeButton:true
+      
     });
   }
   
@@ -68,10 +76,12 @@ export class LoginComponent implements OnInit {
     .pipe(first())
     .subscribe(
       data => {
+        this.toastr.success('Successful','Logged in');
         this.router.navigate([this.returnUrl]);
       },
       error => {
         this.error = 'Login failed, please try again later';
+        this.toastr.error('Failed','Login failed');
         this.loading = false;
       });
   }

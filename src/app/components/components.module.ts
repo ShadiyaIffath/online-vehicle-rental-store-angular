@@ -7,6 +7,8 @@ import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbdModalBasic } from './modal/modal.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ComponentsComponent } from './components.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -33,7 +35,13 @@ export function tokenGetter() {
         NouisliderModule,
         RouterModule,
         JwBootstrapSwitchNg2Module,
-        HttpClientModule
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot({
+            timeOut:5000,
+            closeButton:true,
+            positionClass:'toast-bottom-right'
+        })
     ],
     declarations: [
         ComponentsComponent,

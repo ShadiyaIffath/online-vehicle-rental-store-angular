@@ -6,7 +6,8 @@ export class Vehicle {
     carCode: string;
     engine: string;
     automatic: boolean;
-    type: string;
+    type: any | string;
+    typeId:number;
     dayAdded: string;
     dayRemoved: string;
 }

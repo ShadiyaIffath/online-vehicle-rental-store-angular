@@ -38,7 +38,7 @@ export class CarComponent implements OnInit {
       this.vehicleTypes = data;
     });
 
-    if (!this.authenticationService.currentUserValue || this.authenticationService.currentUserValue.role !== 'admin') {
+    if (!this.authenticationService.currentUserValue && this.authenticationService.currentUserValue.role !== 'admin') {
       this.router.navigate(['']);
     }
   }

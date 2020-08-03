@@ -41,7 +41,7 @@ export class FleetComponent implements OnInit {
       else {  
         this.noVehicles = false;
       }
-    })
+    });
   }
 
   typeChecked(): void {

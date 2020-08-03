@@ -43,12 +43,6 @@ export class LoginComponent implements OnInit {
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
     });
-    this.toastr.success('Successful','Logged in',
-    {
-      timeOut:6000,
-      closeButton:true
-      
-    });
   }
   
   ngOnDestroy() {

@@ -7,7 +7,7 @@ import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbdModalBasic } from './modal/modal.component';
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ComponentsComponent } from './components.component';
@@ -20,6 +20,7 @@ import { ErrorInterceptor } from '../helpers/error.interceptor';
 import { ChangesGuard } from 'app/helpers/popupModal';
 import { EquipmentComponent } from './equipment/equipment.component';
 import { CarComponent } from './car/car.component';
+import { ManageVehiclesComponent } from './manageVehicles/manage-vehicles.component';
 
 
 export function tokenGetter() {
@@ -38,10 +39,11 @@ export function tokenGetter() {
         HttpClientModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot({
-            timeOut:5000,
+            timeOut:3000,
             closeButton:true,
-            positionClass:'toast-bottom-right'
-        })
+            positionClass:'toast-top-right'
+        }),
+        ToastContainerModule
     ],
     declarations: [
         ComponentsComponent,
@@ -51,7 +53,8 @@ export function tokenGetter() {
         LoginComponent,
         FleetComponent,
         EquipmentComponent,
-        CarComponent
+        CarComponent,
+        ManageVehiclesComponent
     ],
     exports: [ComponentsComponent],
     providers: [

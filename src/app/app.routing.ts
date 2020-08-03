@@ -9,12 +9,14 @@ import { LoginComponent } from './components/login/login.component';
 import { ChangesGuard} from './helpers/popupModal';
 import { CarComponent } from './components/car/car.component';
 import { EquipmentComponent } from './components/equipment/equipment.component';
+import { ManageVehiclesComponent } from './components/manageVehicles/manage-vehicles.component';
 
 const routes: Routes =[
     { path: '', redirectTo: 'index', pathMatch: 'full' },
     { path: 'index',                component: ComponentsComponent },
     { path:'components/register', component: RegisterComponent},
      { path:'components/login',      component: LoginComponent},
+     { path:'components/manageVehicles', component: ManageVehiclesComponent},
      { path: 'components/car', component:CarComponent},
      { path: 'components/equipment', component:EquipmentComponent}
 

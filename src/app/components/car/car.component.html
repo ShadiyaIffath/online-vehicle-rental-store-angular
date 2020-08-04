@@ -1,7 +1,8 @@
 <div class="page-header" filter-color="orange" style="height:max-content;">
     <div class="page-header-image" style="background-image:url(assets/img/addVehicle.jpg)"></div>
     <div class="container">
-        <div class="card card-login card-plain" style="background-color: #6e1005; margin-top: 5%; max-width: 50%; border-radius: 5%; padding-right: 5%; padding-left: 5%;">
+        <div class="card card-login card-plain"
+            style="background-color: #6e1005; margin-top: 5%; max-width: 50%; border-radius: 5%; padding-right: 5%; padding-left: 5%;">
             <form class="form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
                 <div class="header header-primary text-center">
                     <div class="logo-container">
@@ -45,7 +46,7 @@
                         <select class="form-control" formControlName="type" (focus)="focus1=true" (blur)="focus1=false"
                             [ngClass]="{ 'is-invalid': submitted && f.type.errors }" style="height:auto;">
                             <option value="" disabled>Choose the car type</option>
-                            <option *ngFor="let car of vehicleTypes" [ngValue]="car" style="color: orange;">{{car.type}}
+                            <option *ngFor="let car of vehicleTypes" [ngValue]="car.id" style="color: orange;">{{car.type}}
                             </option>
                         </select>
                         <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
@@ -65,7 +66,7 @@
                         <label class="form-control-label">Manual</label>
                     </div>
                     <div class="input-group form-group-no-border input-lg"
-                    [ngClass]="{'input-group-focus':focus1===true}">
+                        [ngClass]="{'input-group-focus':focus1===true}" *ngIf="vehicleId == null">
                         <label class="form-control-label">Attach image</label>
                         <div class="input-group form-group-no-border input-lg"
                             [ngClass]="{'input-group-focus':focus1===true}">
@@ -83,16 +84,24 @@
                         </div>
                     </div>
                     <div *ngIf="imageUploaded">
-                        <img class="card-img img-fluid" src="data:image/png;base64,{{vehicle.image.value}}" alt="Car Image" style="height: 10%;">
+                        <img class="card-img img-fluid" src="data:image/png;base64,{{vehicle.image.value || vehicle.image}}"
+                            alt="Car Image" style="height: 10%;">
                     </div>
                 </div>
-                <div class="text-center">
-                    <button [disabled]="loading" class="btn btn-primary btn-round btn-lg btn-block" type="submit">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Add vehicle
-                    </button>
-                    <div *ngIf="error" class="text-warning">{{error}}</div>
+                <div class="row">
+                    <div class="col-4 text-left">
+                        <button [disabled]="loading" class="btn btn-primary btn-round btn-lg btn-block" (click)="back()">
+                            Back
+                        </button>
+                    </div>
+                    <div class="col-5 text-right offset-lg-3">
+                        <button [disabled]="loading" class="btn btn-primary btn-round btn-lg btn-block" type="submit">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            {{button}}
+                        </button>
+                    </div>
                 </div>
+                <div *ngIf="error" class="text-warning text-center">{{error}}</div>
             </form>
         </div>
     </div>

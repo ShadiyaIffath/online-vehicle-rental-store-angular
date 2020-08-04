@@ -32,7 +32,6 @@ export class FleetComponent implements OnInit {
     });
     this.inventoryService.getVehicles().subscribe((data: any[]) =>{
       this.vehicles = data;
-      this.assignTypeToCars();
       this.filteredCars = this.vehicles;
 
       if (this.vehicles.length === 0) {
@@ -51,18 +50,6 @@ export class FleetComponent implements OnInit {
   filteredInventory() {
     this.typeChecked();
     return this.filteredCars;
-  }
-
-  getTypeById(id){
-    return this.vehicleTypes.filter(function(type){
-      return (type.id == id);
-    })[0];
-  }
-
-  assignTypeToCars(){
-    for(var index:number =0; index < this.vehicles.length; index++){
-      this.vehicles[index].type = this.getTypeById(this.vehicles[index].typeId);
-    }
   }
 }
 

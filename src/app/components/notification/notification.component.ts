@@ -10,6 +10,7 @@ export class NotificationComponent {
     @Input()
     public alerts: Array<IAlert> = [];
     private backup: Array<IAlert>;
+    private alert:IAlert;
 
     constructor() {
         this.alerts.push({

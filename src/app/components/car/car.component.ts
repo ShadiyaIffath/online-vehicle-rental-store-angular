@@ -89,7 +89,7 @@ export class CarComponent implements OnInit {
 
     if (this.vehicleForm.errors || this.vehicleForm.invalid) {
       this.error = 'Vehicle creation failed, invalid data';
-      this.toastr.error('Failed!', 'Vehicle creation failed.');
+      this.toastr.error('Form incomplete','Failed!');
       return;
     }
 
@@ -103,17 +103,17 @@ export class CarComponent implements OnInit {
       }, error => {
         console.log(error);
         this.error = 'Vehicle creation failed. Please try again later.'
-        this.toastr.error('Failed!', 'Vehicle creation failed.');
+        this.toastr.error( 'Vehicle creation failed.','Failed!');
       });
     }
     else{
       this.inventoryService.updateVehicle(this.vehicle)
       .subscribe(data => {
-        this.toastr.success('Successful', 'Vehicle successfully updated');
+        this.toastr.success('Vehicle successfully updated','Successful');
       }, error => {
         console.log(error);
         this.error = 'Vehicle update failed. Please try again later.'
-        this.toastr.error('Failed!', 'Vehicle update failed.');
+        this.toastr.error('Vehicle update failed.','Failed!' );
       });
     }
     this.loading = false;

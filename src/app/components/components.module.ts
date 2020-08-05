@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NouisliderModule } from 'ng2-nouislider';
@@ -8,7 +10,6 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbdModalBasic } from './modal/modal.component';
 import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ComponentsComponent } from './components.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -21,6 +22,7 @@ import { ChangesGuard } from 'app/helpers/popupModal';
 import { EquipmentComponent } from './equipment/equipment.component';
 import { CarComponent } from './car/car.component';
 import { ManageVehiclesComponent } from './manageVehicles/manage-vehicles.component';
+
 
 
 export function tokenGetter() {
@@ -37,6 +39,7 @@ export function tokenGetter() {
         RouterModule,
         JwBootstrapSwitchNg2Module,
         HttpClientModule,
+        BrowserModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot({
             timeOut:3000,

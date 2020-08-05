@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthenticationService } from 'app/services/authentication/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-navbar',
@@ -19,7 +20,8 @@ export class NavbarComponent implements OnInit {
         private element: ElementRef,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService) {
+        private authenticationService: AuthenticationService,
+        private toastr: ToastrService) {
         this.sidebarVisible = false;
         if (this.authenticationService.currentUserValue) {
             this.loggedIn = true;
@@ -67,6 +69,7 @@ export class NavbarComponent implements OnInit {
         this.authenticationService.logout();
         this.loggedIn = false;
         this.adminControls = false;
+        this.toastr.success('Logged out', 'Successful');
     }
 
 }

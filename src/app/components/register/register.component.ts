@@ -7,6 +7,7 @@ import { first } from 'rxjs/operators';
 
 import { User } from '../../models/User';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 
 const now = new Date();
 
@@ -23,7 +24,6 @@ export class RegisterComponent implements OnInit {
   returnUrl: string = '/components/login';
   error = '';
   model: NgbDateStruct;
-  adminControls: boolean = false;
   user: User = new User();
   today: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   minDate: NgbDateStruct = { year: now.getFullYear() - 100, month: now.getMonth() + 1, day: now.getDate() };
@@ -33,14 +33,10 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private parserFormatter: NgbDateParserFormatter,
     private authenticationService: AuthenticationService,
-    private _cdr: ChangeDetectorRef) {
+    private _cdr: ChangeDetectorRef,
+    private toastr: ToastrService) {
     if (this.authenticationService.currentUserValue) {
-      if (this.authenticationService.currentUserValue.role == 'admin') {
-        this.adminControls = true;
-      }
-      else {
-        this.router.navigate(['']);
-      }
+      this.router.navigate(['']);
     }
   }
 
@@ -70,7 +66,7 @@ export class RegisterComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.registerForm.invalid) {
-      console.log('form error');
+      this.toastr.error('Form is incomplete', 'Failed');
       this.error = 'Register failed, invalid credentials';
       return;
     }
@@ -81,13 +77,12 @@ export class RegisterComponent implements OnInit {
         .pipe(first())
         .subscribe(
           data => {
+            this.toastr.success('Registration successful, Login', 'Successful');
             this.router.navigate([this.returnUrl]);
-            if (this.adminControls == false) {
-              this.authenticationService.registerSuccessful = true;
-            }
           },
           error => {
             console.log(error);
+            this.toastr.error('Registration failed', 'Failed');
             if (error == "Conflict") {
               this.error = 'Register failed! Sorry, your email is already in use.';
               this.registerForm.controls['email'].setErrors({ 'incorrect': true });
@@ -103,29 +98,16 @@ export class RegisterComponent implements OnInit {
   }
 
   createRegisterFormControls() {
-    if (!this.adminControls) {
-      this.registerForm = this.formBuilder.group({
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        email: ['', Validators.compose([Validators.required, Validators.email])],
-        password: ['', Validators.required],
-        phone: ['', Validators.compose([Validators.pattern("[0-9 ]{10}"), Validators.required])],
-        dob: ['', Validators.compose([Validators.required])],
-        drivingLicense: ['', Validators.required],
-        additionalIdentification: ['', Validators.required],
-      });
-    }
-    else {
-      this.registerForm = this.formBuilder.group({
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        email: ['', Validators.compose([Validators.required, Validators.email])],
-        password: ['', Validators.required],
-        phone: ['', Validators.compose([Validators.pattern("[0-9 ]{10}"), Validators.required])],
-        dob: ['', Validators.compose([Validators.required])],
-      });
-    }
-
+    this.registerForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.required],
+      phone: ['', Validators.compose([Validators.pattern("[0-9 ]{10}"), Validators.required])],
+      dob: ['', Validators.compose([Validators.required])],
+      drivingLicense: ['', Validators.required],
+      additionalIdentification: ['', Validators.required],
+    });
   }
 
   uploadIdentityFile = (files) => {
@@ -174,6 +156,6 @@ export class RegisterComponent implements OnInit {
     this.user.active = true;
     this.user.activatedDate = this.parserFormatter.format(this.today);
   }
-  
+
 }
 

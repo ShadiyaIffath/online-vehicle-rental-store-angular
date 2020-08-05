@@ -18,13 +18,13 @@ import { HttpClientModule } from '@angular/common/http';
         NavbarComponent,
     ],
     imports: [
-        BrowserAnimationsModule,
         NgbModule,
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
         AppRoutingModule,
         ComponentsModule,
+        BrowserAnimationsModule,
         HttpClientModule
     ],
     providers: [],

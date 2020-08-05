@@ -15,7 +15,6 @@ export class AuthenticationService {
   @Output() userLoggedIn: EventEmitter<any> = new EventEmitter<any>();
   private currentUserSubject: BehaviorSubject<TokenClaim>;
   public currentUser: Observable<TokenClaim>;
-  public registerSuccessful:boolean = false;
 
   constructor(private http: HttpClient,
     private router: Router) {
@@ -25,10 +24,6 @@ export class AuthenticationService {
 
   public get currentUserValue(): TokenClaim {
     return this.currentUserSubject.value;
-  }
-
-  public get registerSuccessfulValue():boolean{
-    return this.registerSuccessful;
   }
 
   public getEmitter() {
@@ -60,7 +55,6 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     this.userLoggedIn.emit(null);
     this.currentUserSubject.next(null);
-    this.registerSuccessful = false;
     this.router.navigate(['/components/login']);
   }
 

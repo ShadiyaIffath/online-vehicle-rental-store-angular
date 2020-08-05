@@ -27,9 +27,6 @@ export class LoginComponent implements OnInit {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['']);
     }
-    if(this.authenticationService.registerSuccessful == true){
-      this.title = 'Registration successful';
-    }
   }
 
   ngOnInit() {
@@ -62,6 +59,7 @@ export class LoginComponent implements OnInit {
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       this.error = 'Login failed, invalid credentials';
+      this.toastr.error('Login failed', 'Failed');
       return;
     }
 
@@ -70,12 +68,12 @@ export class LoginComponent implements OnInit {
     .pipe(first())
     .subscribe(
       data => {
-        this.toastr.success('Successful','Logged in');
+        this.toastr.success('Successfully logged in','Successful');
         this.router.navigate([this.returnUrl]);
       },
       error => {
         this.error = 'Login failed, please try again later';
-        this.toastr.error('Failed','Login failed');
+        this.toastr.error('Login failed', 'Failed');
         this.loading = false;
       });
   }

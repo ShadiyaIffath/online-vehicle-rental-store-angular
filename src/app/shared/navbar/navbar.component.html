@@ -24,7 +24,7 @@
                         <p>Home</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf='loggedIn'>
                     <a class="nav-link" [routerLink]="'/components/login'">
                         <i class="now-ui-icons files_paper"></i>
                         <p>Bookings</p>

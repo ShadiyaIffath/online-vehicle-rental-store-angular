@@ -43,7 +43,7 @@ export class AuthenticationService {
         let jwtData = atob(user.split('.')[1]);
         let token = JSON.parse(jwtData);
         token.token = user;
-
+        
         localStorage.setItem('currentUser', JSON.stringify(token));
         this.userLoggedIn.emit(token);
         this.currentUserSubject.next(token);

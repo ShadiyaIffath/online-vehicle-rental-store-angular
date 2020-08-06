@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
         this.sidebarVisible = false;
         if (this.authenticationService.currentUserValue) {
             this.loggedIn = true;
-            if(this.authenticationService.currentUserValue.role =='admin'){
+            if (this.authenticationService.currentUserValue.role == 'admin') {
                 this.adminControls = true;
             }
         }
@@ -35,10 +35,12 @@ export class NavbarComponent implements OnInit {
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
         this.authenticationService.getEmitter().subscribe((customObject) => {
-            this.loggedIn = true;
-            if (customObject != null && customObject.role) {
-                this.adminControls = true;
-            }
+            if (customObject != null) {
+                this.loggedIn = true;
+                if (customObject.role == 'admin') {
+                    this.adminControls = true;
+                }
+            }          
         });
     }
     sidebarOpen() {

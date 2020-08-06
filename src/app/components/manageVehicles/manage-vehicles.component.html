@@ -20,15 +20,15 @@
                 <div class="col-lg-3">
                     <label class="text-primary"><b> Car Type</b></label>
                     <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
-                        style="height:auto; margin-bottom: 3%; border-color: tomato;">
-                        <option *ngFor="let car of vehicleTypes" [ngValue]="car" class="text-primary">{{car.type}}
+                        style="height:auto; margin-bottom: 3%; border-color: tomato;" (change)="typeFilter($event)">
+                        <option *ngFor="let type of vehicleTypes" [ngValue]="car" class="text-primary">{{type.type}}
                         </option>
                     </select>
                 </div>
                 <div class="col-lg-3">
                     <label class="text-primary"><b>Active</b></label>
                     <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
-                        style="height:auto; margin-bottom: 3%;border-color: tomato;">
+                        style="height:auto; margin-bottom: 3%;border-color: tomato;" (change)="activeFilter($event)">
                         <option *ngFor="let value of availability" [ngValue]="value.id" class="text-primary">
                             {{value.type}}
                         </option>
@@ -64,13 +64,12 @@
                             <td>{{car.dayAdded}}</td>
                             <td>{{car.active}}</td>
                             <td>
-                                <button class="btn btn-primary btn-sm" title="Edit vehicle"><i
-                                        class="fa fa-pencil-square-o" aria-hidden="true"
-                                        (click)="editVehicle(car.id)"></i></button>
-                                <button class="btn btn-primary btn-sm" *ngIf="!car.active" title="Activate vehicle"><i
-                                        class="fa fa-check" aria-hidden="true"></i></button>
-                                <button class="btn btn-primary btn-sm" *ngIf="car.active" title="Deactivate vehicle"><i
-                                        class="fa fa-times" aria-hidden="true"></i></button>
+                                <button class="btn btn-primary btn-sm" title="Edit vehicle">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editVehicle(car.id)"></i></button>
+                                <button class="btn btn-primary btn-sm" *ngIf="!car.active" title="Activate vehicle">
+                                    <i class="fa fa-check" aria-hidden="true" (click)="updateVehicleStatus(car)"></i></button>
+                                <button class="btn btn-primary btn-sm" *ngIf="car.active" title="Deactivate vehicle">
+                                    <i class="fa fa-times" aria-hidden="true" (click)="updateVehicleStatus(car)"></i></button>
                             </td>
                         </tr>
                     </tbody>

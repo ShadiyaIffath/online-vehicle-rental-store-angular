@@ -22,6 +22,7 @@ import { ChangesGuard } from 'app/helpers/popupModal';
 import { EquipmentComponent } from './equipment/equipment.component';
 import { CarComponent } from './car/car.component';
 import { ManageVehiclesComponent } from './manageVehicles/manage-vehicles.component';
+import { RoleGuardService } from 'app/helpers/RoleGuardService';
 
 
 
@@ -44,7 +45,7 @@ export function tokenGetter() {
         ToastrModule.forRoot({
             timeOut:3000,
             closeButton:true,
-            positionClass:'toast-top-right'
+            positionClass:'toast-bottom-right'
         }),
         ToastContainerModule
     ],
@@ -63,6 +64,7 @@ export function tokenGetter() {
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        ChangesGuard]
+        ChangesGuard,
+        RoleGuardService]
 })
 export class ComponentsModule { }

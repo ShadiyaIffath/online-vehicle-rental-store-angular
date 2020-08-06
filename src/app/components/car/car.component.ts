@@ -18,7 +18,7 @@ const now = new Date();
 })
 export class CarComponent implements OnInit {
   vehicleForm: FormGroup;
-  vehicleId: number;
+  vehicleId: any;
   engines = ['Petrol', 'Diesel', 'Hybrid'];
   submitted: boolean = false;
   vehicleTypes: any[];
@@ -52,6 +52,16 @@ export class CarComponent implements OnInit {
       this.button = 'Confirm edit';
       this.imageUploaded = true;
       this.assignValuesToForm();
+    //   this.inventoryService.getVehicleById(this.vehicleId).subscribe((data: Vehicle) => {
+    //     this.vehicle = data;
+    //     console.log(data);
+    //     this.assignValuesToForm();
+    //   },err =>{
+    //     console.log(err);
+    //   });
+    //   this.title = 'Edit Vehicle';
+    //   this.button = 'Confirm edit';
+    //   this.imageUploaded = true;     
     }
     else{
       this.vehicleForm = this.formBuilder.group({
@@ -168,6 +178,6 @@ export class CarComponent implements OnInit {
       engine: [this.vehicle.engine, Validators.required],
       gear: [gear, Validators.required],
       type: [this.vehicle.typeId, Validators.required]
-    });
+    });    
   }
 }

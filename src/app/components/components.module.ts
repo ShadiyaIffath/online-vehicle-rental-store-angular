@@ -23,6 +23,7 @@ import { EquipmentComponent } from './equipment/equipment.component';
 import { CarComponent } from './car/car.component';
 import { ManageVehiclesComponent } from './manageVehicles/manage-vehicles.component';
 import { RoleGuardService } from 'app/helpers/RoleGuardService';
+import { BookingComponent } from './booking/booking.component';
 
 
 
@@ -58,7 +59,8 @@ export function tokenGetter() {
         FleetComponent,
         EquipmentComponent,
         CarComponent,
-        ManageVehiclesComponent
+        ManageVehiclesComponent,
+        BookingComponent
     ],
     exports: [ComponentsComponent],
     providers: [

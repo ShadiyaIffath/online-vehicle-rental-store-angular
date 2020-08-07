@@ -12,7 +12,7 @@ import { Vehicle } from '../../models/Vehicle';
 export class InventoryService {
   private types: any[];
   private cars: any[];
-  vehicleId: BehaviorSubject<number>;
+  public vehicleId = new BehaviorSubject<number>(0);
   constructor(private http: HttpClient) {
   }
 
@@ -21,7 +21,7 @@ export class InventoryService {
       .pipe(map(types => {
         this.types = types;
         return this.types;
-      }), shareReplay({ bufferSize: 1, refCount: true }));
+      }), shareReplay(1));
   }
 
   getVehicles() {
@@ -29,18 +29,18 @@ export class InventoryService {
       .pipe(map(cars => {
         this.cars = cars;
         return this.cars;
-      }), shareReplay({ bufferSize: 1, refCount: true }));
+      }), shareReplay(1));
   }
 
-  // getVehicleById(id: number) {
-  //   let index = id.toString();
-  //   const params = new HttpParams().set('id', index);
-  //   const headers = new HttpHeaders().set('content-type', 'application/json');
-  //   return this.http.get<any>(`${environment.apiUrl}/api/vehicle/getVehicle`, { headers: headers, params: params })
-  //     .pipe(map(car => {
-  //       return car;
-  //     }));
-  // }
+  getVehicleById(id: number) {
+    let index = id.toString();
+    const params = new HttpParams().set('id', index);
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/getVehicle`, { headers: headers, params: params })
+      .pipe(map(car => {
+        return car;
+      }));
+  }
 
   createVehicle(vehicle: Vehicle) {
     return this.http.post<any>(`${environment.apiUrl}/api/vehicle/addVehicle`, vehicle)
@@ -81,22 +81,11 @@ export class InventoryService {
   }
 
   selectVehicle(id: number): void {
-    this.vehicleId = new BehaviorSubject(id);
+    this.vehicleId.next(id);
   }
 
   removeSelection(): void {
     this.vehicleId = null;
-  }
-
-   getVehicleById(id:number){
-    let car;
-    for (var index: number = 0; index < this.cars.length; index++) {
-      if(this.cars[index].id == id){
-        car =  this.cars[index];
-        break;
-      }
-    }
-    return car; 
   }
 
   getTypeById(id: number) {

@@ -10,8 +10,8 @@
                             <div class="form-check">
                                 <div class="row form-group" *ngFor="let type of vehicleTypes">
                                     <label class="form-check-label text-white">
-                                        <input class="form-check-input" type="checkbox" name="vehicleTypes" value="{{type.id}}"
-                                            [(ngModel)]="type.checked">
+                                        <input class="form-check-input" type="checkbox" name="vehicleTypes"
+                                            value="{{type.id}}" [(ngModel)]="type.checked">
                                         <span class="form-check-sign"></span>
                                         <p class="card-text">{{type.type}}</p>
                                     </label>
@@ -24,9 +24,9 @@
                             <div class="form-check">
                                 <div class="row form-group" *ngFor="let type of vehicleTypes">
                                     <label class="form-check-label text-white">
-                                        <input class="form-check-input" type="checkbox" name="vehiclePrices" value="{{type.id}}"
-                                            [(ngModel)]="type.checked">
-                                        <span class="form-check-sign"></span>                                       
+                                        <input class="form-check-input" type="checkbox" name="vehiclePrices"
+                                            value="{{type.id}}" [(ngModel)]="type.checked">
+                                        <span class="form-check-sign"></span>
                                         <p class="card-text">£{{type.pricePerDay}}</p>
                                     </label>
                                 </div>
@@ -36,17 +36,26 @@
                 </div>
             </div>
             <div class="col-auto mb-3" *ngFor="let car of filteredCars">
-                <div class="card" style="width: 20rem;">
+                <div class="card" style="width: 100%;">
                     <div class="card-header">
-                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{car.image}}" alt="Card image cap">
+                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{car.image}}" alt="car image">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{car.model}} <span style="padding-left:60px; font-size: xx-large;"><b>£ {{car.type.pricePerDay}}</b></span></h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{car.type.type}} <span style="padding-left:80px; font-size: x-large;"><i class="fas fa-users"></i><b> {{car.type.passengers}}</b></span></h6>                       
-                        <p class="card-text text-small text-muted">Engine: <span style="padding-left:150px;">{{car.engine}}</span></p>
-                        <p class="card-text text-small text-muted" *ngIf="car.automatic == true">Gear: <span style="padding-left:155px;">Automatic</span></p>
-                        <p class="card-text text-small text-muted" *ngIf="car.automatic == false">Gear: <span style="padding-left:155px;">Manual</span></p>
-                        <a href="#" class="card-link pull-center"><span style="padding-left:110px;"><b>Reserve</b></span></a>
+                        <h5 class="card-title">{{car.model}} <span style="padding-left:18%; font-size: xx-large;"><b>£
+                                    {{car.type.pricePerDay}}</b></span></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{car.type.type}} <span
+                                style="padding-left:25%; font-size: x-large;"><i class="fas fa-users"></i><b>
+                                    {{car.type.passengers}}</b></span></h6>
+                        <p class="card-text text-small text-muted">Engine: <span
+                                style="padding-left:150px;">{{car.engine}}</span></p>
+                        <p class="card-text text-small text-muted" *ngIf="car.automatic == true">Gear: <span
+                                style="padding-left:155px;">Automatic</span></p>
+                        <p class="card-text text-small text-muted" *ngIf="car.automatic == false">Gear: <span
+                                style="padding-left:155px;">Manual</span></p>
+                        <div class="text-center">
+                            <button class="btn btn-primary" title="Book vehicle">
+                                <i class="fas fa-hand-point-up" (click)="bookVehicle(car.id)"> Book</i></button>
+                        </div>
                     </div>
                 </div>
             </div>

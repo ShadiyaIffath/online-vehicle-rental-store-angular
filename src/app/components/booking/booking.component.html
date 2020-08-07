@@ -1,0 +1,176 @@
+<div class="wrapper"
+    style="background-image:url(assets/img/service3.jpg); background-repeat: no-repeat; background-size: cover;">
+    <div class="container clear-filter" style="padding-top: 15%; color: black;">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card" style="background-color: #f96332; width: 100%; height: auto; color: white;">
+                    <div class="card-header">
+                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicle.image}}"
+                            alt="car image">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-dark">{{vehicle.model}} <span
+                                style="padding-left:18%; font-size: xx-large;"><b>£
+                                    {{vehicle.type.pricePerDay}}</b></span></h5>
+                        <h6 class="card-subtitle mb-2">{{vehicle.type.type}} <span
+                                style="padding-left:25%; font-size: x-large;"><i class="fas fa-users"></i><b>
+                                    {{vehicle.type.passengers}}</b></span></h6>
+                        <p class="card-text text-small">Engine: <span
+                                style="padding-left:150px;">{{vehicle.engine}}</span></p>
+                        <p class="card-text text-small" *ngIf="vehicle.automatic == true">Gear: <span
+                                style="padding-left:155px;">Automatic</span></p>
+                        <p class="card-text text-small" *ngIf="vehicle.automatic == false">Gear: <span
+                                style="padding-left:155px;">Manual</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 offset-sm-2">
+                <div class="card rounded-3" style="width: 100%; overflow: visible !important;">
+                    <div class="card-header">
+                        <h3 class="h3-seo text-center text-primary"><b>For how long do you want?</b></h3>
+                        <p class="text-center text-primary">You can only book for a minimum: 5 hours - maximum: 14 days </p>
+                    </div>
+                    <div class="card-body">
+                        <form class="form" [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Pick-up date<b class="text-danger">*</b>:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus===true}">
+                                        <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
+                                            name="dp1" [(ngModel)]="startDate" ngbDatepicker #d1="ngbDatepicker"
+                                            (click)="d1.toggle()" [minDate]="minDate" formControlName="pickUpDate"
+                                            [ngClass]="{ 'is-invalid': submitted && f.pickUpDate.errors }" (ngModelChange)="changeDate($event)" />
+                                        <div *ngIf="submitted && f.pickUpDate.errors" class="invalid-feedback">
+                                            <div *ngIf="f.pickUpDate.errors.required">Pick-up date is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Pick up time<b class="text-danger">*</b>:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus1===true}">
+                                        <select class="form-control" formControlName="pickUpTime" (focus)="focus1=true"
+                                            (blur)="focus1=false"
+                                            [ngClass]="{ 'is-invalid': submitted && f.pickUpTime.errors }"
+                                            style="height:auto;">
+                                            <option value="" disabled>Select pick up time</option>
+                                            <option *ngFor="let time of timeArray" [ngValue]="time"
+                                                style="color: orange;">
+                                                {{time}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f.pickUpTime.errors" class="invalid-feedback">
+                                            <div *ngIf="f.pickUpTime.errors.required">Pick up time is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Drop off date<b class="text-danger">*</b>:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus===true}">
+                                        <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
+                                            name="dp2" [(ngModel)]="endDate" ngbDatepicker #d2="ngbDatepicker"
+                                            (click)="d2.toggle()" [minDate]="startDate"
+                                            formControlName="dropOffDate" (ngModelChange)="changeDate($event)"
+                                            [ngClass]="{ 'is-invalid': submitted && f.dropOffDate.errors }" />
+                                        <div *ngIf="submitted && f.dropOffDate.errors" class="invalid-feedback">
+                                            <div *ngIf="f.dropOffDate.errors.required">Drop off date is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Drop off time<b class="text-danger">*</b>:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus1===true}">
+
+                                        <select class="form-control" formControlName="dropOffTime" (focus)="focus1=true"
+                                            (blur)="focus1=false"
+                                            [ngClass]="{ 'is-invalid': submitted && f.dropOffTime.errors }"
+                                            style="height:auto;">
+                                            <option value="" disabled>Select drop off time</option>
+                                            <option *ngFor="let time of timeArray" [ngValue]="time"
+                                                style="color: orange;">
+                                                {{time}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f.dropOffTime.errors" class="invalid-feedback">
+                                            <div *ngIf="f.dropOffTime.errors.required">Drop off time is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Additional equipment: (You can select
+                                        multiple)</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus1===true}">
+
+                                        <select class="form-control" formControlName="dropOffTime" (focus)="focus1=true"
+                                            (blur)="focus1=false"
+                                            [ngClass]="{ 'is-invalid': submitted && f.dropOffTime.errors }"
+                                            style="height:auto;" multiple>
+                                            <option value="" disabled>Highlight additional equipment</option>
+                                            <!-- <option *ngFor="let car of vehicleTypes" [ngValue]="car.id"
+                                                style="color: orange;">
+                                                {{car.type}}
+                                            </option> -->
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.dropOffTime.errors" class="invalid-feedback">
+                                            <div *ngIf="f.dropOffTime.errors.required">{{additionError}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 class="text-center"><b>Price: £ {{price}}</b></h3>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col">
+                                        <button [disabled]="loading"
+                                            class="btn btn-primary btn-round btn-lg btn-block pull-left"
+                                            [routerLink]="['']">
+                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button [disabled]="loading"
+                                            class="btn btn-primary btn-round btn-lg btn-block pull-right" type="submit">
+                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                                <div *ngIf="error" class="text-danger text-center">{{error}}</div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer" data-background-color="black">
+</footer>

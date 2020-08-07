@@ -26,6 +26,7 @@ export class CarComponent implements OnInit {
   error: string = '';
   title: string = 'New Vehicle';
   button: string = 'Add vehicle';
+  editing: boolean = false;
   imageUploaded: boolean = false;
   loading: boolean = false;
   today: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
@@ -47,23 +48,17 @@ export class CarComponent implements OnInit {
 
     if (this.inventoryService.vehicleId != null) {
       this.vehicleId = this.inventoryService.vehicleId.value;
-      this.vehicle = this.inventoryService.getVehicleById(this.vehicleId);
-      this.title = 'Edit Vehicle';
-      this.button = 'Confirm edit';
-      this.imageUploaded = true;
-      this.assignValuesToForm();
-    //   this.inventoryService.getVehicleById(this.vehicleId).subscribe((data: Vehicle) => {
-    //     this.vehicle = data;
-    //     console.log(data);
-    //     this.assignValuesToForm();
-    //   },err =>{
-    //     console.log(err);
-    //   });
-    //   this.title = 'Edit Vehicle';
-    //   this.button = 'Confirm edit';
-    //   this.imageUploaded = true;     
+      this.inventoryService.getVehicleById(this.vehicleId).subscribe((data)=>{
+        this.vehicle = data;
+        this.title = 'Edit Vehicle';
+        this.button = 'Confirm edit';
+        this.imageUploaded = true;
+        this.assignValuesToForm();
+      }, err =>{
+        this.router.navigate(['/components/manageVehicles']);
+      });
     }
-    else{
+
       this.vehicleForm = this.formBuilder.group({
         carCode: ['', Validators.required],
         model: ['', Validators.required],
@@ -72,7 +67,7 @@ export class CarComponent implements OnInit {
         type: ['', Validators.required],
         image: ['', Validators.required]
       });
-    }
+    
   }
 
   ngOnInit(): void {
@@ -98,7 +93,7 @@ export class CarComponent implements OnInit {
     this.submitted = true;
 
     if (this.vehicleForm.errors || this.vehicleForm.invalid) {
-      this.error = 'Vehicle creation failed, invalid data';
+      this.error = 'Invalid data, please check again';
       this.toastr.error('Form incomplete','Failed!');
       return;
     }
@@ -110,6 +105,7 @@ export class CarComponent implements OnInit {
     this.inventoryService.createVehicle(this.vehicle)
       .subscribe(data => {
         this.toastr.success('Successful', 'Vehicle successfully created');
+        this.router.navigate(['/components/manageVehicles']);
       }, error => {
         console.log(error);
         this.error = 'Vehicle creation failed. Please try again later.'
@@ -120,6 +116,7 @@ export class CarComponent implements OnInit {
       this.inventoryService.updateVehicle(this.vehicle)
       .subscribe(data => {
         this.toastr.success('Vehicle successfully updated','Successful');
+        this.router.navigate(['/components/manageVehicles']);
       }, error => {
         console.log(error);
         this.error = 'Vehicle update failed. Please try again later.'

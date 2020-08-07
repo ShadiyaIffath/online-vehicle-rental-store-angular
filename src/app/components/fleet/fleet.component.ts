@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import { InventoryService } from '../../services/inventory/inventory.service'
 import { Vehicle } from 'app/models/Vehicle';
+
 
 @Component({
   selector: 'app-fleet',
@@ -19,7 +21,7 @@ export class FleetComponent implements OnInit {
   closeResult: string;
 
   constructor(private inventoryService: InventoryService,
-    private modalService: NgbModal) {    
+    private router:Router) {    
   }
 
   ngOnInit(): void {
@@ -31,7 +33,7 @@ export class FleetComponent implements OnInit {
       this.serviceFailed = true;
     });
     this.inventoryService.getVehicles().subscribe((data: any[]) =>{
-      this.vehicles = data;
+      this.vehicles = data.filter(x=> x.active ==  true);
       this.filteredCars = this.vehicles;
 
       if (this.vehicles.length === 0) {
@@ -50,6 +52,11 @@ export class FleetComponent implements OnInit {
   filteredInventory() {
     this.typeChecked();
     return this.filteredCars;
+  }
+
+  bookVehicle(id: number) {
+    this.inventoryService.selectVehicle(id);
+    this.router.navigate(['components/booking']);
   }
 }
 

@@ -44,14 +44,14 @@
                         <h5 class="card-title">{{car.model}} <span style="padding-left:18%; font-size: xx-large;"><b>£
                                     {{car.type.pricePerDay}}</b></span></h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{car.type.type}} <span
-                                style="padding-left:25%; font-size: x-large;"><i class="fas fa-users"></i><b>
+                                style="padding-left: 30%; font-size: x-large;"><i class="fas fa-users"></i><b>
                                     {{car.type.passengers}}</b></span></h6>
                         <p class="card-text text-small text-muted">Engine: <span
-                                style="padding-left:150px;">{{car.engine}}</span></p>
+                                style="padding-left:55%;">{{car.engine}}</span></p>
                         <p class="card-text text-small text-muted" *ngIf="car.automatic == true">Gear: <span
-                                style="padding-left:155px;">Automatic</span></p>
+                                style="padding-left:55%;">Automatic</span></p>
                         <p class="card-text text-small text-muted" *ngIf="car.automatic == false">Gear: <span
-                                style="padding-left:155px;">Manual</span></p>
+                                style="padding-left:60%;">Manual</span></p>
                         <div class="text-center">
                             <button class="btn btn-primary" title="Book vehicle">
                                 <i class="fas fa-hand-point-up" (click)="bookVehicle(car.id)"> Book</i></button>

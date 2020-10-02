@@ -11,6 +11,7 @@ import { InventoryService } from 'app/services/inventory/inventory.service';
 import { Vehicle } from 'app/models/Vehicle';
 import { BehaviorSubject } from 'rxjs';
 import { Booking } from 'app/models/VehicleBooking';
+import { BookingService } from 'app/services/booking/booking.service';
 
 
 const now = new Date();
@@ -30,6 +31,7 @@ export class BookingComponent implements OnInit {
   title: string = '';
   price: number; //this will be replaced with booking object
   vehicleId: number;
+  loaded: Promise<boolean>;
   vehicle: Vehicle = new Vehicle();
   booking: Booking = new Booking();
   additionalError: string = '';
@@ -42,6 +44,7 @@ export class BookingComponent implements OnInit {
     private parserFormatter: NgbDateParserFormatter,
     private authenticationService: AuthenticationService,
     private inventoryService: InventoryService,
+    private bookingService:  BookingService, 
     private toastr: ToastrService) {
     // redirect to login page if not logged in
     if (this.authenticationService.currentUserValue == null) {
@@ -53,6 +56,8 @@ export class BookingComponent implements OnInit {
       this.vehicleId = this.inventoryService.vehicleId.value;
         this.inventoryService.getVehicleById(this.vehicleId).subscribe((data)=>{
           this.vehicle = data;
+          this.price =this.vehicle.type.pricePerDay;
+          this.loaded =Promise.resolve(true);
       }, err =>{
         this.router.navigate(['']);
       });
@@ -89,12 +94,14 @@ export class BookingComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.bookingForm.controls; }
 
-  changeDate(event: any) {
+  async changeDate(event: any) {
     var end = moment({ year: this.endDate.year, month: this.endDate.month, day: this.endDate.day });
     var start = moment({ year: this.startDate.year, month: this.startDate.month, day: this.startDate.day });
     var diff = end.diff(start, 'days') + 1;
     if (diff > 0 && diff <= 14) {
+      if(await this.loaded == true){
       this.price = diff * this.vehicle.type.pricePerDay;
+      }
     }
   }
 
@@ -121,11 +128,29 @@ export class BookingComponent implements OnInit {
       return;
     }
     this.extractFormValues();
+    this.loading = true;
+    if(this.booking.id == null){
+    this.bookingService.createBooking(this.booking)
+      .subscribe(data => {
+        this.toastr.success('Successful', 'Your booking was successful');
+        this.router.navigate(['']);
+      }, error => {
+        console.log(error);
+        this.error = 'Booking failed. Please try again later.'
+        this.toastr.error( 'The booking failed.','Failed!');
+      });
+    }
+
   }
 
   extractFormValues(){
+    if(this.booking.id == null){
+      this.booking.status ="created";
+      this.booking.createdOn = moment().format("YYYY-MM-DD HH:mm:ss");
+      console.log(this.authenticationService.currentUserValue);
+      this.booking.accountId = parseInt(this.authenticationService.currentUserValue.nameid);
+    }
       this.booking.totalCost = this.price;
-      this.booking.createdOn = moment().toString();
       this.booking.vehicleId = this.vehicleId;
       console.log(this.booking);
   }
@@ -140,8 +165,8 @@ export class BookingComponent implements OnInit {
     var endTime = moment(date +' '+ time);
 
     if(startTime.isBefore(endTime) && (endTime.diff(startTime,'days')+ 1) <=14 && (endTime.diff(startTime,'hours') >=5)){
-      this.booking.startTime = startTime.toString();
-      this.booking.endTime = endTime.toString();
+      this.booking.startTime = startTime.format("YYYY-MM-DD HH:mm:ss");
+      this.booking.endTime = endTime.format("YYYY-MM-DD HH:mm:ss");
       return true;
     }
     return false;

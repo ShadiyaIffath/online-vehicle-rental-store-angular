@@ -5,6 +5,8 @@ export class Booking{
     confirmationCode: string ;
     totalCost: number;
     createdOn: Date| string;
+    status:string;
     vehicleId:number;
+    accountId:number;
     vehicle: any|string;
 }

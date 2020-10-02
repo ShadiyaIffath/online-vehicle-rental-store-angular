@@ -1,7 +1,7 @@
 export class TokenClaim{
     role:string;
     email: string;
-    nameId:string;
+    nameid:string;
     token?: string;
     nbf:string;
     exp:string;

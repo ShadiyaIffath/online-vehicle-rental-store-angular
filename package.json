@@ -35,6 +35,7 @@
     "jw-bootstrap-switch-ng2": "2.0.5",
     "moment": "^2.27.0",
     "ng2-nouislider": "1.7.13",
+    "ngx-spinner": "^9.0.2",
     "ngx-toastr": "^9.1.1",
     "nouislider": "9.2.0",
     "popper.js": "1.14.7",

@@ -1,7 +1,12 @@
 <div class="page-header" filter-color="orange" style="height:max-content;">
-    <div class="page-header-image" style="background-image:url(assets/img/addVehicle.jpg)"></div>
+    <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#1010ee" type="ball-clip-rotate"
+        [fullScreen]="true">
+        <p style="color: #6e1005"> Loading... </p>
+    </ngx-spinner>
+    <div class="page-header-image" style="background-image:url(assets/img/equipment.jpeg)"></div>
     <div class="container">
-        <div class="card card-login card-plain" style="background-color:  #6e1005; margin-top: 10%; max-width: 50%; border-radius: 5%; padding-right: 5%; padding-left: 5%;">
+        <div class="card card-login card-plain"
+            style="background-color:  #6e1005; margin-top: 10%; max-width: 50%; border-radius: 5%; padding-right: 5%; padding-left: 5%;">
             <form class="form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
                 <div class="header header-primary text-center">
                     <div class="logo-container">
@@ -12,24 +17,28 @@
                 <div class="content">
                     <div class="input-group form-group-no-border input-lg"
                         [ngClass]="{'input-group-focus':focus===true}">
-                        <input type="text" class="form-control" formControlName="itemCode" placeholder="Equipment code"
+                        <input type="text" class="form-control" formControlName="name" placeholder="Equipment Name"
                             (focus)="focus=true" (blur)="focus=false"
-                            [ngClass]="{ 'is-invalid': submitted && f.itemCode.errors }">
-                        <div *ngIf="submitted && f.itemCode.errors" class="invalid-feedback">
-                            <div *ngIf="f.itemCode.errors.required">Equipment code is required</div>
+                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                            <div *ngIf="f.name.errors.required">Equipment name is required</div>
+                        </div>
+                    </div>
+                    <div class="input-group form-group-no-border input-lg"
+                        [ngClass]="{'input-group-focus':focus===true}">
+                        <input type="number" class="form-control" formControlName="price" placeholder="Purchased Price (Lkr)"
+                            (focus)="focus=true" (blur)="focus=false"
+                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                        <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                            <div *ngIf="f.price.errors.required">Equipment price is required</div>
                         </div>
                     </div>
                     <div class="input-group form-group-no-border input-lg"
                         [ngClass]="{'input-group-focus':focus1===true}">
-                        <input type="text" formControlName="description" placeholder="Description" class="form-control"
-                            (focus)="focus1=true" (blur)="focus1=false"
-                            [ngClass]="{ 'is-invalid': submitted && f.model.errors }" />
-                    </div>
-                    <div class="input-group form-group-no-border input-lg"
-                        [ngClass]="{'input-group-focus':focus1===true}">
-                        <select class="form-control" formControlName="catergory" (focus)="focus1=true" (blur)="focus1=false"
-                            [ngClass]="{ 'is-invalid': submitted && f.type.errors }" style="height:auto;">
-                            <option value="" disabled>Choose category</option>
+                        <select class="form-control" formControlName="catergory" (focus)="focus1=true"
+                            (blur)="focus1=false" [ngClass]="{ 'is-invalid': submitted && f.type.errors }"
+                            style="height:auto;">
+                            <option value="" disabled selected>Choose category</option>
                             <option *ngFor="let car of vehicleTypes" [ngValue]="car" style="color: orange;">{{car.type}}
                             </option>
                         </select>
@@ -37,13 +46,24 @@
                             <div *ngIf="f.category.errors.required">Category is required</div>
                         </div>
                     </div>
+                    <div class="input-group form-group-no-border input-lg"
+                        [ngClass]="{'input-group-focus':focus1===true}">
+                        <textarea type="text" formControlName="features" placeholder="Features" class="form-control"
+                            (focus)="focus1=true" (blur)="focus1=false"
+                            [ngClass]="{ 'is-invalid': submitted && f.features.errors }"></textarea>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <button [disabled]="loading" class="btn btn-primary btn-round btn-lg btn-block" type="submit">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Add equipment
-                    </button>
-                    <div *ngIf="error" class="text-warning">{{error}}</div>
+                <div class="card-footer" style="padding: 5%;">
+                    <div class="row">
+                        <div class="col-4 pull-left">
+                            <button [disabled]="loading" class="btn btn-primary btn-round btn-lg text-center"
+                                (click)="back()">Back</button>
+                        </div>
+                        <div class="col-5 pull-right offset-lg-3">
+                            <button [disabled]="loading" class="btn btn-primary btn-round btn-lg text-center"
+                                style="margin-left:-55px;" type="submit">{{button}}</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

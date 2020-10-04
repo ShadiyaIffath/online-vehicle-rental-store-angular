@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from "ngx-spinner";
 import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
 import { InventoryService } from '../../services/inventory/inventory.service'
@@ -24,8 +25,8 @@ export class CarComponent implements OnInit {
   vehicleTypes: any[];
   vehicle: Vehicle = new Vehicle();
   error: string = '';
-  title: string = 'New Vehicle';
-  button: string = 'Add vehicle';
+  title: string = '';
+  button: string = '';
   editing: boolean = false;
   imageUploaded: boolean = false;
   loading: boolean = false;
@@ -37,16 +38,25 @@ export class CarComponent implements OnInit {
     private parserFormatter: NgbDateParserFormatter,
     private _cdr: ChangeDetectorRef,
     private toastr: ToastrService,
-    private router: Router) {
+    private router: Router,
+    private spinner: NgxSpinnerService) {
     this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
       this.vehicleTypes = data;
     });
+  }
+
+  ngOnInit(): void {
+    var body = document.getElementsByTagName('body')[0];
+    body.classList.add('login-page');
+
+    var navbar = document.getElementsByTagName('nav')[0];
+    navbar.classList.add('navbar-transparent');
 
     if (!this.authenticationService.currentUserValue && this.authenticationService.currentUserValue.role !== 'admin') {
       this.router.navigate(['']);
     }
-
-    if (this.inventoryService.vehicleId != null) {
+    this.spinner.show();
+    if (this.inventoryService.vehicleId != null && this.inventoryService.vehicleId.value != 0) {
       this.vehicleId = this.inventoryService.vehicleId.value;
       this.inventoryService.getVehicleById(this.vehicleId).subscribe((data)=>{
         this.vehicle = data;
@@ -54,9 +64,14 @@ export class CarComponent implements OnInit {
         this.button = 'Confirm edit';
         this.imageUploaded = true;
         this.assignValuesToForm();
+        this.spinner.hide();
       }, err =>{
-        this.router.navigate(['/components/manageVehicles']);
+        this.router.navigate(['/components/manage-vehicles']);
       });
+    }else{
+      this.spinner.hide();
+      this.title = 'New Vehicle';
+      this.button = 'Add Vehicle';
     }
 
       this.vehicleForm = this.formBuilder.group({
@@ -68,14 +83,6 @@ export class CarComponent implements OnInit {
         image: ['', Validators.required]
       });
     
-  }
-
-  ngOnInit(): void {
-    var body = document.getElementsByTagName('body')[0];
-    body.classList.add('login-page');
-
-    var navbar = document.getElementsByTagName('nav')[0];
-    navbar.classList.add('navbar-transparent');
   }
 
   ngOnDestroy() {
@@ -105,7 +112,7 @@ export class CarComponent implements OnInit {
     this.inventoryService.createVehicle(this.vehicle)
       .subscribe(data => {
         this.toastr.success('Successful', 'Vehicle successfully created');
-        this.router.navigate(['/components/manageVehicles']);
+        this.router.navigate(['/components/manage-vehicles']);
       }, error => {
         console.log(error);
         this.error = 'Vehicle creation failed. Please try again later.'
@@ -116,7 +123,7 @@ export class CarComponent implements OnInit {
       this.inventoryService.updateVehicle(this.vehicle)
       .subscribe(data => {
         this.toastr.success('Vehicle successfully updated','Successful');
-        this.router.navigate(['/components/manageVehicles']);
+        this.router.navigate(['/components/manage-vehicles']);
       }, error => {
         console.log(error);
         this.error = 'Vehicle update failed. Please try again later.'
@@ -164,7 +171,7 @@ export class CarComponent implements OnInit {
 
   back() {
     this.inventoryService.removeSelection();
-    this.router.navigate(['components/manageVehicles']);
+    this.router.navigate(['components/manage-vehicles']);
   }
 
   assignValuesToForm(){

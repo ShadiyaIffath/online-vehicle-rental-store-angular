@@ -85,7 +85,7 @@ export class InventoryService {
   }
 
   removeSelection(): void {
-    this.vehicleId = null;
+    this.vehicleId.next(0);
   }
 
   getTypeById(id: number) {

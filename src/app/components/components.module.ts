@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbdModalBasic } from './modal/modal.component';
 import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { ComponentsComponent } from './components.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -24,6 +25,7 @@ import { CarComponent } from './car/car.component';
 import { ManageVehiclesComponent } from './manageVehicles/manage-vehicles.component';
 import { RoleGuardService } from 'app/helpers/RoleGuardService';
 import { BookingComponent } from './booking/booking.component';
+import { ManageEquipmentComponent } from './manageEquipment/manage-equipment.component';
 
 
 
@@ -48,7 +50,8 @@ export function tokenGetter() {
             closeButton:true,
             positionClass:'toast-bottom-right'
         }),
-        ToastContainerModule
+        ToastContainerModule,
+        NgxSpinnerModule
     ],
     declarations: [
         ComponentsComponent,
@@ -60,7 +63,8 @@ export function tokenGetter() {
         EquipmentComponent,
         CarComponent,
         ManageVehiclesComponent,
-        BookingComponent
+        BookingComponent,
+        ManageEquipmentComponent
     ],
     exports: [ComponentsComponent],
     providers: [

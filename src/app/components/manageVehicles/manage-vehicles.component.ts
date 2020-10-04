@@ -3,6 +3,7 @@ import * as Rellax from 'rellax';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { InventoryService } from 'app/services/inventory/inventory.service';
 import { VehicleType } from 'app/models/VehicleType';
@@ -26,11 +27,12 @@ export class ManageVehiclesComponent implements OnInit {
 
   constructor(private inventoryService: InventoryService,
     private router: Router, private toastr: ToastrService,
-    private parserFormatter: NgbDateParserFormatter,) { }
+    private parserFormatter: NgbDateParserFormatter,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     var rellaxHeader = new Rellax('.rellax-header');
-
+    this.spinner.show();
     this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
       this.vehicleTypes = data;
       this.vehicleTypes.unshift({ id: 0, type: 'All' });
@@ -46,6 +48,7 @@ export class ManageVehiclesComponent implements OnInit {
       else {
         this.noVehicles = false;
       }
+      this.spinner.hide();
     });
 
     var body = document.getElementsByTagName('body')[0];

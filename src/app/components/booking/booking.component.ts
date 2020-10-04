@@ -89,6 +89,8 @@ export class BookingComponent implements OnInit {
 
     var navbar = document.getElementsByTagName('nav')[0];
     navbar.classList.remove('navbar-transparent');
+
+    this.inventoryService.removeSelection();
   }
 
   // convenience getter for easy access to form fields
@@ -170,5 +172,10 @@ export class BookingComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  cancel(){
+    this.inventoryService.removeSelection();
+    this.router.navigate(['']);
   }
 }

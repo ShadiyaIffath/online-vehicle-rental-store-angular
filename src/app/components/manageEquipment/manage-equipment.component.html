@@ -1,14 +1,14 @@
 <div class="wrapper">
     <div class="page-header page-header-small" filter-color="orange">
         <div class="page-header-image rellax-header" data-rellax-speed="-8"
-            style="background-image: url('assets/img/manageV.jpg') ;">
+            style="background-image: url('assets/img/manageE.png') ;">
         </div>
         <div class="container">
             <div class="content-center">
                 <div class="content">
                     <div class="text-center">
                         <h2>{{total}}</h2>
-                        <h4><b>Total Vehicles</b></h4>
+                        <h4><b>Total Equipment</b></h4>
                     </div>
                 </div>
             </div>
@@ -22,24 +22,15 @@
         <div class="container" style="padding: 2%; background-color: #b92e34; ">
             <div class="row d-flex justify-content-between">
                 <div class="col-lg-3">
-                    <label class="text-primary"><b> Car Type</b></label>
+                    <label class="text-primary"><b> Category</b></label>
                     <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
-                        style="height:auto; margin-bottom: 3%; border-color: tomato;" (change)="typeFilter($event)">
-                        <option *ngFor="let type of vehicleTypes" [ngValue]="car" class="text-primary">{{type.type}}
-                        </option>
-                    </select>
-                </div>
-                <div class="col-lg-3">
-                    <label class="text-primary"><b>Active</b></label>
-                    <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
-                        style="height:auto; margin-bottom: 3%;border-color: tomato;" (change)="activeFilter($event)">
-                        <option *ngFor="let value of availability" [ngValue]="value.id" class="text-primary">
-                            {{value.type}}
+                        style="height:auto; margin-bottom: 3%; border-color: tomato;" (change)="categoryFilter($event)">
+                        <option *ngFor="let category of categories" [ngValue]="category" class="text-primary">{{category.title}}
                         </option>
                     </select>
                 </div>
                 <div class="col-lg-3 offset-lg-2">
-                    <button class="btn btn-primary" [routerLink]="'/components/car'">Add Vehicle</button>
+                    <button class="btn btn-primary" [routerLink]="'/components/equipment'">Add Equipment</button>
                 </div>
             </div>
             <div class="table-responsive">
@@ -47,11 +38,9 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#Id</th>
-                            <th scope="col">Model</th>
-                            <th scope="col">Car code</th>
-                            <th scope="col">Engine</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Automatic</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Purchased Price</th>
                             <th scope="col">Day added</th>
                             <th scope="col">Active</th>
                             <th scope="col">Action</th>
@@ -63,8 +52,6 @@
                             <td>{{car.model}}</td>
                             <td>{{car.carCode}}</td>
                             <td>{{car.engine}}</td>
-                            <td>{{car.type.type}}</td>
-                            <td>{{car.automatic}}</td>
                             <td>{{car.dayAdded}}</td>
                             <td>{{car.active}}</td>
                             <td>

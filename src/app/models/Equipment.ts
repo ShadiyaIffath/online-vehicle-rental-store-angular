@@ -1,7 +1,11 @@
+import { EquipmentCategory } from './EquipmentCategory';
+
 export class Equipment{
-    itemCode:string;
-    active: boolean;
+    id: number;
+    name: string;
+    purchasedPrice: number;
     dayAdded:string|Date;
-    dayRemoved: string| Date;
-    description: string;
+    category: EquipmentCategory;
+    categoryId: number;
+    features: string;
 }

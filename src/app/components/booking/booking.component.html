@@ -122,7 +122,7 @@
                         <div class="row">
                             <div class="col">
                                 <button [disabled]="loading"
-                                    class="btn btn-primary btn-round btn-lg btn-block pull-left" [routerLink]="['']">
+                                    class="btn btn-primary btn-round btn-lg btn-block pull-left" (click)="cancel()">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     Cancel
                                 </button>

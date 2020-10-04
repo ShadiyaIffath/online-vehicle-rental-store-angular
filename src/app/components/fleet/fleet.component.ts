@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { InventoryService } from '../../services/inventory/inventory.service'
 import { Vehicle } from 'app/models/Vehicle';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -21,10 +22,12 @@ export class FleetComponent implements OnInit {
   closeResult: string;
 
   constructor(private inventoryService: InventoryService,
-    private router:Router) {    
+    private router:Router,
+    private spinner: NgxSpinnerService) {    
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
       this.vehicleTypes = data;
       this.serviceFailed = false;
@@ -42,6 +45,7 @@ export class FleetComponent implements OnInit {
       else {  
         this.noVehicles = false;
       }
+      this.spinner.hide();
     });
   }
 
@@ -55,6 +59,7 @@ export class FleetComponent implements OnInit {
   }
 
   bookVehicle(id: number) {
+    console.log(id);
     this.inventoryService.selectVehicle(id);
     this.router.navigate(['components/booking']);
   }

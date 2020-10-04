@@ -26,13 +26,13 @@
           </div>
           <div ngbDropdown>
             <button class="active btn btn-primary" ngbDropdownToggle>Pick-up Day</button>
-            <ngb-datepicker class="dropdown-menu" (select)="onDateSelection($event)" (click)="d.toggle()"
+            <ngb-datepicker class="dropdown-menu" (select)="onDateSelection($event)" [minDate]="minDate" (click)="d.toggle()"
               [(ngModel)]="pickUpDay" [ngClass]="{'input-group-focus':focus1===true}" ngbDropdownMenu>
             </ngb-datepicker>
           </div>
           <div ngbDropdown>
             <button class="active btn btn-primary" ngbDropdownToggle>Drop-off Day</button>
-            <ngb-datepicker class="dropdown-menu" (select)="onDateSelection($event)" (click)="d.toggle()"
+            <ngb-datepicker class="dropdown-menu" (select)="onDateSelection($event)" [minDate]="pickUpDay" (click)="d.toggle()"
               [(ngModel)]="dropOffDay" [ngClass]="{'input-group-focus':focus1===true}" ngbDropdownMenu>
             </ngb-datepicker>
           </div>

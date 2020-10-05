@@ -17,7 +17,7 @@ export class InventoryService {
   }
 
   getVehicleTypes() {
-    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/getTypes`)
+    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/get-types`)
       .pipe(map(types => {
         this.types = types;
         return this.types;
@@ -25,7 +25,7 @@ export class InventoryService {
   }
 
   getVehicles() {
-    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/getVehicles`)
+    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/get-vehicles`)
       .pipe(map(cars => {
         this.cars = cars;
         return this.cars;
@@ -36,14 +36,14 @@ export class InventoryService {
     let index = id.toString();
     const params = new HttpParams().set('id', index);
     const headers = new HttpHeaders().set('content-type', 'application/json');
-    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/getVehicle`, { headers: headers, params: params })
+    return this.http.get<any>(`${environment.apiUrl}/api/vehicle/get-vehicle`, { headers: headers, params: params })
       .pipe(map(car => {
         return car;
       }));
   }
 
   createVehicle(vehicle: Vehicle) {
-    return this.http.post<any>(`${environment.apiUrl}/api/vehicle/addVehicle`, vehicle)
+    return this.http.post<any>(`${environment.apiUrl}/api/vehicle/add-vehicle`, vehicle)
       .pipe(map(x => {
         this.cars.push(vehicle);
         console.log(x);
@@ -51,7 +51,7 @@ export class InventoryService {
   }
 
   updateVehicle(vehicle: Vehicle) {
-    return this.http.patch<any>(`${environment.apiUrl}/api/vehicle/updateVehicle`, vehicle)
+    return this.http.patch<any>(`${environment.apiUrl}/api/vehicle/update-vehicle`, vehicle)
       .pipe(map(x => {
         for (var index: number = 0; index < this.cars.length; index++) {
           if (this.cars[index].id == vehicle.id) {
@@ -72,7 +72,7 @@ export class InventoryService {
   }
 
   updateVehicleStatus(vehicle: Vehicle) {
-    return this.http.post<any>(`${environment.apiUrl}/api/vehicle/updateVehicleStatus`,
+    return this.http.post<any>(`${environment.apiUrl}/api/vehicle/update-vehicle-status`,
       { id: vehicle.id, active: vehicle.active, dayRemoved: vehicle.dayRemoved }, {
       headers: new HttpHeaders({
         "Content-Type": "application/json"

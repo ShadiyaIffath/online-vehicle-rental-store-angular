@@ -42,12 +42,7 @@ export class ManageVehiclesComponent implements OnInit {
       this.vehicles = data;
       this.filteredCars = this.vehicles;
       this.total = this.getActiveVehiclesCount();
-      if (this.vehicles.length === 0) {
-        this.noVehicles = true;
-      }
-      else {
-        this.noVehicles = false;
-      }
+      this.noVehicleTag();
       this.spinner.hide();
     });
 
@@ -81,8 +76,23 @@ export class ManageVehiclesComponent implements OnInit {
       selected = car;
     }, err => {
       this.toastr.error('Vehicle removal failed', 'Failed');
-      console.log(err);
     });
+  }
+
+  deleteVehicle(id: number){
+    this.inventoryService.deleteVehicle(id).subscribe(() =>{
+      this.toastr.success('Equipment removed successfully', 'Deleted');
+      this.spinner.show();
+      this.inventoryService.getVehicles().subscribe((data: any[]) => {
+        this.vehicles = data;
+        this.filteredCars = this.vehicles;
+        this.total = this.vehicles.length;
+        this.noVehicleTag();
+        this.spinner.hide();
+      });
+    },error=>{
+      this.toastr.error('Equipment removal failed', 'Failed');
+    })
   }
 
   getActiveVehiclesCount(): number {
@@ -96,7 +106,6 @@ export class ManageVehiclesComponent implements OnInit {
   }
 
   activeFilter(event: any) {
-    console.log(event);
     let filter = event.target.value;
     if (filter == 'All') {
       this.filteredCars = this.vehicles;
@@ -107,6 +116,7 @@ export class ManageVehiclesComponent implements OnInit {
         return car.active === active;
       });
     }
+    this.noVehicleTag();
   }
 
   typeFilter(event: any){
@@ -118,6 +128,16 @@ export class ManageVehiclesComponent implements OnInit {
       this.filteredCars = this.vehicles.filter(function (car) {
         return car.type.type === filter;
       });
+    }
+    this.noVehicleTag();
+  }
+
+  noVehicleTag(){
+    if (this.filteredCars.length == 0) {
+      this.noVehicles = true;
+    }
+    else {
+      this.noVehicles = false;
     }
   }
 }

@@ -62,6 +62,15 @@ export class InventoryService {
       }))
   }
 
+  deleteVehicle(id: number){
+    let index = id.toString();
+    const params = new HttpParams().set('id', index);
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    return this.http.delete<any>(`${environment.apiUrl}/api/vehicle/delete-vehicle`, { headers: headers, params: params })
+      .pipe(map(data => {
+      }));
+  }
+
   updateVehicleStatus(vehicle: Vehicle) {
     return this.http.post<any>(`${environment.apiUrl}/api/vehicle/updateVehicleStatus`,
       { id: vehicle.id, active: vehicle.active, dayRemoved: vehicle.dayRemoved }, {

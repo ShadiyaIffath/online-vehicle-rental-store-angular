@@ -91,6 +91,8 @@ export class CarComponent implements OnInit {
 
     var navbar = document.getElementsByTagName('nav')[0];
     navbar.classList.remove('navbar-transparent');
+
+    this.inventoryService.removeSelection();
   }
 
   // convenience getter for easy access to form fields
@@ -123,6 +125,7 @@ export class CarComponent implements OnInit {
       this.inventoryService.updateVehicle(this.vehicle)
       .subscribe(data => {
         this.toastr.success('Vehicle successfully updated','Successful');
+        this.inventoryService.removeSelection();
         this.router.navigate(['/components/manage-vehicles']);
       }, error => {
         console.log(error);

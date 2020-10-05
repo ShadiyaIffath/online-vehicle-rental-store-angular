@@ -34,14 +34,30 @@ export class ManageEquipmentComponent implements OnInit {
       this.equipment = data;
       this.filteredEquipment = this.equipment;
       this.total = this.filteredEquipment.length;
-      if (this.equipment.length === 0) {
-        this.noEquipment = true;
-      }
-      else {
-        this.noEquipment = false;
-      }
+      this.noEquipmentTag();
       this.spinner.hide();
     });
+  }
+
+  editEquipment(id: number){  
+      this.equipmentService.selectEquipment(id);
+      this.router.navigate(['components/equipment']);   
+  }
+
+  deleteEquipment(id: number){
+    this.equipmentService.deleteEquipment(id).subscribe(() =>{
+      this.toastr.success('Equipment removed successfully', 'Deleted');
+      this.spinner.show();
+      this.equipmentService.getEquipment().subscribe((data: any[]) => {
+        this.equipment = data;
+        this.filteredEquipment = this.equipment;
+        this.total = this.filteredEquipment.length;
+        this.noEquipmentTag();
+        this.spinner.hide();
+      });
+    },error=>{
+      this.toastr.error('Equipment removal failed', 'Failed');
+    })
   }
 
   categoryFilter(event: any){
@@ -53,6 +69,16 @@ export class ManageEquipmentComponent implements OnInit {
       this.filteredEquipment = this.equipment.filter(function (equipment) {
         return equipment.category.title === filter;
       });
+    }
+    this.noEquipmentTag();
+  }
+
+  noEquipmentTag(){
+    if (this.equipment.length === 0) {
+      this.noEquipment = true;
+    }
+    else {
+      this.noEquipment = false;
     }
   }
 }

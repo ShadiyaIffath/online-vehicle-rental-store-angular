@@ -26,6 +26,7 @@ import { ManageVehiclesComponent } from './manageVehicles/manage-vehicles.compon
 import { RoleGuardService } from 'app/helpers/RoleGuardService';
 import { BookingComponent } from './booking/booking.component';
 import { ManageEquipmentComponent } from './manageEquipment/manage-equipment.component';
+import { ManageUsersComponent } from './manageUsers/manage-users.component';
 
 
 
@@ -64,7 +65,8 @@ export function tokenGetter() {
         CarComponent,
         ManageVehiclesComponent,
         BookingComponent,
-        ManageEquipmentComponent
+        ManageEquipmentComponent,
+        ManageUsersComponent
     ],
     exports: [ComponentsComponent],
     providers: [

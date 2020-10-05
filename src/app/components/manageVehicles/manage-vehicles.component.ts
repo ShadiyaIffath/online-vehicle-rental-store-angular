@@ -66,13 +66,13 @@ export class ManageVehiclesComponent implements OnInit {
 
   updateVehicleStatus(selected: Vehicle) {
     let car = selected;
-    car.active = !car.active;
-    if (!car.active) {
-      car.dayRemoved = this.parserFormatter.format(this.today);
-    }
     this.inventoryService.updateVehicleStatus(car).subscribe(x => {
       this.toastr.success('Vehicle status updated.', 'Successful');
       this.total = !car.active == true ? this.total - 1 : this.total + 1;
+      car.active = !car.active;
+      if (!car.active) {
+        car.dayRemoved = this.parserFormatter.format(this.today);
+      }
       selected = car;
     }, err => {
       this.toastr.error('Vehicle removal failed', 'Failed');
@@ -81,7 +81,7 @@ export class ManageVehiclesComponent implements OnInit {
 
   deleteVehicle(id: number){
     this.inventoryService.deleteVehicle(id).subscribe(() =>{
-      this.toastr.success('Equipment removed successfully', 'Deleted');
+      this.toastr.success('Vehicle removed successfully', 'Deleted');
       this.spinner.show();
       this.inventoryService.getVehicles().subscribe((data: any[]) => {
         this.vehicles = data;
@@ -91,7 +91,7 @@ export class ManageVehiclesComponent implements OnInit {
         this.spinner.hide();
       });
     },error=>{
-      this.toastr.error('Equipment removal failed', 'Failed');
+      this.toastr.error('Vehicle removal failed', 'Failed');
     })
   }
 

@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment';
 import { User } from '../../models/User';
 import { TokenClaim } from 'app/models/TokenClaims';
 
+export const TOKEN_NAME: string = 'jwt_token';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +20,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient,
     private router: Router) {
-    this.currentUserSubject = new BehaviorSubject<TokenClaim>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<TokenClaim>(JSON.parse(localStorage.getItem('jwt_token')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -28,6 +30,29 @@ export class AuthenticationService {
 
   public getEmitter() {
     return this.userLoggedIn;
+  }
+
+  getToken(): string {
+    return localStorage.getItem(TOKEN_NAME);
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem(TOKEN_NAME, token);
+  }
+
+  getTokenExpirationDate(token: string): Date {
+    if (this.currentUserValue.exp === undefined) return null;
+    let date = new Date(0); 
+    date.setUTCSeconds(parseInt(this.currentUserValue.exp));
+    return date;
+  }
+
+  isTokenExpired(token?: string): boolean {
+    if(!token) token = this.getToken();
+    if(!token) return true;
+    let date = this.getTokenExpirationDate(token);
+    if(date === undefined) return true;
+    return !(date.valueOf() > new Date().valueOf());
   }
 
   login(email: string, password: string) {
@@ -44,7 +69,7 @@ export class AuthenticationService {
         let token = JSON.parse(jwtData);
         token.token = user;
         
-        localStorage.setItem('currentUser', JSON.stringify(token));
+        this.setToken(JSON.stringify(token));
         this.userLoggedIn.emit(token);
         this.currentUserSubject.next(token);
       }));
@@ -52,7 +77,7 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem(TOKEN_NAME);
     this.userLoggedIn.emit(null);
     this.currentUserSubject.next(null);
     this.router.navigate(['/components/login']);

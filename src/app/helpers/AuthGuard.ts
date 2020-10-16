@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
 
@@ -7,25 +8,31 @@ import { AuthenticationService } from '../services/authentication/authentication
 export class AuthGuard implements CanActivate {
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private toastr: ToastrService
     ) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const user = this.authenticationService.currentUserValue;
-        if (user) {
-            // check if route is restricted by role
-            if (route.data.roles && route.data.roles.indexOf(user.role) === -1) {
-                // role not authorised so redirect to home page
-                this.router.navigate(['/']);
+        //check is token is expired
+        if (this.authenticationService.isTokenExpired()) {
+            // token is expired
+            console.log('expired');
+            this.toastr.error('Access Denied');
+            this.router.navigate(['components/login'], { queryParams: { returnUrl: state.url } });
+            return false;
+        }
+        else{
+            const expectedRole = route.data.expectedRole;
+            const user = this.authenticationService.currentUserValue;
+            if(!this.authenticationService.currentUserValue.role === expectedRole){
+                // not authorized user
+                this.toastr.error('Access Denied');
+                this.router.navigate(['components/login'], { queryParams: { returnUrl: state.url } });
                 return false;
             }
-
-            // authorised so return true
-            return true;
+            else{
+                return true;
+            }
         }
-
-        // not logged in so redirect to login page with the return url
-        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-        return false;
     }
 }

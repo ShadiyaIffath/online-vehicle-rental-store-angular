@@ -24,7 +24,7 @@ const routes: Routes = [
     {
         path: 'components/manage-equipment',
         component: ManageEquipmentComponent,
-        canActivate: [RoleGuard],
+        canActivate: [AuthGuard],
         data: {
             expectedRole: 'admin'
         }
@@ -32,7 +32,7 @@ const routes: Routes = [
     {
         path: 'components/manage-vehicles',
         component: ManageVehiclesComponent,
-        canActivate: [RoleGuard],
+        canActivate: [AuthGuard],
         data: {
             expectedRole: 'admin'
         }
@@ -40,7 +40,7 @@ const routes: Routes = [
     {
         path: 'components/manage-users',
         component: ManageUsersComponent,
-        canActivate: [RoleGuard],
+        canActivate: [AuthGuard],
         data: {
             expectedRole: 'admin'
         }
@@ -56,7 +56,7 @@ const routes: Routes = [
     {
         path: 'components/car',
         component: CarComponent,
-        canActivate: [RoleGuard],
+        canActivate: [AuthGuard],
         data: {
             expectedRole: 'admin'
         }
@@ -64,7 +64,7 @@ const routes: Routes = [
     {
         path: 'components/equipment', 
         component: EquipmentComponent,
-         canActivate: [RoleGuard],
+         canActivate: [AuthGuard],
         data: {
             expectedRole: 'admin'
         }

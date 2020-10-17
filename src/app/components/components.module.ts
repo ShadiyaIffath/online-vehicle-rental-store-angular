@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,6 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbdModalBasic } from './modal/modal.component';
 import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
+
 
 import { ComponentsComponent } from './components.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -27,6 +28,7 @@ import { RoleGuardService } from 'app/helpers/RoleGuardService';
 import { BookingComponent } from './booking/booking.component';
 import { ManageEquipmentComponent } from './manageEquipment/manage-equipment.component';
 import { ManageUsersComponent } from './manageUsers/manage-users.component';
+import { MaterialModule } from 'app/shared/Material/material.module';
 
 
 
@@ -47,12 +49,13 @@ export function tokenGetter() {
         BrowserModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot({
-            timeOut:3000,
-            closeButton:true,
-            positionClass:'toast-bottom-right'
+            timeOut: 3000,
+            closeButton: true,
+            positionClass: 'toast-bottom-right'
         }),
         ToastContainerModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        MaterialModule,
     ],
     declarations: [
         ComponentsComponent,
@@ -73,6 +76,7 @@ export function tokenGetter() {
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         ChangesGuard,
-        RoleGuardService]
+        RoleGuardService],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ComponentsModule { }

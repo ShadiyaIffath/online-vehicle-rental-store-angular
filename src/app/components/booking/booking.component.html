@@ -1,147 +1,221 @@
-<div class="wrapper"
-    style="background-image:url(assets/img/service3.jpg); background-repeat: no-repeat; background-size: cover;">
-    <div class="container clear-filter" style="padding-top: 15%; color: black;">
-
-        <div class="card rounded-3" style="width: 50%; overflow: visible !important;">
+<div class="wrapper" filter-color="orange" style="background-color: #ba6b57; min-height: 100vh">
+    <div class="container">
+        <div class="card rounded-3" style="overflow: visible !important; color: black; margin-top: 10%;">
             <div class="card-header">
-                <h3 class="h3-seo text-center text-primary"><b>For how long do you want?</b></h3>
-                <p class="text-center text-primary">You can only book for a minimum: 5 hours - maximum: 14 days </p>
+                <h3 class="h3-seo text-center text-primary"><b>You are booking the {{vehicle.model}}</b></h3>
             </div>
-            <div class="card-body" style="padding: 5%;">
-                <form class="form" [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
-                    <div class="row">
-                        <div class="col">
-                            <label class="form-control-label">Pick-up date<b class="text-danger">*</b>:</label>
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus===true}">
-                                <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
-                                    name="dp1" [(ngModel)]="startDate" ngbDatepicker #d1="ngbDatepicker"
-                                    (click)="d1.toggle()" [minDate]="minDate" formControlName="pickUpDate"
-                                    [ngClass]="{ 'is-invalid': submitted && f.pickUpDate.errors }"
-                                    (ngModelChange)="changeDate($event)" />
-                                <div *ngIf="submitted && f.pickUpDate.errors" class="invalid-feedback">
-                                    <div *ngIf="f.pickUpDate.errors.required">Pick-up date is required</div>
+            <mat-horizontal-stepper style="overflow: visible;" fxLayout="column" fxFlex="100" fxLayoutAlign=" stretch"
+                #stepper>
+                <div class="card-body">
+                    <mat-step [stepControl]="bookingForm" label="Duration" style="overflow: visible;">
+                        <form class="form" [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+                            <h3 class="h3-seo text-center text-primary"><b>For how long do you want?</b></h3>
+                            <p class="text-center text-primary">You can only book for a minimum: 5 hours - maximum: 14
+                                days </p>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Pick-up date<b class="text-danger">*</b>:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus===true}">
+                                        <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
+                                            name="dp1" [(ngModel)]="startDate" ngbDatepicker #d1="ngbDatepicker"
+                                            (click)="d1.toggle()" [minDate]="minDate" formControlName="pickUpDate"
+                                            [ngClass]="{ 'is-invalid': submitted && f.pickUpDate.errors }"
+                                            (ngModelChange)="changeDate($event)"
+                                            style="overflow: visible !important;" />
+                                        <div *ngIf="submitted && f.pickUpDate.errors" class="invalid-feedback">
+                                            <div *ngIf="f.pickUpDate.errors.required">Pick-up date is required</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label class="form-control-label">Pick up time<b class="text-danger">*</b>:</label>
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <select class="form-control" formControlName="pickUpTime" (focus)="focus1=true"
-                                    (blur)="focus1=false" [ngClass]="{ 'is-invalid': submitted && f.pickUpTime.errors }"
-                                    style="height:auto;">
-                                    <option value="" disabled>Select pick up time</option>
-                                    <option *ngFor="let time of timeArray" [ngValue]="time" style="color: orange;">
-                                        {{time}}
-                                    </option>
-                                </select>
-                                <div *ngIf="submitted && f.pickUpTime.errors" class="invalid-feedback">
-                                    <div *ngIf="f.pickUpTime.errors.required">Pick up time is required</div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Pick up time<b class="text-danger">*</b>:</label>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label class="form-control-label">Drop off date<b class="text-danger">*</b>:</label>
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus===true}">
-                                <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
-                                    name="dp2" [(ngModel)]="endDate" ngbDatepicker #d2="ngbDatepicker"
-                                    (click)="d2.toggle()" [minDate]="startDate" formControlName="dropOffDate"
-                                    (ngModelChange)="changeDate($event)"
-                                    [ngClass]="{ 'is-invalid': submitted && f.dropOffDate.errors }" />
-                                <div *ngIf="submitted && f.dropOffDate.errors" class="invalid-feedback">
-                                    <div *ngIf="f.dropOffDate.errors.required">Drop off date is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label class="form-control-label">Drop off time<b class="text-danger">*</b>:</label>
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-
-                                <select class="form-control" formControlName="dropOffTime" (focus)="focus1=true"
-                                    (blur)="focus1=false"
-                                    [ngClass]="{ 'is-invalid': submitted && f.dropOffTime.errors }"
-                                    style="height:auto;">
-                                    <option value="" disabled>Select drop off time</option>
-                                    <option *ngFor="let time of timeArray" [ngValue]="time" style="color: orange;">
-                                        {{time}}
-                                    </option>
-                                </select>
-                                <div *ngIf="submitted && f.dropOffTime.errors" class="invalid-feedback">
-                                    <div *ngIf="f.dropOffTime.errors.required">Drop off time is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label class="form-control-label">Additional equipment: (You can select
-                                multiple)</label>
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-
-                                <select class="form-control" formControlName="dropOffTime" (focus)="focus1=true"
-                                    (blur)="focus1=false"
-                                    [ngClass]="{ 'is-invalid': submitted && f.dropOffTime.errors }" style="height:auto;"
-                                    multiple>
-                                    <option value="" disabled>Highlight additional equipment</option>
-                                    <!-- <option *ngFor="let car of vehicleTypes" [ngValue]="car.id"
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus1===true}">
+                                        <select class="form-control" formControlName="pickUpTime" (focus)="focus1=true"
+                                            (blur)="focus1=false"
+                                            [ngClass]="{ 'is-invalid': submitted && f.pickUpTime.errors }"
+                                            style="height:auto;">
+                                            <option value="" disabled>Select pick up time</option>
+                                            <option *ngFor="let time of timeArray" [ngValue]="time"
                                                 style="color: orange;">
-                                                {{car.type}}
-                                            </option> -->
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                                <div *ngIf="submitted && f.dropOffTime.errors" class="invalid-feedback">
-                                    <div *ngIf="f.dropOffTime.errors.required">{{additionError}}</div>
+                                                {{time}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f.pickUpTime.errors" class="invalid-feedback">
+                                            <div *ngIf="f.pickUpTime.errors.required">Pick up time is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Drop off date<b class="text-danger">*</b>:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus===true}">
+                                        <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
+                                            name="dp2" [(ngModel)]="endDate" ngbDatepicker #d2="ngbDatepicker"
+                                            (click)="d2.toggle()" [minDate]="startDate" formControlName="dropOffDate"
+                                            (ngModelChange)="changeDate($event)"
+                                            [ngClass]="{ 'is-invalid': submitted && f.dropOffDate.errors }" />
+                                        <div *ngIf="submitted && f.dropOffDate.errors" class="invalid-feedback">
+                                            <div *ngIf="f.dropOffDate.errors.required">Drop off date is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label">Drop off time<b class="text-danger">*</b>:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group form-group-no-border input-lg"
+                                        [ngClass]="{'input-group-focus':focus1===true}">
+
+                                        <select class="form-control" formControlName="dropOffTime" (focus)="focus1=true"
+                                            (blur)="focus1=false"
+                                            [ngClass]="{ 'is-invalid': submitted && f.dropOffTime.errors }"
+                                            style="height:auto;">
+                                            <option value="" disabled>Select drop off time</option>
+                                            <option *ngFor="let time of timeArray" [ngValue]="time"
+                                                style="color: orange;">
+                                                {{time}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f.dropOffTime.errors" class="invalid-feedback">
+                                            <div *ngIf="f.dropOffTime.errors.required">Drop off time is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button [disabled]="loading"
+                                        class="btn btn-primary btn-round btn-lg btn-block pull-left" (click)="cancel()"
+                                        style="width:55%;">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        Cancel
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button [disabled]="loading" style="width:55%;"
+                                        class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
+                                        (click)="goForward(stepper,1)">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="error" class="text-danger text-center">{{error}}</div>
+                        </form>
+                    </mat-step>
+                </div>
+                <div class="card-body">
+                    <mat-step label="Additional equipment?">
+                        <div class="containter" style="height:100%;">
+                        <h3 class="h3-seo text-center text-primary"><b>We have more to offer (Optional)</b></h3>
+                        <p class="text-center text-primary">Select the category you want <i>Maximum only 3 equipment can
+                                be selected</i></p>
+                        <div class="card-deck">
+                            <div class="card" style="width: 55%;" *ngFor="let type of categories">
+                                <div class="card-header">
+                                    <img class="card-img-top img-fluid" src="data:image/png;base64,{{type.image}}"
+                                        alt="car image">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase"> {{type.title}}</h5>
+                                    <p class="card-text text-small text-muted">{{type.description}}</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <button class="btn btn-round btn-primary btn-sm"
+                                        (click)="showEquipment(type.id)">Select</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <h3 class="text-center"><b>Price: £ {{price}}</b></h3>
-                    <div class="card-footer">
+                        <div class="row" style="margin-top:2%;" *ngIf="!noEquipment">
+                            <div class="input-group form-group-no-border input-lg"
+                                [ngClass]="{'input-group-focus':focus1===true}">
+                                <select class="form-control" (focus)="focus1=true" (blur)="focus1=false"
+                                    style="height:auto;" (change)="equipmentSelected($event)" multiple>
+                                    <option value="" disabled *ngIf="!noEquipment"
+                                        style="font-weight: bold; font-size: large;">Select the model you want</option>
+                                    <option *ngFor="let e of filteredEquipment" style="font-size: large;"
+                                        style="color: orange;">
+                                        {{e.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="row">
+                            <div class="col-3" *ngFor="let e of selectedEquipment">
+                                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                    <strong>{{e.name}}</strong>
+                                    <button type="button" class="close" (click)="removeEquipment(e)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:2%;">
                             <div class="col">
                                 <button [disabled]="loading"
-                                    class="btn btn-primary btn-round btn-lg btn-block pull-left" (click)="cancel()">
-                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                    Cancel
+                                    class="btn btn-primary btn-round btn-lg btn-block pull-left"
+                                    (click)="goBack(stepper)" style="width:55%;">
+                                    Back
                                 </button>
                             </div>
                             <div class="col">
-                                <button [disabled]="loading"
-                                    class="btn btn-primary btn-round btn-lg btn-block pull-right" type="submit">
-                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                    Submit
+                                <button [disabled]="loading" style="width:55%;"
+                                    class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
+                                    (click)="goForward(stepper,2)">
+                                    Next
                                 </button>
                             </div>
                         </div>
                         <div *ngIf="error" class="text-danger text-center">{{error}}</div>
                     </div>
-                </form>
+                    </mat-step>
+                </div>
+                <div class="card-body">
+                    <mat-step>
+                        <ng-template matStepLabel>Are you elligible?</ng-template>
+                        <h3 class="h3-seo text-center text-primary"><b>Verifying your driving license and personal
+                                information</b></h3>
+                        <p class="text-center text-primary">Note: If you are below the age of 25 you will only be
+                            allowed to rent vehicles of type <b>small town car</b></p>
+                            <div class="row" style="margin-top:2%;">
+                                <div class="col">
+                                    <button [disabled]="loading"
+                                        class="btn btn-primary btn-round btn-lg btn-block pull-left"
+                                        (click)="goBack(stepper)" style="width:55%;">
+                                        Back
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button [disabled]="loading" style="width:55%;"
+                                        class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
+                                        (click)="goForward(stepper,2)">
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="error" class="text-danger text-center">{{error}}</div>
+                    </mat-step>
+                </div>
+            </mat-horizontal-stepper>
+            <div class="card-footer">
+                <h3 class="text-center"><b>Price: £ {{price}}</b></h3>
             </div>
         </div>
     </div>
 </div>
-
 <footer class="footer" data-background-color="black">
 </footer>

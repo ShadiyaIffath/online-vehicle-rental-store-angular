@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+    @Input() userLoggedIn: any =null;
     private toggleButton: any;
     private sidebarVisible: boolean;
     adminControls: boolean = false;
@@ -23,7 +24,7 @@ export class NavbarComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private toastr: ToastrService) {
         this.sidebarVisible = false;
-        if (this.authenticationService.currentUserValue) {
+        if (!this.authenticationService.isTokenExpired()) {
             this.loggedIn = true;
             if (this.authenticationService.currentUserValue.role == 'admin') {
                 this.adminControls = true;
@@ -35,14 +36,17 @@ export class NavbarComponent implements OnInit {
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
         this.authenticationService.getEmitter().subscribe((customObject) => {
-            if (customObject != null) {
+            if (!this.authenticationService.isTokenExpired()) {
                 this.loggedIn = true;
-                if (customObject.role == 'admin') {
-                    this.adminControls = true;
+                if (customObject != null) {
+                    if (customObject.role == 'admin') {
+                        this.adminControls = true;
+                    }
                 }
-            }          
+            }
         });
     }
+
     sidebarOpen() {
         const toggleButton = this.toggleButton;
         const html = document.getElementsByTagName('html')[0];

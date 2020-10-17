@@ -8,6 +8,9 @@ export class Vehicle {
     automatic: boolean;
     type: any | string;
     typeId:number;
+    duration: number;
+    fuelConsumption: number;
+    engineCapacity: number;
     dayAdded: string;
     dayRemoved: string;
 }

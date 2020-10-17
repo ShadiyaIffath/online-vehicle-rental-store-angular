@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 import { InventoryService } from '../../services/inventory/inventory.service'
 import { Vehicle } from 'app/models/Vehicle';
@@ -10,7 +11,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-fleet',
   templateUrl: './fleet.component.html',
-  styleUrls: ['./fleet.component.css']
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./fleet.component.css'],
 })
 
 export class FleetComponent implements OnInit {
@@ -20,10 +22,12 @@ export class FleetComponent implements OnInit {
   noVehicles: boolean = false;
   serviceFailed: boolean = false;
   closeResult: string;
+  vehicle: Vehicle;
 
   constructor(private inventoryService: InventoryService,
     private router:Router,
-    private spinner: NgxSpinnerService) {    
+    private spinner: NgxSpinnerService,
+    private modalService: NgbModal) {    
   }
 
   ngOnInit(): void {
@@ -49,6 +53,12 @@ export class FleetComponent implements OnInit {
     });
   }
 
+  openVehicleContent(vehicleContent, vehicle) {
+    this.modalService.open(vehicleContent, { size: 'lg', scrollable: true , backdropClass: 'light-red-backdrop', centered: true });
+    vehicle.duration = moment().diff(vehicle.dayAdded, 'days');
+    this.vehicle = vehicle;
+    }
+
   typeChecked(): void {
     //this.filteredCars.filter(item => { return item.checked; });
   }
@@ -59,7 +69,12 @@ export class FleetComponent implements OnInit {
   }
 
   bookVehicle(id: number) {
-    console.log(id);
+    this.inventoryService.selectVehicle(id);
+    this.router.navigate(['components/booking']);
+  }
+
+  makereservation(id: number) {
+    this.modalService.dismissAll();
     this.inventoryService.selectVehicle(id);
     this.router.navigate(['components/booking']);
   }

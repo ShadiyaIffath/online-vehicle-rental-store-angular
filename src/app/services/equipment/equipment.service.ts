@@ -33,7 +33,7 @@ export class EquipmentService {
       }), shareReplay(1));
   }
 
-  createVehicle(equipment: Equipment) {
+  createEquipment(equipment: Equipment) {
     return this.http.post<any>(`${environment.apiUrl}/api/equipment/add-equipment`, equipment)
       .pipe(map(x => {
         this.equipments.push(equipment);

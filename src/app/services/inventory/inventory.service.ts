@@ -46,7 +46,7 @@ export class InventoryService {
     return this.http.post<any>(`${environment.apiUrl}/api/vehicle/add-vehicle`, vehicle)
       .pipe(map(x => {
         this.cars.push(vehicle);
-        console.log(x);
+        return x;
       }));
   }
 

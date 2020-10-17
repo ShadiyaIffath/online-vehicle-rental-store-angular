@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 
-import { AuthenticationService } from 'app/services/authentication/authentication.service';
 import { Equipment } from 'app/models/Equipment';
 import { EquipmentService } from 'app/services/equipment/equipment.service';
 import { ToastrService } from 'ngx-toastr';
@@ -29,7 +28,6 @@ export class EquipmentComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private equipmentService: EquipmentService,
-    private authenticationService: AuthenticationService,
     private parserFormatter: NgbDateParserFormatter,
     private toastr: ToastrService,
     private router: Router,
@@ -37,10 +35,6 @@ export class EquipmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    if (!this.authenticationService.currentUserValue || this.authenticationService.currentUserValue.role !== 'admin') {
-      this.router.navigate(['']);
-    }
     this.spinner.show();
 
     this.equipmentService.getEquipmentCategories().subscribe((data: any[]) => {
@@ -104,7 +98,7 @@ export class EquipmentComponent implements OnInit {
     this.extractFormValues();
     this.spinner.show();
     if (this.equipmentId == null) {
-      this.equipmentService.createVehicle(this.equipment)
+      this.equipmentService.createEquipment(this.equipment)
         .subscribe(data => {
           this.toastr.success('Successful', 'Equipment successfully created');
           this.router.navigate(['/components/manage-equipment']);

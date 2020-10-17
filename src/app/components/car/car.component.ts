@@ -34,7 +34,6 @@ export class CarComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private inventoryService: InventoryService,
-    private authenticationService: AuthenticationService,
     private parserFormatter: NgbDateParserFormatter,
     private _cdr: ChangeDetectorRef,
     private toastr: ToastrService,
@@ -52,9 +51,6 @@ export class CarComponent implements OnInit {
     var navbar = document.getElementsByTagName('nav')[0];
     navbar.classList.add('navbar-transparent');
 
-    if (!this.authenticationService.currentUserValue && this.authenticationService.currentUserValue.role !== 'admin') {
-      this.router.navigate(['']);
-    }
     this.spinner.show();
     if (this.inventoryService.vehicleId != null && this.inventoryService.vehicleId.value != 0) {
       this.vehicleId = this.inventoryService.vehicleId.value;
@@ -66,6 +62,7 @@ export class CarComponent implements OnInit {
         this.assignValuesToForm();
         this.spinner.hide();
       }, err =>{
+        this.spinner.hide();
         this.router.navigate(['/components/manage-vehicles']);
       });
     }else{
@@ -80,7 +77,9 @@ export class CarComponent implements OnInit {
         engine: ['', Validators.required],
         gear: ['', Validators.required],
         type: ['', Validators.required],
-        image: ['', Validators.required]
+        image: ['', Validators.required],
+        fuelConsumption: ['', Validators.required, Validators.pattern("^[0-9]*$")],
+        enginePower: ['', Validators.required, Validators.pattern("^[0-9]*$")]
       });
     
   }
@@ -159,6 +158,8 @@ export class CarComponent implements OnInit {
     this.vehicle.carCode = this.vehicleForm.get('carCode').value;
     this.vehicle.model = this.vehicleForm.get('model').value;
     this.vehicle.typeId = this.vehicleForm.get('type').value;
+    this.vehicle.fuelConsumption = this.vehicleForm.get('fuelConsumption').value;
+    this.vehicle.engineCapacity = this.vehicleForm.get('enginePower').value;
     if (this.vehicleForm.get('gear').value == 'automatic') {
       this.vehicle.automatic = true;
     }
@@ -184,7 +185,9 @@ export class CarComponent implements OnInit {
       model: [this.vehicle.model, Validators.required],
       engine: [this.vehicle.engine, Validators.required],
       gear: [gear, Validators.required],
-      type: [this.vehicle.typeId, Validators.required]
+      type: [this.vehicle.typeId, Validators.required],
+      fuelConsumption: [this.vehicle.fuelConsumption, Validators.required],
+      enginePower: [this.vehicle.engineCapacity, Validators.required]
     });    
   }
 }

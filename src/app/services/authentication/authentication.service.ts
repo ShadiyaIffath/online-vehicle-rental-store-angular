@@ -14,7 +14,7 @@ export const TOKEN_NAME: string = 'jwt_token';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  @Output() userLoggedIn: EventEmitter<any> = new EventEmitter<any>();
+  userLoggedIn: EventEmitter<any> = new EventEmitter<any>();
   private currentUserSubject: BehaviorSubject<TokenClaim>;
   public currentUser: Observable<TokenClaim>;
 
@@ -41,9 +41,10 @@ export class AuthenticationService {
   }
 
   getTokenExpirationDate(token: string): Date {
-    if (this.currentUserValue.exp === undefined) return null;
+    if ( token === null) return null;
+    let tokentObject = JSON.parse(token);
     let date = new Date(0); 
-    date.setUTCSeconds(parseInt(this.currentUserValue.exp));
+    date.setUTCSeconds(parseInt(tokentObject.exp));
     return date;
   }
 
@@ -51,7 +52,7 @@ export class AuthenticationService {
     if(!token) token = this.getToken();
     if(!token) return true;
     let date = this.getTokenExpirationDate(token);
-    if(date === undefined) return true;
+    if(date === undefined || date === null) return true;
     return !(date.valueOf() > new Date().valueOf());
   }
 

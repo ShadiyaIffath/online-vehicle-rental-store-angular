@@ -11,6 +11,7 @@ import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MaterialModule } from './shared/Material/material.module';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
         AppRoutingModule,
         ComponentsModule,
         BrowserAnimationsModule,
-        HttpClientModule
+        HttpClientModule,
+        MaterialModule
     ],
     providers: [],
     bootstrap: [AppComponent],

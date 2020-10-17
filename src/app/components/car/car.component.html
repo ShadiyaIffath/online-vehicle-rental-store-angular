@@ -77,6 +77,24 @@
                         <label class="form-control-label">Manual</label>
                     </div>
                     <div class="input-group form-group-no-border input-lg"
+                        [ngClass]="{'input-group-focus':focus===true}">
+                        <input type="text" class="form-control" formControlName="enginePower" placeholder="Engine Power (CC)"
+                            (focus)="focus=true" (blur)="focus=false"
+                            [ngClass]="{ 'is-invalid': submitted && f.enginePower.errors }">
+                        <div *ngIf="submitted && f.enginePower.errors" class="invalid-feedback">
+                            <div *ngIf="f.enginePower.errors.required">Engine power is required</div>
+                        </div>
+                    </div>
+                    <div class="input-group form-group-no-border input-lg"
+                        [ngClass]="{'input-group-focus':focus===true}">
+                        <input type="text" class="form-control" formControlName="fuelConsumption" placeholder="Fuel consumption (km/L)"
+                            (focus)="focus=true" (blur)="focus=false"
+                            [ngClass]="{ 'is-invalid': submitted && f.fuelConsumption.errors }">
+                        <div *ngIf="submitted && f.fuelConsumption.errors" class="invalid-feedback">
+                            <div *ngIf="f.fuelConsumption.errors.required">Fuel consumption is required</div>
+                        </div>
+                    </div>
+                    <div class="input-group form-group-no-border input-lg"
                         [ngClass]="{'input-group-focus':focus1===true}" *ngIf="vehicleId == null">
                         <label class="form-control-label">Attach image</label>
                         <div class="input-group form-group-no-border input-lg"
@@ -97,7 +115,7 @@
                     <div *ngIf="imageUploaded">
                         <img class="card-img img-fluid"
                             src="data:image/png;base64,{{vehicle.image.value || vehicle.image}}" alt="Car Image"
-                            style="height: 10%;">
+                            style="height: 150px; width: auto;">
                     </div>
                 </div>
                 <div class="card-footer">

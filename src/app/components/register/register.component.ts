@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private _cdr: ChangeDetectorRef,
     private toastr: ToastrService) {
-    if (this.authenticationService.currentUserValue) {
+    if (!this.authenticationService.isTokenExpired()) {
       this.router.navigate(['']);
     }
   }

@@ -1,0 +1,13 @@
+mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-form-field {
+    margin-top: 16px;
+  }
+
+  ::ng-deep .mat-horizontal-content-container {overflow: visible !important;}
+
+  /* ::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+} */

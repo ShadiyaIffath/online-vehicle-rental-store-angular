@@ -3,4 +3,5 @@ export class EquipmentCategory{
     title:string;
     description: string;
     image: any;
+    price: number;
 }

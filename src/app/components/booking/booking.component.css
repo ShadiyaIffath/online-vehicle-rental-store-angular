@@ -8,6 +8,6 @@ mat-stepper-horizontal {
 
   ::ng-deep .mat-horizontal-content-container {overflow: visible !important;}
 
-  /* ::ng-deep .mat-horizontal-stepper-header{
+  ::ng-deep .mat-horizontal-stepper-header{
     pointer-events: none !important;
-} */
+}

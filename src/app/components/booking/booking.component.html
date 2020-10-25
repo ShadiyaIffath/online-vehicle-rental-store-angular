@@ -1,5 +1,9 @@
 <div class="wrapper" filter-color="orange" style="background-color: #ba6b57; min-height: 100vh">
     <div class="container">
+        <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#1010ee" type="ball-clip-rotate"
+            [fullScreen]="true">
+            <p style="color: #6e1005"> Loading... </p>
+        </ngx-spinner>
         <div class="card rounded-3" style="overflow: visible !important; color: black; margin-top: 10%;">
             <div class="card-header">
                 <h3 class="h3-seo text-center text-primary"><b>You are booking the {{vehicle.model}}</b></h3>
@@ -98,15 +102,14 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <button [disabled]="loading"
-                                        class="btn btn-primary btn-round btn-lg btn-block pull-left" (click)="cancel()"
-                                        style="width:55%;">
+                                    <button class="btn btn-primary btn-round btn-lg btn-block pull-left"
+                                        (click)="cancel()" style="width:55%;">
                                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                         Cancel
                                     </button>
                                 </div>
                                 <div class="col">
-                                    <button [disabled]="loading" style="width:55%;"
+                                    <button style="width:55%;"
                                         class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
                                         (click)="goForward(stepper,1)">
                                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -121,67 +124,69 @@
                 <div class="card-body">
                     <mat-step label="Additional equipment?">
                         <div class="containter" style="height:100%;">
-                        <h3 class="h3-seo text-center text-primary"><b>We have more to offer (Optional)</b></h3>
-                        <p class="text-center text-primary">Select the category you want <i>Maximum only 3 equipment can
-                                be selected</i></p>
-                        <div class="card-deck">
-                            <div class="card" style="width: 55%;" *ngFor="let type of categories">
-                                <div class="card-header">
-                                    <img class="card-img-top img-fluid" src="data:image/png;base64,{{type.image}}"
-                                        alt="car image">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase"> {{type.title}}</h5>
-                                    <p class="card-text text-small text-muted">{{type.description}}</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <button class="btn btn-round btn-primary btn-sm"
-                                        (click)="showEquipment(type.id)">Select</button>
+                            <h3 class="h3-seo text-center text-primary"><b>We have more to offer (Optional)</b></h3>
+                            <p class="text-center text-primary">Select the category you want <i>Maximum only 3 equipment
+                                    can
+                                    be selected</i></p>
+                            <div class="card-deck">
+                                <div class="card" style="width: 55%;" *ngFor="let type of categories">
+                                    <div class="card-header">
+                                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{type.image}}"
+                                            alt="car image">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase"> {{type.title}}</h5>
+                                        <p class="card-text text-small text-muted">{{type.description}}</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button class="btn btn-round btn-primary btn-sm"
+                                            (click)="showEquipment(type.id)">Select</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" style="margin-top:2%;" *ngIf="!noEquipment">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <select class="form-control" (focus)="focus1=true" (blur)="focus1=false"
-                                    style="height:auto;" (change)="equipmentSelected($event)" multiple>
-                                    <option value="" disabled *ngIf="!noEquipment"
-                                        style="font-weight: bold; font-size: large;">Select the model you want</option>
-                                    <option *ngFor="let e of filteredEquipment" style="font-size: large;"
-                                        style="color: orange;">
-                                        {{e.name}}
-                                    </option>
-                                </select>
+                            <div class="row" style="margin-top:2%;" *ngIf="!noEquipment">
+                                <div class="input-group form-group-no-border input-lg"
+                                    [ngClass]="{'input-group-focus':focus1===true}">
+                                    <select class="form-control" (focus)="focus1=true" (blur)="focus1=false"
+                                        style="height:auto;" (change)="equipmentSelected($event)" multiple>
+                                        <option value="" disabled *ngIf="!noEquipment"
+                                            style="font-weight: bold; font-size: large;">Select the model you want
+                                        </option>
+                                        <option *ngFor="let e of filteredEquipment" style="font-size: large;"
+                                            style="color: orange;">
+                                            {{e.name}}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3" *ngFor="let e of selectedEquipment">
-                                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                    <strong>{{e.name}}</strong>
-                                    <button type="button" class="close" (click)="removeEquipment(e)" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                            <div class="row">
+                                <div class="col-3" *ngFor="let e of selectedEquipment">
+                                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                        <strong>{{e.name}}</strong>
+                                        <button type="button" class="close" (click)="removeEquipment(e)"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:2%;">
+                                <div class="col">
+                                    <button class="btn btn-primary btn-round btn-lg btn-block pull-left"
+                                        (click)="goBack(stepper)" style="width:55%;">
+                                        Back
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button style="width:55%;"
+                                        class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
+                                        (click)="goForward(stepper,2)">
+                                        Next
                                     </button>
                                 </div>
                             </div>
+                            <div *ngIf="error" class="text-danger text-center">{{error}}</div>
                         </div>
-                        <div class="row" style="margin-top:2%;">
-                            <div class="col">
-                                <button [disabled]="loading"
-                                    class="btn btn-primary btn-round btn-lg btn-block pull-left"
-                                    (click)="goBack(stepper)" style="width:55%;">
-                                    Back
-                                </button>
-                            </div>
-                            <div class="col">
-                                <button [disabled]="loading" style="width:55%;"
-                                    class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
-                                    (click)="goForward(stepper,2)">
-                                    Next
-                                </button>
-                            </div>
-                        </div>
-                        <div *ngIf="error" class="text-danger text-center">{{error}}</div>
-                    </div>
                     </mat-step>
                 </div>
                 <div class="card-body">
@@ -191,23 +196,61 @@
                                 information</b></h3>
                         <p class="text-center text-primary">Note: If you are below the age of 25 you will only be
                             allowed to rent vehicles of type <b>small town car</b></p>
-                            <div class="row" style="margin-top:2%;">
+                        <div class="container">
+                            <div class="row">
                                 <div class="col">
-                                    <button [disabled]="loading"
-                                        class="btn btn-primary btn-round btn-lg btn-block pull-left"
-                                        (click)="goBack(stepper)" style="width:55%;">
-                                        Back
-                                    </button>
+                                    <img class="card-img-top img-fluid"
+                                        src="data:image/png;base64,{{account.drivingLicense}}" alt="driving license">
                                 </div>
-                                <div class="col">
-                                    <button [disabled]="loading" style="width:55%;"
-                                        class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
-                                        (click)="goForward(stepper,2)">
-                                        Next
-                                    </button>
+                                <div class="col" style="background-color:#E8E8E8; padding: 5%;">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="text-primary">Vehicle type: </h5>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="text-center text-muted">{{vehicle.type.type}}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="text-primary">Date of birth: </h5>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="text-center text-muted">{{account.dob}}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="text-primary">Your age as of today: </h5>
+                                        </div>
+                                        <div class="col">
+                                            <h5 class="text-center text-muted">{{account.age}}</h5>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div *ngIf="error" class="text-danger text-center">{{error}}</div>
+                        </div>
+                        <h4 *ngIf="error" class="text-warning text-center" style="padding-top: 3%;">{{error}}</h4>
+                        <div class="row" style="margin-top:2%;">
+                            <div class="col">
+                                <button class="btn btn-primary btn-round btn-lg btn-block pull-left"
+                                    (click)="goBack(stepper)" style="width:55%;">
+                                    Back
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button *ngIf="!loading" style="width:55%;"
+                                    class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
+                                    (click)="bookingConfirmed()">
+                                    Confirm
+                                </button>
+                                <button *ngIf="loading" style="width:55%;"
+                                    class="btn btn-primary btn-round btn-lg btn-block pull-right" type="button"
+                                    (click)="navigateHome()">
+                                    Home
+                                </button>
+                            </div>
+                        </div>
                     </mat-step>
                 </div>
             </mat-horizontal-stepper>

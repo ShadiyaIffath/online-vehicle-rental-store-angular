@@ -1,4 +1,4 @@
-export class Booking{
+export class VehicleBooking{
     id: number;
     startTime: Date| string;
     endTime: Date | string;

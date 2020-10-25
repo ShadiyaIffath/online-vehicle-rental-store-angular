@@ -18,6 +18,16 @@ export class UsersService {
       }));
   }
 
+  getAccountDetails(id: number) {
+    let index = id.toString();
+    const params = new HttpParams().set('id', index);
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    return this.http.get<any>(`${environment.apiUrl}/api/account/get-account`, { headers: headers, params: params })
+      .pipe(map(acc => {
+        return acc;
+      }));
+  }
+
   deleteUser(id: number){
     let index = id.toString();
     const params = new HttpParams().set('id', index);

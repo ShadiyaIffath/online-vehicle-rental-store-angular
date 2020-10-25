@@ -7,6 +7,7 @@ export class User {
     lastName: string;
     phone: string;
     dob: string;
+    age: any;
     activatedDate:string;
     drivingLicense: string|any;
     active:boolean;

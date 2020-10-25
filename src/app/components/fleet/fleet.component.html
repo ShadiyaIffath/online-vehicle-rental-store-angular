@@ -111,6 +111,7 @@
                     <div class="card-body">
 
                         <h5 class="card-title text-uppercase"> {{car.model}}</h5>
+                        <h5 class="card-title text-muted"> {{car.type.type}}</h5>
                         <p class="card-text text-small text-muted">Engine: <span
                                 style="padding-left:52%;">{{car.engine}}</span></p>
                         <p class="card-text text-small text-muted" *ngIf="car.automatic == true">Gear: <span

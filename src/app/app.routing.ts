@@ -26,7 +26,7 @@ const routes: Routes = [
         component: ManageEquipmentComponent,
         canActivate: [AuthGuard],
         data: {
-            expectedRole: 'admin'
+            expectedRole: ['admin']
         }
     },
     {
@@ -34,7 +34,7 @@ const routes: Routes = [
         component: ManageVehiclesComponent,
         canActivate: [AuthGuard],
         data: {
-            expectedRole: 'admin'
+            expectedRole: ['admin']
         }
     },
     {
@@ -42,23 +42,23 @@ const routes: Routes = [
         component: ManageUsersComponent,
         canActivate: [AuthGuard],
         data: {
-            expectedRole: 'admin'
+            expectedRole: ['admin']
         }
     },
     {
         path: 'components/booking',
-        component: BookingComponent
-        // canActivate: [RoleGuard],
-        // data: {
-        //     expectedRole: '
-        // }
+        component: BookingComponent,
+        canActivate: [AuthGuard],
+        data: {
+            expectedRole: ['admin','customer']
+        }
     },
     {
         path: 'components/car',
         component: CarComponent,
         canActivate: [AuthGuard],
         data: {
-            expectedRole: 'admin'
+            expectedRole: ['admin']
         }
     },
     {
@@ -66,7 +66,7 @@ const routes: Routes = [
         component: EquipmentComponent,
          canActivate: [AuthGuard],
         data: {
-            expectedRole: 'admin'
+            expectedRole: ['admin']
         }
     }
 

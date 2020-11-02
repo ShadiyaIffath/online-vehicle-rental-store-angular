@@ -2,10 +2,14 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 import { InventoryService } from '../../services/inventory/inventory.service'
+import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { UsersService } from 'app/services/users/users.service';
 import { Vehicle } from 'app/models/Vehicle';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { User } from 'app/models/User';
 
 
 @Component({
@@ -23,11 +27,17 @@ export class FleetComponent implements OnInit {
   serviceFailed: boolean = false;
   closeResult: string;
   vehicle: Vehicle;
+  accountId: number;
+  account: User = new User();
+  underAge: boolean = false;
 
   constructor(private inventoryService: InventoryService,
-    private router:Router,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private userService: UsersService,
+    private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private modalService: NgbModal) {    
+    private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -36,28 +46,39 @@ export class FleetComponent implements OnInit {
       this.vehicleTypes = data;
       this.serviceFailed = false;
     },
-    (error)=>{ 
-      this.serviceFailed = true;
-    });
-    this.inventoryService.getVehicles().subscribe((data: any[]) =>{
-      this.vehicles = data.filter(x=> x.active ==  true);
+      (error) => {
+        this.serviceFailed = true;
+      });
+    this.inventoryService.getVehicles().subscribe((data: any[]) => {
+      this.vehicles = data.filter(x => x.active == true);
       this.filteredCars = this.vehicles;
 
       if (this.vehicles.length === 0) {
         this.noVehicles = true;
       }
-      else {  
+      else {
         this.noVehicles = false;
       }
       this.spinner.hide();
     });
+    if (!this.authenticationService.isTokenExpired()) {
+      this.accountId = Number(this.authenticationService.currentUserValue.nameid);
+      this.userService.getAccountDetails(this.accountId).subscribe((data) => {
+        this.account = data;
+        this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
+        this.account.age = moment().diff(this.account.dob, 'years');
+        if (this.account.age < 25) {
+          this.underAge = true;
+        }
+      });
+    }
   }
 
   openVehicleContent(vehicleContent, vehicle) {
-    this.modalService.open(vehicleContent, { size: 'lg', scrollable: true , backdropClass: 'light-red-backdrop', centered: true });
+    this.modalService.open(vehicleContent, { size: 'lg', scrollable: true, backdropClass: 'light-red-backdrop', centered: true });
     vehicle.duration = moment().diff(vehicle.dayAdded, 'days');
     this.vehicle = vehicle;
-    }
+  }
 
   typeChecked(): void {
     //this.filteredCars.filter(item => { return item.checked; });
@@ -68,15 +89,27 @@ export class FleetComponent implements OnInit {
     return this.filteredCars;
   }
 
-  bookVehicle(id: number) {
-    this.inventoryService.selectVehicle(id);
-    this.router.navigate(['components/booking']);
+  underAgeError(type: string) : boolean{
+    if(this.underAge == true && type !== 'Small town car'){
+      this.toastr.error('You should be older than 25 to book this type');
+      return true;
+    }
+    return false;
   }
 
-  makereservation(id: number) {
+  bookVehicle(id: number, type: string) {
+    if(!this.underAgeError(type)){
+    this.inventoryService.selectVehicle(id);
+    this.router.navigate(['components/booking']);
+    }
+  }
+
+  makereservation(id: number, type: string) {
+    if(!this.underAgeError(type)){
     this.modalService.dismissAll();
     this.inventoryService.selectVehicle(id);
     this.router.navigate(['components/booking']);
+    }
   }
 }
 

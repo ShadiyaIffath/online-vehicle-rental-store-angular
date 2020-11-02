@@ -52,7 +52,7 @@
                             <td>{{e.name}}</td>
                             <td>{{e.category.title}}</td>
                             <td>{{e.purchasedPrice}}</td>
-                            <td>{{e.dayAdded}}</td>
+                            <td>{{e.dayAdded | date}}</td>
                             <td>
                                 <button class="btn btn-primary btn-sm" title="Edit Equipment"
                                     (click)="editEquipment(e.id)">

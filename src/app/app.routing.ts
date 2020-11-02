@@ -15,6 +15,7 @@ import { RoleGuardService as RoleGuard } from './helpers/RoleGuardService';
 import { BookingComponent } from './components/booking/booking.component';
 import { ManageEquipmentComponent } from './components/manageEquipment/manage-equipment.component';
 import { ManageUsersComponent } from './components/manageUsers/manage-users.component';
+import { ManageBookingComponent } from './components/manageBookings/manage-booking.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -40,6 +41,14 @@ const routes: Routes = [
     {
         path: 'components/manage-users',
         component: ManageUsersComponent,
+        canActivate: [AuthGuard],
+        data: {
+            expectedRole: ['admin']
+        }
+    },
+    {
+        path: 'components/manage-bookings',
+        component: ManageBookingComponent,
         canActivate: [AuthGuard],
         data: {
             expectedRole: ['admin']

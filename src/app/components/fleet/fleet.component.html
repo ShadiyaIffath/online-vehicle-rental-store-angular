@@ -63,7 +63,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-lg btn-light" (click)="modal.close('Close click')">Close</button>
-            <button type="button" class="btn btn-lg btn-primary" (click)="makereservation(vehicle.id)"><i
+            <button type="button" class="btn btn-lg btn-primary" (click)="makereservation(vehicle.id, vehicle.type.type)"><i
                     class="fas fa-car"> Book</i></button>
         </div>
     </ng-template>
@@ -122,7 +122,7 @@
                             <button class="btn btn-primary pull-left" title="View vehicle"
                                 (click)="openVehicleContent(vehicleContent, car) ">
                                 <i class="fas fa-hand-point-up"> View</i></button>
-                            <button type="button" class="btn btn-primary pull-right" (click)="bookVehicle(car.id)">
+                            <button type="button" class="btn btn-primary pull-right" (click)="bookVehicle(car.id, car.type.type)">
                                 <i class="fas fa-car"> Book </i> </button>
                         </div>
                     </div>

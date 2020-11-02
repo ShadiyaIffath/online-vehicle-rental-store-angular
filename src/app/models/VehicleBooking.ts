@@ -8,5 +8,6 @@ export class VehicleBooking{
     status:string;
     vehicleId:number;
     accountId:number;
+    account : any;
     vehicle: any|string;
 }

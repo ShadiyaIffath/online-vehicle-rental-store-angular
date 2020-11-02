@@ -11,7 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbdModalBasic } from './modal/modal.component';
 import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import { ComponentsComponent } from './components.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -29,6 +29,7 @@ import { BookingComponent } from './booking/booking.component';
 import { ManageEquipmentComponent } from './manageEquipment/manage-equipment.component';
 import { ManageUsersComponent } from './manageUsers/manage-users.component';
 import { MaterialModule } from 'app/shared/Material/material.module';
+import { ManageBookingComponent } from './manageBookings/manage-booking.component';
 
 
 
@@ -48,6 +49,7 @@ export function tokenGetter() {
         HttpClientModule,
         BrowserModule,
         BrowserAnimationsModule,
+        NgxPaginationModule,
         ToastrModule.forRoot({
             timeOut: 3000,
             closeButton: true,
@@ -69,7 +71,8 @@ export function tokenGetter() {
         ManageVehiclesComponent,
         BookingComponent,
         ManageEquipmentComponent,
-        ManageUsersComponent
+        ManageUsersComponent,
+        ManageBookingComponent
     ],
     exports: [ComponentsComponent],
     providers: [

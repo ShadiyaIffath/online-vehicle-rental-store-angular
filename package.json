@@ -38,6 +38,7 @@
     "jwt-decode": "^3.0.0",
     "moment": "^2.27.0",
     "ng2-nouislider": "1.7.13",
+    "ngx-pagination": "^5.0.0",
     "ngx-spinner": "^9.0.2",
     "ngx-toastr": "^9.1.1",
     "nouislider": "9.2.0",

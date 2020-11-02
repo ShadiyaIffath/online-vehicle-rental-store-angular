@@ -74,7 +74,7 @@ export class ManageEquipmentComponent implements OnInit {
   }
 
   noEquipmentTag(){
-    if (this.equipment.length === 0) {
+    if (this.filteredEquipment.length === 0) {
       this.noEquipment = true;
     }
     else {

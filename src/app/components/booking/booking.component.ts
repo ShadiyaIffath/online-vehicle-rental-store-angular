@@ -21,7 +21,6 @@ import { UsersService } from 'app/services/users/users.service';
 import { EquipmentBooking } from 'app/models/EquipmentBooking';
 import { Booking } from 'app/models/Booking';
 
-
 const now = new Date();
 
 @Component({
@@ -40,8 +39,10 @@ export class BookingComponent implements OnInit {
   title: string = '';
   price: number; //this will be replaced with booking object
   vehicleId: number;
+  bookingId: number;
   loaded: Promise<boolean>;
   vehicle: Vehicle = new Vehicle();
+  editBooking: boolean = false;
   vehicleBooking: VehicleBooking = new VehicleBooking();
   equipmentBookings: any[];
   account: User = new User();
@@ -57,9 +58,6 @@ export class BookingComponent implements OnInit {
   equipmentId: any;
   booking: Booking = new Booking();
 
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private parserFormatter: NgbDateParserFormatter,
@@ -70,6 +68,40 @@ export class BookingComponent implements OnInit {
     private equipmentService: EquipmentService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
+      this.spinner.show();
+      if (this.inventoryService.vehicleId != null) {
+        this.vehicleId = this.inventoryService.vehicleId.value;
+        this.inventoryService.getVehicleById(this.vehicleId).subscribe((data) => {
+          this.vehicle = data;
+          this.price = this.vehicle.type.pricePerDay;
+          this.loaded = Promise.resolve(true);
+          this.spinner.hide();
+        }, err => {
+          this.spinner.hide();
+          this.toastr.error('An error occured.');
+          this.router.navigate(['']);
+        });
+      }
+      else{
+        this.router.navigate(['']);
+      }
+
+      if(this.bookingService.bookingId != null){
+        this.title = 'Edit your booking';
+        this.bookingId = this.bookingService.bookingId.value;
+        this.bookingService.getBookingById(this.bookingId).subscribe((data)=>{
+          console.log(data);
+          this.booking = data;
+          this.editBooking = true;
+        })
+      }else{
+        this.title = 'Place your booking';
+      }
+  
+      this.equipmentService.getEquipmentCategories().subscribe((data: any[]) => {
+        this.categories = data;
+        this.spinner.hide();
+      });
   }
 
   ngOnInit() {
@@ -79,41 +111,13 @@ export class BookingComponent implements OnInit {
     var navbar = document.getElementsByTagName('nav')[0];
     navbar.classList.add('navbar-transparent');
 
-    this.spinner.show();
-    if (this.inventoryService.vehicleId != null) {
-      this.vehicleId = this.inventoryService.vehicleId.value;
-      this.inventoryService.getVehicleById(this.vehicleId).subscribe((data) => {
-        this.vehicle = data;
-        this.price = this.vehicle.type.pricePerDay;
-        this.loaded = Promise.resolve(true);
-        this.spinner.hide();
-      }, err => {
-        this.router.navigate(['']);
-      });
-    }
-
-    this.equipmentService.getEquipmentCategories().subscribe((data: any[]) => {
-      this.categories = data;
-      this.spinner.hide();
-    });
-
     this.timeArray = [];
-    this.title = 'Place your booking';
-
     this.generateTimeSlots();
     this.bookingForm = this.formBuilder.group({
       pickUpDate: ['', Validators.required],
       pickUpTime: ['', Validators.required],
       dropOffDate: ['', Validators.required],
       dropOffTime: ['', Validators.required],
-    });
-
-    this.firstFormGroup = this.formBuilder.group({
-      firstCtrl: ['', Validators.required],
-      pickUpDate: ['', Validators.required],
-    });
-    this.secondFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required]
     });
   }
 
@@ -125,6 +129,7 @@ export class BookingComponent implements OnInit {
     navbar.classList.remove('navbar-transparent');
 
     this.inventoryService.removeSelection();
+    this.bookingService.removeSelection();
   }
 
   // convenience getter for easy access to form fields
@@ -164,7 +169,7 @@ export class BookingComponent implements OnInit {
       }, error => {
         console.log(error);
         this.error = 'Booking failed. Please try again later.'
-        this.toastr.error('Bbooking failed.');
+        this.toastr.error('Booking failed.');
       });
   }
 

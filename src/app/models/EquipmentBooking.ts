@@ -8,4 +8,8 @@ export class EquipmentBooking{
     vehicleBookingId:number;
     vehicleBooking: any | string;
     equipment: any|string;
+
+    public constructor(init?:Partial<EquipmentBooking>) {
+        Object.assign(this, init);
+    }
 }

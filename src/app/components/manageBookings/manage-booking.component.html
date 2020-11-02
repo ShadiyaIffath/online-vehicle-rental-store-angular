@@ -1,0 +1,231 @@
+<div class="wrapper">
+    <div class="page-header page-header-small" filter-color="orange">
+        <div class="page-header-image rellax-header" data-rellax-speed="-8"
+            style="background-image: url('assets/img/reservationHistory.jpeg') ;">
+        </div>
+        <div class="container">
+            <div class="content-center">
+                <div class="content">
+                    <div class="text-center">
+                        <h2>{{total}}</h2>
+                        <h4><b>Total Bookings</b></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#FFCCB3" type="ball-clip-rotate"
+        [fullScreen]="true">
+        <p style="color: #6e1005"> Loading... </p>
+    </ngx-spinner>
+    <ng-template #bookingContent let-modal>
+        <div class="modal-header">
+            <h3 class="modal-title mb-3"><b>Reservation by {{selectedBooking.vehicleBooking.account.firstName}}
+                    {{selectedBooking.vehicleBooking.account.lastName}}</b></h3>
+            <form [formGroup]="statusForm" style="text-align: center;">
+                <select class="form-control text-center" formControlName="bookStatus" style="height:auto; margin-right: 5%;" (focus)="focus1=true"
+                (blur)="focus1=false" [ngClass]="{ 'is-invalid': submitted && f.bookStatus.errors }">
+                    <option *ngFor="let e of activeStatus" [ngValue]="e.type" style="color: orange;">{{e.type}}</option>
+                </select>
+            </form>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body card" style="background-color:  #FFCCB3; overflow: visible;">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Vehicle Details
+                        </div>
+                        <div class="card-body">
+                            <img class="card-img-top img-fluid"
+                                src="data:image/png;base64,{{selectedBooking.vehicleBooking.vehicle.image}}"
+                                alt="car image">
+                            <div class="row" style="margin-top: 3%;">
+                                <div class="col text-center">
+                                    <h6 class="text-muted" style="margin-top: 7%;">Car plate: </h6>
+                                </div>
+                                <div class="col text-center">
+                                    <b class="card-title">{{selectedBooking.vehicleBooking.vehicle.carCode}}</b>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3%;">
+                                <div class="col text-center">
+                                    <h6 class="text-muted" style="margin-top: 7%;">Car model: </h6>
+                                </div>
+                                <div class="col text-center">
+                                    <b class="card-title">{{selectedBooking.vehicleBooking.vehicle.model}}</b>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3%;">
+                                <div class="col text-center">
+                                    <h6 class="text-muted" style="margin-top: 7%;">Car type: </h6>
+                                </div>
+                                <div class="col text-center">
+                                    <b class="card-title">{{selectedBooking.vehicleBooking.vehicle.type.type}}</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <h3 class="text-center"><b>Price: £ {{selectedBooking.vehicleBooking.totalCost}}</b></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="card" style="overflow: visible;">
+                            <div class="card-header">
+                                Vehicle Booking
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-control-label">Pick-up date:</label>
+                                    </div>
+                                    <div class="col" style="margin-top: 1%;">
+                                        <h6 class="text-center">
+                                            {{selectedBooking.vehicleBooking.startTime | date : "MMM d, y"}}</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-control-label">Pick up time:</label>
+                                    </div>
+                                    <div class="col" style="margin-top: 1%;">
+                                        <h6 class="text-center">
+                                            {{selectedBooking.vehicleBooking.startTime | date : "h:mm a"}}</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-control-label">Drop off date:</label>
+                                    </div>
+                                    <div class="col" style="margin-top: 1%;">
+                                        <h6 class="text-center">
+                                            {{selectedBooking.vehicleBooking.endTime | date : "MMM d, y"}}</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-control-label">Drop off time:</label>
+                                    </div>
+                                    <div class="col" style="margin-top: 1%;">
+                                        <h6 class="text-center">
+                                            {{selectedBooking.vehicleBooking.endTime | date : "h:mm a"}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="card" style="overflow: visible;">
+                            <div class="card-header">
+                                Additional Equipment
+                            </div>
+                            <div class="card-body" *ngIf="!noEquipment">
+                                <div class="row" style="margin-top:3%;">
+                                    <label class="form-control-label" style="margin-left: 4%;">Equipment Selected:
+                                    </label>
+                                </div>
+                                <div class="overflow-auto">
+                                    <div class="row" *ngFor="let e of selectedEquipment">
+                                        <div class="col">
+                                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                                <strong>{{e.equipment.name}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" *ngIf="noEquipment">
+                                <h5 class="text-center text-primary">No equipment reserved</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-muted">Date Created: {{selectedBooking.vehicleBooking.createdOn | date : "dd/MM/y hh:mm a"}}
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-md btn-light" (click)="modal.close('Close click')">Cancel</button>
+            <button type="button" class="btn btn-md btn-warning text-right"
+                (click)="banCustomer(selectedBooking.vehicleBooking.account)"><i class="fas fa-user"></i> Ban
+                customer</button>
+            <button type="button" class="btn btn-md btn-primary text-right" (click)="confirmUpdateBooking()"><i
+                    class="fa fa-lightbulb"></i> Update</button>
+            <button type="button" class="btn btn-md btn-primary text-right" (click)="navigateToEdit()"><i
+                    class="fa fa-pencil-square-o"> </i>Edit</button>
+        </div>
+    </ng-template>
+    <div class="section" style="background-color:#DCDCDC">
+        <div class="container" style="padding: 2%; background-color: #b92e34; ">
+            <div class="row d-flex justify-content-between">
+                <div class="col-lg-3 pb-2">
+                    <label style="color: blanchedalmond;"><b>Active</b></label>
+                    <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
+                        style="height:auto; margin-bottom: 3%;border-color: tomato; background-color: blanchedalmond;"
+                        (change)="statusFilter($event)">
+                        <option *ngFor="let value of status" [ngValue]="value.id" class="text-primary">
+                            {{value.type}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-lg-3  pb-2">
+                    <label style="color: blanchedalmond;"><b> Car Type</b></label>
+                    <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
+                        style="height:auto; margin-bottom: 3%; border-color: tomato; background-color: blanchedalmond;"
+                        (change)="typeFilter($event)">
+                        <option *ngFor="let type of vehicleTypes" [ngValue]="car" class="text-primary">{{type.type}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <h3 class="text-center text-uppercase" style="color: blanchedalmond;" *ngIf="noBookings">There are no
+                bookings available</h3>
+            <div class="table-responsive" *ngIf="!noBookings">
+                <table class="table table-striped table-bordered table-hover table-warning">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#Id</th>
+                            <th scope="col">Vehicle</th>
+                            <th scope="col">Booked by</th>
+                            <th scope="col">Day Created</th>
+                            <th scope="col">Day collecting</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">Day returning</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr *ngFor="let e of filteredBookings">
+                            <th scope="row">{{e.vehicleBooking.id}}</th>
+                            <td>{{e.vehicleBooking.vehicle.model}}</td>
+                            <td>{{e.vehicleBooking.account.firstName}} {{e.vehicleBooking.account.lastName}}</td>
+                            <td>{{e.vehicleBooking.createdOn | date : "dd/MM/y"}}</td>
+                            <td>{{e.vehicleBooking.startTime | date : "dd/MM/y"}}</td>
+                            <td>{{e.vehicleBooking.startTime | date : "shortTime"}}</td>
+                            <td>{{e.vehicleBooking.endTime | date : "dd/MM/y"}}</td>
+                            <td>{{e.vehicleBooking.endTime | date : "shortTime"}}</td>
+                            <td>{{e.vehicleBooking.status}}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" title="View Booking"
+                                    (click)="openBookingContent(bookingContent, e) ">
+                                    <i class="fas fa-file-alt"></i></button>
+                                <button class="btn btn-primary btn-sm" title="Delete Booking">
+                                    <i class="fa fa-trash" aria-hidden="true"
+                                        (click)="deleteBooking(e.vehicleBooking.id)"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer" data-background-color="black">
+</footer>

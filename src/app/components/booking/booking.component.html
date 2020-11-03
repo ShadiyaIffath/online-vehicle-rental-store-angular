@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="margin-top:2%;" *ngIf="!noEquipment">
+                            <div class="row" style="margin-top:2%; padding-left: 5%; padding-right: 5%;" *ngIf="!noEquipment">
                                 <div class="input-group form-group-no-border input-lg"
                                     [ngClass]="{'input-group-focus':focus1===true}">
                                     <select class="form-control" (focus)="focus1=true" (blur)="focus1=false"
@@ -159,10 +159,47 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" style="margin-top: 2%; padding-left: 5%; padding-right: 5%;" *ngIf="equipEdit">
+                                <form [formGroup]="equipmentForm">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="text-muted">New addditional collection time :</p>
+                                            <p class="text-primary">(Only applicable for the newly added equipment)</p>
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-control-label">Collecting date</label>
+                                            <div class="input-group form-group-no-border input-lg"
+                                                [ngClass]="{'input-group-focus':focus===true}">
+                                                <input type="text" placeholder="yyyy-mm-dd"
+                                                    class="form-control datetimepicker" name="dp3" ngbDatepicker
+                                                    #d3="ngbDatepicker" (click)="d3.toggle()" [minDate]="startDate"
+                                                    [maxDate]="endDate" formControlName="equipmentStartDate"
+                                                    [ngClass]="{ 'is-invalid': submitted && e.equipmentStartDate.errors }" />
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-control-label">Collecting time</label>
+                                            <div class="input-group form-group-no-border input-lg"
+                                                [ngClass]="{'input-group-focus':focus1===true}">
+                                                <select class="form-control" formControlName="equipmentStartTime"
+                                                    (focus)="focus1=true" (blur)="focus1=false"
+                                                    [ngClass]="{ 'is-invalid': submitted && e.equipmentStartTime.errors }"
+                                                    style="height:auto;">
+                                                    <option value="" disabled>Select time</option>
+                                                    <option *ngFor="let time of timeArray" [ngValue]="time"
+                                                        style="color: orange;">
+                                                        {{time}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row" style="margin-top:2%; padding-left: 5%;">
                                 <div class="col-3" *ngFor="let e of selectedEquipment">
                                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                        <strong>{{e.name}}</strong>
+                                        <strong>{{e.equipment.name}}</strong>
                                         <button type="button" class="close" (click)="removeEquipment(e)"
                                             aria-label="Close">
                                             <span aria-hidden="true">&times;</span>

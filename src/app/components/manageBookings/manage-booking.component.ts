@@ -22,6 +22,7 @@ export class ManageBookingComponent implements OnInit {
   total: number;
   noBookings: boolean = false;
   noEquipment: boolean = false;
+  disableEdit: boolean = false;
   confirmed: boolean = true;
   selectedBooking: Booking;
   currentIndex = -1;
@@ -32,7 +33,6 @@ export class ManageBookingComponent implements OnInit {
   booking: any[];
   selectedEquipment = [];
   filteredBookings: Booking[] = [];
-  bookingStatus: any;
   //pagination attributes
   config: any;
   statusForm: FormGroup;
@@ -144,17 +144,23 @@ export class ManageBookingComponent implements OnInit {
     this.selectedEquipment = booking.equipmentBookings;
     this.noEquipment = this.selectedEquipment.length > 0 ? false : true;
     this.createStatusForm();
-    this.bookingStatus = this.activeStatus.filter(x => x.type == this.selectedBooking.vehicleBooking.status)[0].type;
+    this.disableEdit = this.selectedBooking.vehicleBooking.status != 'Confirmed' ? true: false;
     this.modalService.open(bookingContent, { size: 'lg', scrollable: true, backdropClass: 'light-red-backdrop', centered: true });
     this.spinner.hide();
   }
 
   createStatusForm(){
     let status = this.activeStatus.filter(x => x.type == this.selectedBooking.vehicleBooking.status)[0].type;
-    console.log(status);
     this.statusForm = this.formBuilder.group({
       bookStatus : [ this.selectedBooking.vehicleBooking.status]
     });
+  }
+
+  statusChanged(event){
+    console.log(event);
+    if(event.target.value != '0: Confirmed'){
+      this.disableEdit = true;
+    }
   }
 
   banCustomer(selected: User) {

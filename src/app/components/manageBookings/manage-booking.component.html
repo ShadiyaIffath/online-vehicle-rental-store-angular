@@ -22,9 +22,9 @@
         <div class="modal-header">
             <h3 class="modal-title mb-3"><b>Reservation by {{selectedBooking.vehicleBooking.account.firstName}}
                     {{selectedBooking.vehicleBooking.account.lastName}}</b></h3>
-            <form [formGroup]="statusForm" style="text-align: center;">
+            <form [formGroup]="statusForm" style="text-align: center; margin-right: 10%;">
                 <select class="form-control text-center" formControlName="bookStatus" style="height:auto; margin-right: 5%;" (focus)="focus1=true"
-                (blur)="focus1=false" [ngClass]="{ 'is-invalid': submitted && f.bookStatus.errors }">
+                (blur)="focus1=false" [ngClass]="{ 'is-invalid': submitted && f.bookStatus.errors }" (change)="statusChanged($event)">
                     <option *ngFor="let e of activeStatus" [ngValue]="e.type" style="color: orange;">{{e.type}}</option>
                 </select>
             </form>
@@ -155,9 +155,9 @@
                 (click)="banCustomer(selectedBooking.vehicleBooking.account)"><i class="fas fa-user"></i> Ban
                 customer</button>
             <button type="button" class="btn btn-md btn-primary text-right" (click)="confirmUpdateBooking()"><i
-                    class="fa fa-lightbulb"></i> Update</button>
-            <button type="button" class="btn btn-md btn-primary text-right" (click)="navigateToEdit()"><i
-                    class="fa fa-pencil-square-o"> </i>Edit</button>
+                    class="fa fa-lightbulb"></i> Update status</button>
+            <button type="button" class="btn btn-md btn-primary text-right" (click)="navigateToEdit()" [disabled]="disableEdit"><i
+                    class="fa fa-pencil-square-o"> </i>Edit booking</button>
         </div>
     </ng-template>
     <div class="section" style="background-color:#DCDCDC">

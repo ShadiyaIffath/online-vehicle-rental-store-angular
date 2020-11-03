@@ -29,11 +29,12 @@ const now = new Date();
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
-  timeArray: any[];
+  timeArray: any[] = [];
   bookingForm: FormGroup;
+  equipmentForm: FormGroup;
+  equipEdit: boolean = false;
   loading = false;
   submitted = false;
-  returnUrl: string = '';
   accountId: number;
   error = '';
   title: string = '';
@@ -68,56 +69,67 @@ export class BookingComponent implements OnInit {
     private equipmentService: EquipmentService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
-      this.spinner.show();
-      if (this.inventoryService.vehicleId != null) {
-        this.vehicleId = this.inventoryService.vehicleId.value;
-        this.inventoryService.getVehicleById(this.vehicleId).subscribe((data) => {
-          this.vehicle = data;
-          this.price = this.vehicle.type.pricePerDay;
-          this.loaded = Promise.resolve(true);
-          this.spinner.hide();
-        }, err => {
-          this.spinner.hide();
-          this.toastr.error('An error occured.');
-          this.router.navigate(['']);
-        });
-      }
-      else{
-        this.router.navigate(['']);
-      }
-
-      if(this.bookingService.bookingId != null){
-        this.title = 'Edit your booking';
-        this.bookingId = this.bookingService.bookingId.value;
-        this.bookingService.getBookingById(this.bookingId).subscribe((data)=>{
-          console.log(data);
-          this.booking = data;
-          this.editBooking = true;
-        })
-      }else{
-        this.title = 'Place your booking';
-      }
-  
-      this.equipmentService.getEquipmentCategories().subscribe((data: any[]) => {
-        this.categories = data;
-        this.spinner.hide();
-      });
   }
 
   ngOnInit() {
+    if (this.inventoryService.vehicleId != null || this.inventoryService.vehicleId.value != 0) {
+      this.vehicleId = this.inventoryService.vehicleId.value;
+      this.inventoryService.getVehicleById(this.vehicleId).subscribe((data) => {
+        console.log(data);
+        this.vehicle = data;
+        this.price = this.vehicle.type.pricePerDay;
+        this.loaded = Promise.resolve(true);
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+        this.toastr.error('An error occured.');
+        this.router.navigate(['']);
+      });
+    }
+    else {
+      this.router.navigate(['']);
+    }
+
     var body = document.getElementsByTagName('body')[0];
     body.classList.add('login-page');
 
     var navbar = document.getElementsByTagName('nav')[0];
     navbar.classList.add('navbar-transparent');
 
-    this.timeArray = [];
+    this.spinner.show();
     this.generateTimeSlots();
     this.bookingForm = this.formBuilder.group({
       pickUpDate: ['', Validators.required],
       pickUpTime: ['', Validators.required],
       dropOffDate: ['', Validators.required],
       dropOffTime: ['', Validators.required],
+    });
+
+    this.equipmentForm = this.formBuilder.group({
+      equipmentStartDate: [''],
+      equipmentStartTime: ['']
+    });
+
+    if (this.bookingService.bookingId.value != 0) {
+      this.title = 'Edit your booking';
+      this.bookingId = this.bookingService.bookingId.value;
+      this.bookingService.getBookingById(this.bookingId).subscribe((data) => {
+        this.booking = data;
+        this.editBooking = true;
+        this.vehicleBooking = this.booking.vehicleBooking;
+        this.price = this.vehicleBooking.totalCost;
+        this.selectedEquipment = this.booking.equipmentBookings;
+        this.assignValuesToForm();
+        this.accountId = this.booking.vehicleBooking.accountId;
+      });
+    } else {
+      this.title = 'Place your booking';
+      this.accountId = Number(this.authenticationService.currentUserValue.nameid);
+    }
+
+    this.equipmentService.getEquipmentCategories().subscribe((data: any[]) => {
+      this.categories = data;
+      this.spinner.hide();
     });
   }
 
@@ -135,6 +147,8 @@ export class BookingComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.bookingForm.controls; }
 
+  get e() { return this.equipmentForm.controls }
+
   async changeDate(event: any) {
     var end = moment({ year: this.endDate.year, month: this.endDate.month, day: this.endDate.day });
     var start = moment({ year: this.startDate.year, month: this.startDate.month, day: this.startDate.day });
@@ -144,6 +158,30 @@ export class BookingComponent implements OnInit {
         this.price = diff * this.vehicle.type.pricePerDay;
       }
     }
+  }
+
+  assignValuesToForm() {
+    let start = moment(this.booking.vehicleBooking.startTime);
+    let end = moment(this.booking.vehicleBooking.endTime);
+
+    this.bookingForm = this.formBuilder.group({
+      pickUpDate: [moment(start, 'yyyy-mm-dd'), Validators.required],
+      pickUpTime: [this.getTimeSlot(moment(start).format('HH:mm')), Validators.required],
+      dropOffDate: [moment(end, 'yyyy-mm-dd'), Validators.required],
+      dropOffTime: [this.getTimeSlot(moment(end).format('HH:mm')), Validators.required]
+    });
+
+    this.equipmentForm = this.formBuilder.group({
+      equipmentStartDate: [moment(start, 'yyyy-mm-dd')],
+      equipmentStartTime: [this.getTimeSlot(moment(start).format('HH:mm'))],
+    });
+    this.startDate = { year: start.year(), month: start.month() + 1, day: start.date() }
+    this.endDate = { year: end.year(), month: end.month() + 1, day: end.date() }
+    this.spinner.hide();
+  }
+
+  getTimeSlot(time): string {
+    return this.timeArray.filter(x => x == time)[0];
   }
 
   generateTimeSlots() {
@@ -161,16 +199,31 @@ export class BookingComponent implements OnInit {
 
   bookingConfirmed() {
     this.booking.vehicleBooking = this.vehicleBooking;
-    this.booking.equipmentBookings = this.equipmentBookings;
-    this.bookingService.createBooking(this.booking)
-      .subscribe(data => {
-        this.toastr.success('Your booking was successful');
-        this.router.navigate(['']);
-      }, error => {
-        console.log(error);
-        this.error = 'Booking failed. Please try again later.'
-        this.toastr.error('Booking failed.');
-      });
+    this.booking.equipmentBookings = this.selectedEquipment;
+    if (this.editBooking) {
+      //update booking
+      this.bookingService.updateBooking(this.booking)
+        .subscribe(data => {
+          this.toastr.success('Your update was successful');
+          this.router.navigate(['components/manage-bookings']);
+        }, error => {
+          console.log(error);
+          this.error = 'Update failed. Please try again later.'
+          this.toastr.error('Booking failed.');
+        });
+    }
+    else {
+      //create new booking
+      this.bookingService.createBooking(this.booking)
+        .subscribe(data => {
+          this.toastr.success('Your booking was successful');
+          this.router.navigate(['']);
+        }, error => {
+          console.log(error);
+          this.error = 'Booking failed. Please try again later.'
+          this.toastr.error('Booking failed.');
+        });
+    }
   }
 
   onBookingFormSubmit(stepper: MatStepper) {
@@ -184,23 +237,24 @@ export class BookingComponent implements OnInit {
     this.extractFormValues();
     this.loading = true;
     this.spinner.show();
-    if (this.vehicleBooking.id == null) {
-      this.bookingService.validateBooking(this.vehicleBooking)
-        .pipe(first())
-        .subscribe(
-          data => {
-            this.error = '';
-            this.getAvailableEquipment();
-            this.toastr.success('Vehicle available for the duration');
-            stepper.next();
-          },
-          error => {
-            this.spinner.hide();
-            console.log(error);
+    this.bookingService.validateBooking(this.vehicleBooking)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.error = '';
+          this.getAvailableEquipment();
+          this.toastr.success('Vehicle available for the duration');
+          stepper.next();
+        },
+        error => {
+          this.spinner.hide();
+          if (error == "Conflict") {
             this.toastr.error('Vehicle is unavaible for the duration');
             this.error = 'Invalid range booked';
-          });
-    }
+          } else {
+            this.toastr.error('Booking creation failed.');
+          }
+        });
   }
 
   getAvailableEquipment() {
@@ -211,13 +265,44 @@ export class BookingComponent implements OnInit {
   }
 
   extractFormValues() {
-    if (this.vehicleBooking.id == null) {
+    if (this.vehicleBooking.id == null || this.vehicleBooking.id == 0) {
       this.vehicleBooking.status = "Confirmed";
       this.vehicleBooking.createdOn = moment().format("YYYY-MM-DD HH:mm:ss");
       this.vehicleBooking.accountId = parseInt(this.authenticationService.currentUserValue.nameid);
     }
     this.vehicleBooking.totalCost = this.price;
     this.vehicleBooking.vehicleId = this.vehicleId;
+  }
+
+  validateEquipmentDate(): boolean {
+    var date = this.parserFormatter.format(this.bookingForm.get('pickUpDate').value);
+    var time = this.bookingForm.get('pickUpTime').value;
+    var startTime = moment(date + ' ' + time);
+
+    date = this.parserFormatter.format(this.bookingForm.get('dropOffDate').value);
+    time = this.bookingForm.get('dropOffTime').value;
+    var endTime = moment(date + ' ' + time);
+
+    date = this.parserFormatter.format(this.equipmentForm.get('equipmentStartDate').value);
+    time = this.equipmentForm.get('equipmentStartTime').value;
+    let equipmentStart = moment(date + ' ' + time);
+    var valid = equipmentStart.isSameOrAfter(startTime)  && equipmentStart.isBefore(endTime) ? true : false;
+    if (valid) {
+      this.assignEquipmentTime(equipmentStart, startTime);
+    }
+    return valid;
+  }
+
+  assignEquipmentTime(equipmentStart, startTime) {
+    console.log(equipmentStart);
+    console.log(startTime);
+    for (var e of this.selectedEquipment) {
+      if (e.id == null || e.id == 0) {
+        e.startTime = equipmentStart.format("YYYY-MM-DD HH:mm:ss");
+      } else {
+        e.startTime = startTime.format("YYYY-MM-DD HH:mm:ss");
+      }
+    }
   }
 
   validateDateRange() {
@@ -247,14 +332,28 @@ export class BookingComponent implements OnInit {
   equipmentSelected(event: any) {
     if (this.selectedEquipment.length <= 3) {
       let name = event.target.value;
-      for (var e of this.filteredEquipment) {
-        if (e.name === name) {
-          this.price += e.category.price;
-          this.selectedEquipment.push(e);
-          break;
+      if (this.verifyEquipmentSelected(name) == false) {
+        for (var e of this.filteredEquipment) {
+          if (e.name === name) {
+            this.price += e.category.price;
+            this.extractEquipmentBookingDetails(e);
+            if (this.editBooking) {
+              this.equipEdit = true;
+            }
+            break;
+          }
         }
       }
     }
+  }
+
+  verifyEquipmentSelected(e): boolean {
+    for (var v of this.selectedEquipment) {
+      if (v.equipment.name == e) {
+        return true;
+      }
+    }
+    return false;
   }
 
   onSubmittingEquipments(stepper: MatStepper) {
@@ -264,43 +363,48 @@ export class BookingComponent implements OnInit {
       this.getAccountDetails();
     } else {
       this.spinner.show();
-      stepper.next();
-      this.extractEquipmentBookingDetails();
-      this.getAccountDetails();
+      if (this.editBooking) {
+        //edit booking
+        if (this.equipEdit && !this.validateEquipmentDate()) {
+          //equipment time invalid
+          this.toastr.error('Equipment booking start time invalid');
+          this.error = 'Invalid range booked';
+        } else {
+          stepper.next();
+          this.getAccountDetails();
+        }
+      } else {
+        //new booking
+        stepper.next();
+        this.getAccountDetails();
+      }
+      this.vehicleBooking.totalCost = this.price;
       this.spinner.hide();
     }
   }
 
-  extractEquipmentBookingDetails() {
-    this.equipmentBookings = [];
-    for (var e of this.selectedEquipment) {
-      var booked = {
-        startTime: this.vehicleBooking.startTime,
-        endTime: this.vehicleBooking.endTime,
-        createdOn: moment(),
-        status: 'Confirmed',
-        equipment: e,
-        equipmentId: e.id,
-        vehicle: this.vehicle,
-        vehicleId: this.vehicle.id
-      }
-      this.equipmentBookings.push(booked);
+  extractEquipmentBookingDetails(e) {
+    var booked = {
+      startTime: this.vehicleBooking.startTime,
+      endTime: this.vehicleBooking.endTime,
+      vehicleBookingId: this.vehicleBooking.id,
+      createdOn: moment(),
+      equipment: e,
+      equipmentId: e.id,
+      vehicle: this.vehicle,
+      vehicleId: this.vehicle.id
     }
+    this.selectedEquipment.push(booked);
   }
 
   getAccountDetails() {
-    this.accountId = Number(this.authenticationService.currentUserValue.nameid);
     this.userService.getAccountDetails(this.accountId).subscribe((data) => {
-      this.spinner.show();
       this.account = data;
       this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
       this.vehicleBooking.accountId = this.accountId;
+      this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
       this.account.age = moment().diff(this.account.dob, 'years');
       this.verifyAge();
-      this.loaded = Promise.resolve(true);
-      this.spinner.hide();
-    }, err => {
-      this.toastr.error('An error occurred', 'Sorry');
     });
   }
 
@@ -319,16 +423,16 @@ export class BookingComponent implements OnInit {
       this.loading = false;
       this.error = 'You are eligible to make this booking';
     }
-    console.log(this.loading);
   }
 
   removeEquipment(remove) {
-    this.price -= remove.category.price;
-    this.selectedEquipment = this.selectedEquipment.filter(e => e !== remove);
+    this.price -= remove.equipment.category.price;
+    this.selectedEquipment = this.selectedEquipment.filter(e => e.equipmentId !== remove.equipmentId);
   }
 
   cancel() {
     this.inventoryService.removeSelection();
+    this.bookingService.removeSelection();
     this.router.navigate(['']);
   }
 

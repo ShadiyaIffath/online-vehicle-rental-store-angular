@@ -40,6 +40,7 @@ export class BookingComponent implements OnInit {
   title: string = '';
   price: number; //this will be replaced with booking object
   vehicleId: number;
+  type: string = '';
   bookingId: number;
   loaded: Promise<boolean>;
   vehicle: Vehicle = new Vehicle();
@@ -47,10 +48,10 @@ export class BookingComponent implements OnInit {
   vehicleBooking: VehicleBooking = new VehicleBooking();
   equipmentBookings: any[];
   account: User = new User();
-  additionalError: string = '';
   startDate: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   endDate: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   minDate: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
+  maxDate: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() + 14 };
   categories: any[];
   equipment: any[];
   selectedEquipment: any[] = [];
@@ -58,6 +59,7 @@ export class BookingComponent implements OnInit {
   noEquipment: boolean = true;
   equipmentId: any;
   booking: Booking = new Booking();
+  edited: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
@@ -72,21 +74,21 @@ export class BookingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.spinner.show();
     if (this.inventoryService.vehicleId != null || this.inventoryService.vehicleId.value != 0) {
       this.vehicleId = this.inventoryService.vehicleId.value;
       this.inventoryService.getVehicleById(this.vehicleId).subscribe((data) => {
-        console.log(data);
         this.vehicle = data;
+        this.type = this.vehicle.type.type;
         this.price = this.vehicle.type.pricePerDay;
         this.loaded = Promise.resolve(true);
-        this.spinner.hide();
       }, err => {
-        this.spinner.hide();
         this.toastr.error('An error occured.');
         this.router.navigate(['']);
       });
     }
     else {
+      this.spinner.hide();
       this.router.navigate(['']);
     }
 
@@ -96,7 +98,6 @@ export class BookingComponent implements OnInit {
     var navbar = document.getElementsByTagName('nav')[0];
     navbar.classList.add('navbar-transparent');
 
-    this.spinner.show();
     this.generateTimeSlots();
     this.bookingForm = this.formBuilder.group({
       pickUpDate: ['', Validators.required],
@@ -119,6 +120,7 @@ export class BookingComponent implements OnInit {
         this.vehicleBooking = this.booking.vehicleBooking;
         this.price = this.vehicleBooking.totalCost;
         this.selectedEquipment = this.booking.equipmentBookings;
+        this.generateTimeSlots();
         this.assignValuesToForm();
         this.accountId = this.booking.vehicleBooking.accountId;
       });
@@ -131,6 +133,11 @@ export class BookingComponent implements OnInit {
       this.categories = data;
       this.spinner.hide();
     });
+
+    this.userService.getAccountDetails(this.accountId).subscribe((data) => {
+      this.account = data;
+    });
+    this.spinner.hide();
   }
 
   ngOnDestroy() {
@@ -155,8 +162,27 @@ export class BookingComponent implements OnInit {
     var diff = end.diff(start, 'days') + 1;
     if (diff > 0 && diff <= 14) {
       if (await this.loaded == true) {
-        this.price = diff * this.vehicle.type.pricePerDay;
+        this.price = this.getSelctedEquipmentPrice() + (diff * this.vehicle.type.pricePerDay);
       }
+    }
+  }
+
+  editBookingDate() {
+    var start = this.parserFormatter.format(this.bookingForm.get('pickUpDate').value);
+    var end = this.parserFormatter.format(this.bookingForm.get('dropOffDate').value);
+    var initialEnd = moment(this.booking.vehicleBooking.endTime);
+    var mend = moment(end);
+    var mstart = moment(start);
+    var diff = mend.diff(mstart, 'days') + 1;
+    if (diff > 0 && diff <= 14) {
+      this.price = this.getSelctedEquipmentPrice() + (diff * this.vehicle.type.pricePerDay);
+      diff = mend.diff(initialEnd, 'days') + 1;
+      if (diff > 0) {
+        this.edited = true;
+      } else {
+        this.edited = false;
+      }
+      this.generateTimeSlots();
     }
   }
 
@@ -170,13 +196,13 @@ export class BookingComponent implements OnInit {
       dropOffDate: [moment(end, 'yyyy-mm-dd'), Validators.required],
       dropOffTime: [this.getTimeSlot(moment(end).format('HH:mm')), Validators.required]
     });
-
     this.equipmentForm = this.formBuilder.group({
       equipmentStartDate: [moment(start, 'yyyy-mm-dd')],
       equipmentStartTime: [this.getTimeSlot(moment(start).format('HH:mm'))],
     });
-    this.startDate = { year: start.year(), month: start.month() + 1, day: start.date() }
-    this.endDate = { year: end.year(), month: end.month() + 1, day: end.date() }
+    this.startDate = { year: start.year(), month: start.month() + 1, day: start.date() };
+    this.endDate = { year: end.year(), month: end.month() + 1, day: end.date() };
+    this.maxDate = { year: end.year(), month: end.month() + 1, day: end.date() + 1 };
     this.spinner.hide();
   }
 
@@ -187,6 +213,10 @@ export class BookingComponent implements OnInit {
   generateTimeSlots() {
     var startTime = moment('08:00', 'HH:mm');
     var endTime = moment('18:00', 'HH:mm');
+    if (this.edited) {
+      endTime = moment('16:00', 'HH:mm');
+    }
+    this.timeArray = [];
     var nextSlot = 30;
     let time;
 
@@ -195,6 +225,14 @@ export class BookingComponent implements OnInit {
       this.timeArray.push(time);
       startTime.add(nextSlot, 'minutes');
     }
+  }
+
+  getSelctedEquipmentPrice(): number {
+    let total = 0;
+    this.selectedEquipment.forEach(element => {
+      total += element.equipment.category.price;
+    });
+    return total;
   }
 
   bookingConfirmed() {
@@ -286,7 +324,7 @@ export class BookingComponent implements OnInit {
     date = this.parserFormatter.format(this.equipmentForm.get('equipmentStartDate').value);
     time = this.equipmentForm.get('equipmentStartTime').value;
     let equipmentStart = moment(date + ' ' + time);
-    var valid = equipmentStart.isSameOrAfter(startTime)  && equipmentStart.isBefore(endTime) ? true : false;
+    var valid = equipmentStart.isSameOrAfter(startTime) && equipmentStart.isBefore(endTime) ? true : false;
     if (valid) {
       this.assignEquipmentTime(equipmentStart, startTime);
     }
@@ -294,8 +332,6 @@ export class BookingComponent implements OnInit {
   }
 
   assignEquipmentTime(equipmentStart, startTime) {
-    console.log(equipmentStart);
-    console.log(startTime);
     for (var e of this.selectedEquipment) {
       if (e.id == null || e.id == 0) {
         e.startTime = equipmentStart.format("YYYY-MM-DD HH:mm:ss");
@@ -398,14 +434,11 @@ export class BookingComponent implements OnInit {
   }
 
   getAccountDetails() {
-    this.userService.getAccountDetails(this.accountId).subscribe((data) => {
-      this.account = data;
-      this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
-      this.vehicleBooking.accountId = this.accountId;
-      this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
-      this.account.age = moment().diff(this.account.dob, 'years');
-      this.verifyAge();
-    });
+    this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
+    this.vehicleBooking.accountId = this.accountId;
+    this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
+    this.account.age = moment().diff(this.account.dob, 'years');
+    this.verifyAge();
   }
 
   verifyAge() {

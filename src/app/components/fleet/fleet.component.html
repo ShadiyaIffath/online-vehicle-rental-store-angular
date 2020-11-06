@@ -79,7 +79,7 @@
                                 <div class="row form-group" *ngFor="let type of vehicleTypes">
                                     <label class="form-check-label text-white">
                                         <input class="form-check-input" type="checkbox" name="vehicleTypes"
-                                            value="{{type.id}}" [(ngModel)]="type.checked">
+                                            value="{{type.id}}" (change)="typeChecked($event)">
                                         <span class="form-check-sign"></span>
                                         <p class="card-text">{{type.type}}</p>
                                     </label>
@@ -93,7 +93,7 @@
                                 <div class="row form-group" *ngFor="let type of vehicleTypes">
                                     <label class="form-check-label text-white">
                                         <input class="form-check-input" type="checkbox" name="vehiclePrices"
-                                            value="{{type.id}}" [(ngModel)]="type.checked">
+                                            value="{{type.id}}"  (change)="priceChecked(type.id)">
                                         <span class="form-check-sign"></span>
                                         <p class="card-text">£{{type.pricePerDay}}</p>
                                     </label>

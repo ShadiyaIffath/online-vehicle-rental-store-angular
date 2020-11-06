@@ -8,6 +8,7 @@ export class VehicleBooking{
     status:string;
     vehicleId:number;
     accountId:number;
+    late: boolean;
     account : any;
     vehicle: any|string;
 }

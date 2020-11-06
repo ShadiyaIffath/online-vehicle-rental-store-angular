@@ -80,12 +80,15 @@ export class FleetComponent implements OnInit {
     this.vehicle = vehicle;
   }
 
-  typeChecked(): void {
+  typeChecked(value: any): void {
     //this.filteredCars.filter(item => { return item.checked; });
   }
 
+  priceChecked(value: any): void{
+    console.log(value);
+  }
+
   filteredInventory() {
-    this.typeChecked();
     return this.filteredCars;
   }
 

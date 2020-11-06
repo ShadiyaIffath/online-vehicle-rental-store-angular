@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 import { Booking } from 'app/models/Booking';
 import { BookingService } from 'app/services/booking/booking.service';
@@ -11,6 +12,8 @@ import { InventoryService } from 'app/services/inventory/inventory.service';
 import { User } from 'app/models/User';
 import { UsersService } from 'app/services/users/users.service';
 import { first } from 'rxjs/operators';
+import { AuthenticationService } from 'app/services/authentication/authentication.service';
+import { VehicleBooking } from 'app/models/VehicleBooking';
 
 const now = new Date();
 @Component({
@@ -20,7 +23,10 @@ const now = new Date();
 })
 export class ManageBookingComponent implements OnInit {
   total: number;
+  adminControls: boolean = false;
+  adminBooking: boolean = false;
   noBookings: boolean = false;
+  expiredBooking: boolean = false;
   noEquipment: boolean = false;
   disableEdit: boolean = false;
   confirmed: boolean = true;
@@ -29,7 +35,7 @@ export class ManageBookingComponent implements OnInit {
   currentBooking = null;
   vehicleTypes: any[];
   status = [{ id: 0, type: 'All' }, { id: 1, type: 'Confirmed' }, { id: 2, type: 'Cancelled' }, { id: 3, type: 'Abandoned' }, { id: 4, type: 'Completed' }];
-  activeStatus = [{ id: 1, type: 'Confirmed' }, { id: 2, type: 'Cancelled' }, { id: 3, type: 'Abandoned' }, { id: 4, type: 'Completed' }];
+  activeStatus = [{ id: 1, type: 'Confirmed' }, { id: 2, type: 'Cancelled' }, { id: 3, type: 'Collected' }, { id: 4, type: 'Completed' }];
   booking: any[];
   selectedEquipment = [];
   filteredBookings: Booking[] = [];
@@ -41,11 +47,16 @@ export class ManageBookingComponent implements OnInit {
     private toastr: ToastrService,
     private inventoryService: InventoryService,
     private userService: UsersService,
+    private authenticationService: AuthenticationService,
     private spinner: NgxSpinnerService,
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
     private bookingService: BookingService) {
     this.spinner.show();
+
+    if (this.authenticationService.currentUserValue.role == 'admin') {
+      this.adminControls = true;
+    }
     this.bookingService.getAllBooking().subscribe((data: any[]) => {
       this.booking = data;
       this.filteredBookings = this.booking;
@@ -64,9 +75,9 @@ export class ManageBookingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
-  
+
 
   noBookingFlag() {
     if (this.filteredBookings.length === 0) {
@@ -142,75 +153,108 @@ export class ManageBookingComponent implements OnInit {
     this.selectedBooking = booking;
     this.selectedEquipment = [];
     this.selectedEquipment = booking.equipmentBookings;
+    this.expiredBooking = moment().isAfter(moment(booking.vehicleBooking.endTime));
+    this.adminBooking = this.selectedBooking.vehicleBooking.account.typeId == 1 ? true : false;
     this.noEquipment = this.selectedEquipment.length > 0 ? false : true;
     this.createStatusForm();
-    this.disableEdit = this.selectedBooking.vehicleBooking.status != 'Confirmed' ? true: false;
     this.modalService.open(bookingContent, { size: 'lg', scrollable: true, backdropClass: 'light-red-backdrop', centered: true });
     this.spinner.hide();
   }
 
-  createStatusForm(){
-    let status = this.activeStatus.filter(x => x.type == this.selectedBooking.vehicleBooking.status)[0].type;
+  createStatusForm() {
     this.statusForm = this.formBuilder.group({
-      bookStatus : [ this.selectedBooking.vehicleBooking.status]
+      bookStatus: [this.selectedBooking.vehicleBooking.status]
     });
+    if (this.selectedBooking.vehicleBooking.status == 'Confirmed' || this.selectedBooking.vehicleBooking.status == 'Collected') {
+      this.disableEdit = false;
+      this.statusForm.controls.bookStatus.enable();
+    } else {
+      this.disableEdit = true;
+      this.statusForm.controls.bookStatus.disable();
+    }
   }
 
-  statusChanged(event){
-    console.log(event);
-    if(event.target.value != '0: Confirmed'){
+  statusChanged(event) {
+    if (event.target.value != '0: Confirmed') {
       this.disableEdit = true;
     }
   }
 
-  banCustomer(selected: User) {
-    this.userService.updateStatus(selected).subscribe(x => {
-      this.toastr.success('Customer banned successfully.');
-      this.bookingService.getAllBooking().subscribe((data: any[]) => {
-        this.booking = data;
-        this.filteredBookings = this.booking;
-        this.setFilterPagination();
-        this.noBookingFlag();
-        this.modalService.dismissAll();
-        this.spinner.hide();
-      }, err => {
-        console.log(err);
-        this.toastr.error('Customer ban failed', 'Failed');
+  banCustomer(selected: Booking) {
+    if (this.bookingCollectedStatus(selected.vehicleBooking)) {
+      this.userService.updateStatus(selected.vehicleBooking.account).subscribe(x => {
+        this.toastr.success('Customer banned successfully.');
+        this.bookingService.getAllBooking().subscribe((data: any[]) => {
+          this.booking = data;
+          this.filteredBookings = this.booking;
+          this.setFilterPagination();
+          this.noBookingFlag();
+          this.modalService.dismissAll();
+          this.spinner.hide();
+        }, err => {
+          console.log(err);
+          this.toastr.error('Customer ban failed', 'Failed');
+        });
       });
-    });
+    } else {
+      if (selected.vehicleBooking.status == 'Collected') {
+        this.toastr.error('The booked vehicle has already been collected');
+      }
+      else if (selected.vehicleBooking.status != 'Confirmed') {
+        this.toastr.error('Booking has to be in confirmed status to ban customer');
+      }
+      else {
+        this.toastr.info('The customer has ' + moment(selected.vehicleBooking.startTime).diff(moment(), 'minutes') + ' minutes for the booking.');
+      }
+    }
+  }
+
+  bookingCollectedStatus(booking: VehicleBooking): boolean {
+    if (moment().isAfter(moment(booking.startTime)) && booking.status == 'Confirmed') {
+      return true;
+    }
+    return false;
   }
 
   confirmUpdateBooking() {
-    this.selectedBooking.vehicleBooking.status = this.statusForm.get('bookStatus').value;
-    console.log(this.selectedBooking.vehicleBooking.status);
-    this.bookingService.updateBookingStatus(this.selectedBooking).pipe(first())
-      .subscribe(
-        data => {
-          this.toastr.success('Booking update successful');
-          this.bookingService.getAllBooking().subscribe((data: any[]) => {
-            this.booking = data;
-            this.filteredBookings = this.booking;
-            this.setFilterPagination();
-            this.noBookingFlag();
+    let status = this.statusForm.get('bookStatus').value;
+    if (this.selectedBooking.vehicleBooking.status == 'Collected' && status == 'Confirmed') {
+      this.toastr.error('Cannot update status to Confirmed');
+    } else {
+      this.selectedBooking.vehicleBooking.status = status;
+      this.bookingService.updateBookingStatus(this.selectedBooking).pipe(first())
+        .subscribe(
+          data => {
+            this.toastr.success('Booking update successful');
+            this.bookingService.getAllBooking().subscribe((data: any[]) => {
+              this.booking = data;
+              this.filteredBookings = this.booking;
+              this.setFilterPagination();
+              this.noBookingFlag();
+              this.modalService.dismissAll();
+              this.spinner.hide();
+            });
             this.modalService.dismissAll();
-            this.spinner.hide();
+          }, err => {
+            console.log(err)
+            if (err == 'Conflict') {
+              this.toastr.error('Vehicle or equipment times conflicting');
+            }
+            else {
+              this.toastr.error('Booking update failed');
+            }
           });
-          this.modalService.dismissAll();
-        }, err => {
-          console.log(err)
-          if (err == 'Conflict') {
-            this.toastr.error('Vehicle or equipment times conflicting');
-          }
-          else {
-            this.toastr.error('Booking update failed');
-          }
-        });
+    }
   }
 
-  navigateToEdit(){
+  navigateToEdit() {
+    if(this.expiredBooking){
+      this.toastr.info('The booking is already expired');
+    }else{
     this.modalService.dismissAll();
     this.bookingService.selectBooking(this.selectedBooking.vehicleBooking.id)
     this.inventoryService.selectVehicle(this.selectedBooking.vehicleBooking.vehicleId);
-    this.router.navigate(['components/booking']);   
+    this.router.navigate(['components/booking']);
+    }
   }
 }

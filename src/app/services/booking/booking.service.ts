@@ -68,6 +68,16 @@ export class BookingService {
     return this.http.patch<any>(`${environment.apiUrl}/api/booking/update-status`,booking);
   }
 
+  getUsersBookings(id: number){
+    let index = id.toString();
+    const params = new HttpParams().set('id', index);
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    return this.http.get<any>(`${environment.apiUrl}/api/booking/user-bookings`,{ headers: headers, params: params })
+    .pipe(map(res => {
+      return res;
+    }));
+  }
+
   selectBooking(id: number): void {
     this.bookingId.next(id);
   }

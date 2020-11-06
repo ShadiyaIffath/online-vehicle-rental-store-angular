@@ -22,9 +22,12 @@
         <div class="modal-header">
             <h3 class="modal-title mb-3"><b>Reservation by {{selectedBooking.vehicleBooking.account.firstName}}
                     {{selectedBooking.vehicleBooking.account.lastName}}</b></h3>
-            <form [formGroup]="statusForm" style="text-align: center; margin-right: 10%;">
-                <select class="form-control text-center" formControlName="bookStatus" style="height:auto; margin-right: 5%;" (focus)="focus1=true"
-                (blur)="focus1=false" [ngClass]="{ 'is-invalid': submitted && f.bookStatus.errors }" (change)="statusChanged($event)">
+            <label class="form-control-label text-primary" style="margin-right:8%;"
+                *ngIf="!adminControls">{{selectedBooking.vehicleBooking.status}}</label>
+            <form [formGroup]="statusForm" style="text-align: center; margin-right: 10%;" *ngIf="adminControls">
+                <select class="form-control text-center" formControlName="bookStatus"
+                    style="height:auto; margin-right: 5%;" (focus)="focus1=true" (blur)="focus1=false"
+                    [ngClass]="{ 'is-invalid': submitted && f.bookStatus.errors }" (change)="statusChanged($event)">
                     <option *ngFor="let e of activeStatus" [ngValue]="e.type" style="color: orange;">{{e.type}}</option>
                 </select>
             </form>
@@ -151,13 +154,13 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-md btn-light" (click)="modal.close('Close click')">Cancel</button>
-            <button type="button" class="btn btn-md btn-warning text-right"
-                (click)="banCustomer(selectedBooking.vehicleBooking.account)"><i class="fas fa-user"></i> Ban
+            <button type="button" class="btn btn-md btn-warning text-right" *ngIf="adminControls && !adminBooking"
+                (click)="banCustomer(selectedBooking)"><i class="fas fa-user"></i> Ban
                 customer</button>
-            <button type="button" class="btn btn-md btn-primary text-right" (click)="confirmUpdateBooking()"><i
-                    class="fa fa-lightbulb"></i> Update status</button>
-            <button type="button" class="btn btn-md btn-primary text-right" (click)="navigateToEdit()" [disabled]="disableEdit"><i
-                    class="fa fa-pencil-square-o"> </i>Edit booking</button>
+            <button type="button" class="btn btn-md btn-info text-right" (click)="confirmUpdateBooking()"
+                *ngIf="adminControls" [disabled]="disableEdit"><i class="fa fa-lightbulb"></i> Update status</button>
+            <button type="button" class="btn btn-md btn-primary text-right" (click)="navigateToEdit()"
+                [disabled]="disableEdit"><i class="fa fa-pencil-square-o"> </i>Edit booking</button>
         </div>
     </ng-template>
     <div class="section" style="background-color:#DCDCDC">
@@ -192,7 +195,6 @@
                             <th scope="col">#Id</th>
                             <th scope="col">Vehicle</th>
                             <th scope="col">Booked by</th>
-                            <th scope="col">Day Created</th>
                             <th scope="col">Day collecting</th>
                             <th scope="col">Start Time</th>
                             <th scope="col">Day returning</th>
@@ -206,7 +208,6 @@
                             <th scope="row">{{e.vehicleBooking.id}}</th>
                             <td>{{e.vehicleBooking.vehicle.model}}</td>
                             <td>{{e.vehicleBooking.account.firstName}} {{e.vehicleBooking.account.lastName}}</td>
-                            <td>{{e.vehicleBooking.createdOn | date : "dd/MM/y"}}</td>
                             <td>{{e.vehicleBooking.startTime | date : "dd/MM/y"}}</td>
                             <td>{{e.vehicleBooking.startTime | date : "shortTime"}}</td>
                             <td>{{e.vehicleBooking.endTime | date : "dd/MM/y"}}</td>
@@ -216,6 +217,9 @@
                                 <button class="btn btn-primary btn-sm" title="View Booking"
                                     (click)="openBookingContent(bookingContent, e) ">
                                     <i class="fas fa-file-alt"></i></button>
+                                <button class="btn btn-primary btn-sm" title="Ban Customer"
+                                    *ngIf="adminControls" (click)="banCustomer(e)">
+                                    <i class="fas fa-user"></i></button>
                                 <button class="btn btn-primary btn-sm" title="Delete Booking">
                                     <i class="fa fa-trash" aria-hidden="true"
                                         (click)="deleteBooking(e.vehicleBooking.id)"></i></button>

@@ -17,6 +17,8 @@ import { ManageEquipmentComponent } from './components/manageEquipment/manage-eq
 import { ManageUsersComponent } from './components/manageUsers/manage-users.component';
 import { ManageBookingComponent } from './components/manageBookings/manage-booking.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { HelpComponent } from './components/help/help.component';
+import { ManageInquiriesComponent } from './components/manageInquiries/manage-inquiries.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -80,8 +82,20 @@ const routes: Routes = [
         }
     },
     {
+        path: 'components/help',
+        component: HelpComponent,
+    },
+    {
         path: 'components/equipment', 
         component: EquipmentComponent,
+         canActivate: [AuthGuard],
+        data: {
+            expectedRole: ['admin']
+        }
+    },
+    {
+        path: 'components/manage-inquiries', 
+        component: ManageInquiriesComponent,
          canActivate: [AuthGuard],
         data: {
             expectedRole: ['admin']

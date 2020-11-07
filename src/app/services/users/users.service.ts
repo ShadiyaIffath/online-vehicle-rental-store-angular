@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Inquiry } from 'app/models/Inquiry';
 import { User } from 'app/models/User';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -58,6 +59,7 @@ export class UsersService {
   updateAccountPassword(user: any){
     return this.http.patch<any>(`${environment.apiUrl}/api/account/update-password`, user)
       .pipe(map(data => {
+        return data;
       }));
   }
 }

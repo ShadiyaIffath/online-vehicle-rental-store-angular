@@ -1,0 +1,29 @@
+.special{
+    background-color: rgba(245, 245, 245, 0.4);
+    padding: 4%;
+    border-radius: 25px;
+}
+
+input[type=text] {
+    background-color: white;
+}
+
+.map-container-5{
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+}
+
+.map-container-5 iframe{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}
+
+.peaches{
+    background: rgb(238,174,202);
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+}

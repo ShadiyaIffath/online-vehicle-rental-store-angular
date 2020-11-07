@@ -1,1 +1,101 @@
-<p>help works!</p>
+<div class="wrapper" filter-color="orange" style="background: rgb(131,58,180);
+background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);">
+    <div class="container">
+        <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#1010ee" type="ball-clip-rotate"
+            [fullScreen]="true">
+            <p style="color: #6e1005"> Loading... </p>
+        </ngx-spinner>
+    </div>
+    <div class="container" style="padding-top: 8%;">
+        <h2 class="text-center">Contact us</h2>
+        <h5 class="text-white text-center">Your questions always welcome.</h5>
+        <div class="container" stlye="margin-top: 15%;">
+            <form class="form" [formGroup]="inquiryForm" (ngSubmit)="makeInquiry()">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="card special">
+                                <h6 class="text-white">Name</h6>
+                                <div class="input-group form-group-no-border input-lg text-center"
+                                    [ngClass]="{'input-group-focus':focus===true}">
+                                    <input type="text" class="form-control" (focus)="focus=true" (blur)="focus=false"
+                                        maxlength="25" title="Enter " formControlName="inquirer"
+                                        [ngClass]="{ 'is-invalid': submitted && f.inquirer.errors }">
+                                    <div *ngIf="submitted && f.inquirer.errors" class="invalid-feedback">
+                                        <div *ngIf="f.inquirer.errors.required">Name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card special">
+                                <h6 class="text-white">Contact number</h6>
+                                <div class="input-group form-group-no-border input-lg text-center"
+                                    [ngClass]="{'input-group-focus':focus===true}">
+                                    <input type="text" class="form-control" (focus)="focus=true" (blur)="focus=false"
+                                        title="Enter " formControlName="phone"
+                                        [ngClass]="{ 'is-invalid': submitted && f.phone.errors }">
+                                    <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                                        <div *ngIf="f.phone.errors.required">Contact number is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card special">
+                                <h6 class="text-white">Inquiry</h6>
+                                <div class="input-group form-group-no-border input-lg text-center"
+                                    [ngClass]="{'input-group-focus':focus===true}">
+                                    <textarea class="form-control" 
+                                        formControlName="inquiry"
+                                        [ngClass]="{ 'is-invalid': submitted && f.inquiry.errors }" rows="4"></textarea>
+                                    <div *ngIf="submitted && f.inquiry.errors" class="invalid-feedback">
+                                        <div *ngIf="f.inquiry.errors.required">Your inquiry is required</div>
+                                    </div>
+                                </div>
+                            </div>        
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary btn-round btn-lg" type="submit">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Make Inquiry
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-6" style="padding-left: 3%;">
+                        <div class="row">
+                            <div class="card special">
+                                <h6 class="text-white">E-mail</h6>
+                                <div class="input-group form-group-no-border input-lg text-center"
+                                    [ngClass]="{'input-group-focus':focus===true}">
+                                    <input type="text" class="form-control" (focus)="focus=true" (blur)="focus=false"
+                                        title="Enter " formControlName="email"
+                                        [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                        <div *ngIf="f.email.errors.required">E-mail is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card" style="border-radius: 25px;">
+                                <div class="card-header peaches">
+                                    <h5 class="mb-0">We are located at</h5>
+                                </div>
+                                <div class="card-body card-body-cascade text-center">
+                                    <div id="map-container-google-9" class="z-depth-1-half map-container-5"
+                                        style="height: 250px">
+                                        <iframe
+                                            src="https://maps.google.com/maps?q=Madryt&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                                            frameborder="0" style="border:0" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

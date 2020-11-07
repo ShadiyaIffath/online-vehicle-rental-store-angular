@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item" *ngIf='!adminControls'>
-                    <a class="nav-link" [routerLink]="['/index']">
+                    <a class="nav-link" [routerLink]="['/components/help']">
                         <i class="now-ui-icons travel_info"></i>
                         <p>Help</p>
                     </a>
@@ -50,6 +50,11 @@
                 <li class="nav-item" *ngIf='loggedIn && adminControls'>
                     <a class="nav-link" [routerLink]="['/components/manage-equipment']">
                         <p>Equipment</p>
+                    </a>
+                </li>
+                <li class="nav-item" *ngIf='loggedIn && adminControls'>
+                    <a class="nav-link" [routerLink]="['/components/manage-inquiries']">
+                        <p>Inquiries</p>
                     </a>
                 </li>
                 <li class="nav-item" *ngIf='!loggedIn'>

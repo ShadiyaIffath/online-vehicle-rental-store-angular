@@ -19,12 +19,11 @@ export class ManageUsersComponent implements OnInit {
   total: number = 0;
 
   constructor(private userService: UsersService,
-    private router: Router, 
+    private router: Router,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService){}
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-
     this.spinner.show();
     this.userService.getUsers().subscribe((data: any[]) => {
       this.users = data;
@@ -59,7 +58,7 @@ export class ManageUsersComponent implements OnInit {
     this.noUsersTag();
   }
 
-  noUsersTag(){
+  noUsersTag() {
     if (this.filteredUsers.length == 0) {
       this.noUsers = true;
     }
@@ -68,24 +67,24 @@ export class ManageUsersComponent implements OnInit {
     }
   }
 
-  deleteUser(id: number){
-    this.userService.deleteUser(id).subscribe(() =>{
+  deleteUser(id: number) {
+    this.userService.deleteUser(id).subscribe(() => {
       this.toastr.success('User removed successfully', 'Deleted');
       this.spinner.show();
       this.userService.getUsers().subscribe((data: any[]) => {
         this.users = data;
         this.filteredUsers = this.users;
-        this.total = this.users.length;
+        this.total = this.getActiveUsersCount();
         this.noUsersTag();
         this.spinner.hide();
       });
-    },error=>{
+    }, error => {
       this.toastr.error('User removal failed', 'Failed');
     })
   }
 
   updateUserStatus(selected: User) {
-    let user = selected;   
+    let user = selected;
     this.userService.updateStatus(selected).subscribe(x => {
       this.toastr.success('User status updated.', 'Successful');
       this.total = !user.active == true ? this.total - 1 : this.total + 1;

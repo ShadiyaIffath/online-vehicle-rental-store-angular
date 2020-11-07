@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { formatDate } from "@angular/common";
-import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -13,7 +10,6 @@ import { AuthenticationService } from '../../services/authentication/authenticat
 import { UsersService } from 'app/services/users/users.service';
 import { first } from 'rxjs/operators';
 
-const now = new Date();
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -35,9 +31,6 @@ export class ProfileComponent implements OnInit {
   accountId: number;
   account: User = new User();
   fieldTextType: boolean;
-  today: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
-  minDate: NgbDateStruct = { year: now.getFullYear() - 100, month: now.getMonth() + 1, day: now.getDate() };
-  maxDate: NgbDateStruct = { year: now.getFullYear() - 18, month: now.getMonth() + 1, day: now.getDate() };
 
   constructor(private userService: UsersService,
     private authenticationService: AuthenticationService,

@@ -6,7 +6,7 @@
     <ng-template #vehicleContent let-modal>
         <div class="modal-header">
             <h3 class="modal-title mb-3"><b>{{vehicle.model}} <i class="fas fa-users"></i>
-                {{vehicle.type.passengers}}</b></h3>
+                    {{vehicle.type.passengers}}</b></h3>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -63,74 +63,33 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-lg btn-light" (click)="modal.close('Close click')">Close</button>
-            <button type="button" class="btn btn-lg btn-primary" (click)="makereservation(vehicle.id, vehicle.type.type)"><i
-                    class="fas fa-car"> Book</i></button>
+            <button type="button" class="btn btn-lg btn-primary"
+                (click)="makereservation(vehicle.id, vehicle.type.type)"><i class="fas fa-car"> Book</i></button>
         </div>
     </ng-template>
-    <div class="row">
-        <div class="card-columns" *ngIf="!noVehicles">
-            <div class="col-auto mb-3">
-                <div class="card" style="background-color: #f96332; width: 18rem; height: auto;">
-                    <div class="card-body">
-                        <h5 class="card-title">Lets find your ideal vehicle</h5>
-                        <div class="card-block">
-                            <h6 class="card-subtitle mb-2 text-muted">Type</h6>
-                            <div class="form-check">
-                                <div class="row form-group" *ngFor="let type of vehicleTypes">
-                                    <label class="form-check-label text-white">
-                                        <input class="form-check-input" type="checkbox" name="vehicleTypes"
-                                            value="{{type.id}}" (change)="typeChecked($event)">
-                                        <span class="form-check-sign"></span>
-                                        <p class="card-text">{{type.type}}</p>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="card-block">
-                            <h6 class="card-subtitle mb-2 text-muted">Price per day</h6>
-                            <div class="form-check">
-                                <div class="row form-group" *ngFor="let type of vehicleTypes">
-                                    <label class="form-check-label text-white">
-                                        <input class="form-check-input" type="checkbox" name="vehiclePrices"
-                                            value="{{type.id}}"  (change)="priceChecked(type.id)">
-                                        <span class="form-check-sign"></span>
-                                        <p class="card-text">£{{type.pricePerDay}}</p>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-auto mb-3">
+        <div class="card" style="width: 100%;">
+            <div class="card-header">
+                <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicleElement.image}}" alt="car image">
             </div>
-            <div class="col-auto mb-3" *ngFor="let car of filteredCars">
-                <div class="card" style="width: 100%;">
-                    <div class="card-header">
-                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{car.image}}" alt="car image">
-                    </div>
-                    <div class="card-body">
-
-                        <h5 class="card-title text-uppercase"> {{car.model}}</h5>
-                        <h5 class="card-title text-muted"> {{car.type.type}}</h5>
-                        <p class="card-text text-small text-muted">Engine: <span
-                                style="padding-left:52%;">{{car.engine}}</span></p>
-                        <p class="card-text text-small text-muted" *ngIf="car.automatic == true">Gear: <span
-                                style="padding-left:52%;">Automatic</span></p>
-                        <p class="card-text text-small text-muted" *ngIf="car.automatic == false">Gear: <span
-                                style="padding-left:57%;">Manual</span></p>
-                        <div class="text-center">
-                            <button class="btn btn-primary pull-left" title="View vehicle"
-                                (click)="openVehicleContent(vehicleContent, car) ">
-                                <i class="fas fa-hand-point-up"> View</i></button>
-                            <button type="button" class="btn btn-primary pull-right" (click)="bookVehicle(car.id, car.type.type)">
-                                <i class="fas fa-car"> Book </i> </button>
-                        </div>
-                    </div>
+            <div class="card-body">
+                <h5 class="card-title text-uppercase"> {{vehicleElement.model}}</h5>
+                <h5 class="card-title text-muted"> {{vehicleElement.type.type}}</h5>
+                <p class="card-text text-small text-muted">Engine: <span style="padding-left:52%;">{{vehicleElement.engine}}</span>
+                </p>
+                <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == true">Gear: <span
+                        style="padding-left:52%;">Automatic</span></p>
+                <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == false">Gear: <span
+                        style="padding-left:57%;">Manual</span></p>
+                <div class="text-center">
+                    <button class="btn btn-primary pull-left" title="View vehicle"
+                        (click)="openVehicleContent(vehicleContent, vehicleElement) ">
+                        <i class="fas fa-hand-point-up"> View</i></button>
+                    <button type="button" class="btn btn-primary pull-right"
+                        (click)="bookVehicle(vehicleElement.id, vehicleElement.type.type)">
+                        <i class="fas fa-car"> Book </i> </button>
                 </div>
             </div>
         </div>
-    </div>
-    <div *ngIf="noVehicles">
-        <h4 class="text-primary text-center">Oops! Currently we have no vehicles</h4>
     </div>
 </div>

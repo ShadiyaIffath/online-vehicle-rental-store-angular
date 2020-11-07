@@ -33,8 +33,8 @@ import { ManageBookingComponent } from './manageBookings/manage-booking.componen
 import { ProfileComponent } from './profile/profile.component';
 import { HelpComponent } from './help/help.component';
 import { ManageInquiriesComponent } from './manageInquiries/manage-inquiries.component';
-
-
+import { FilterVehiclePipe } from 'app/pipes/vehicleFilterPipe';
+import { FilterVehicleTypePipe } from 'app/pipes/vehicleTypeFilterPipe';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -78,7 +78,9 @@ export function tokenGetter() {
         ManageBookingComponent,
         ProfileComponent,
         HelpComponent,
-        ManageInquiriesComponent
+        ManageInquiriesComponent,
+        FilterVehiclePipe,
+        FilterVehicleTypePipe
     ],
     exports: [ComponentsComponent],
     providers: [

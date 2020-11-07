@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
@@ -20,14 +20,13 @@ import { User } from 'app/models/User';
 })
 
 export class FleetComponent implements OnInit {
-  vehicleTypes: any[];
-  vehicles: Vehicle[];
-  filteredCars: Vehicle[];
-  noVehicles: boolean = false;
-  serviceFailed: boolean = false;
+
+  @Input() vehicleElement: Vehicle;
+  @Input() index: number;
+  
   closeResult: string;
   vehicle: Vehicle;
-  accountId: number;
+  accountId: number = -1;
   account: User = new User();
   underAge: boolean = false;
 
@@ -41,26 +40,6 @@ export class FleetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.spinner.show();
-    this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
-      this.vehicleTypes = data;
-      this.serviceFailed = false;
-    },
-      (error) => {
-        this.serviceFailed = true;
-      });
-    this.inventoryService.getVehicles().subscribe((data: any[]) => {
-      this.vehicles = data.filter(x => x.active == true);
-      this.filteredCars = this.vehicles;
-
-      if (this.vehicles.length === 0) {
-        this.noVehicles = true;
-      }
-      else {
-        this.noVehicles = false;
-      }
-      this.spinner.hide();
-    });
     if (!this.authenticationService.isTokenExpired()) {
       this.accountId = Number(this.authenticationService.currentUserValue.nameid);
       this.userService.getAccountDetails(this.accountId).subscribe((data) => {
@@ -80,18 +59,6 @@ export class FleetComponent implements OnInit {
     this.vehicle = vehicle;
   }
 
-  typeChecked(value: any): void {
-    //this.filteredCars.filter(item => { return item.checked; });
-  }
-
-  priceChecked(value: any): void{
-    console.log(value);
-  }
-
-  filteredInventory() {
-    return this.filteredCars;
-  }
-
   underAgeError(type: string) : boolean{
     if(this.underAge == true && type !== 'Small town car'){
       this.toastr.error('You should be older than 25 to book this type');
@@ -103,7 +70,7 @@ export class FleetComponent implements OnInit {
   bookVehicle(id: number, type: string) {
     if(!this.underAgeError(type)){
     this.inventoryService.selectVehicle(id);
-    this.router.navigate(['components/booking']);
+    this.handleBookingRoute();
     }
   }
 
@@ -111,7 +78,15 @@ export class FleetComponent implements OnInit {
     if(!this.underAgeError(type)){
     this.modalService.dismissAll();
     this.inventoryService.selectVehicle(id);
-    this.router.navigate(['components/booking']);
+    this.handleBookingRoute();
+    }
+  }
+
+  handleBookingRoute(){
+    if(this.accountId == -1){
+      this.toastr.info("Please login to make a booking");
+    }else{
+      this.router.navigate(['components/booking']);
     }
   }
 }

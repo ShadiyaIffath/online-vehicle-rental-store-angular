@@ -1,8 +1,9 @@
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
-import { NgbDateStruct,NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import * as Rellax from 'rellax';
 import * as moment from 'moment';
 import { NgxSpinnerService } from "ngx-spinner";
+import { InventoryService } from 'app/services/inventory/inventory.service';
 
 const now = new Date();
 @Component({
@@ -16,27 +17,32 @@ const now = new Date();
 })
 
 export class ComponentsComponent implements OnInit, OnDestroy {
-    minDate: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
-    dropOffDay: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
-    pickUpDay: NgbDateStruct = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
-
-    displayMessage = "Sort by...";
-    sortOptions = ["Balance", "Company", "Last Name"];
-    gear = ["Automatic","Manual"];
-
-    changeMessage(selectedItem: string){
-       this.displayMessage = "Sort by " + selectedItem;
-     }
-
-    constructor( private renderer : Renderer2,
-        private spinner: NgxSpinnerService) {}
+    vehicleList;
+    vehicles;
+    noVehicles: boolean = false;
+    constructor(private renderer: Renderer2,
+        private inventoryService: InventoryService,
+        private spinner: NgxSpinnerService) { }
 
     ngOnInit() {
-       var rellaxHeader = new Rellax('.rellax-header');
+        var rellaxHeader = new Rellax('.rellax-header');
         var body = document.getElementsByTagName('body')[0];
         body.classList.add('index-page');
+        this.spinner.show();
+        this.inventoryService.getVehicles().subscribe((data: any[]) => {
+            this.vehicleList = data.filter(function(x) { return  x.active == true});
+            this.vehicles = data.filter(function(x) { return  x.active == true});
+            if (this.vehicleList.length === 0) {
+                this.noVehicles = true;
+            }
+            else {
+                this.noVehicles = false;
+            }
+            this.spinner.hide();
+        });
     }
-    ngOnDestroy(){
+
+    ngOnDestroy() {
         var body = document.getElementsByTagName('body')[0];
         body.classList.remove('index-page');
     }

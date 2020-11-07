@@ -98,7 +98,6 @@ export class BookingComponent implements OnInit {
     var navbar = document.getElementsByTagName('nav')[0];
     navbar.classList.add('navbar-transparent');
 
-    this.generateTimeSlots();
     this.bookingForm = this.formBuilder.group({
       pickUpDate: ['', Validators.required],
       pickUpTime: ['', Validators.required],
@@ -125,6 +124,7 @@ export class BookingComponent implements OnInit {
         this.accountId = this.booking.vehicleBooking.accountId;
       });
     } else {
+      this.generateTimeSlots();
       this.title = 'Place your booking';
       this.accountId = Number(this.authenticationService.currentUserValue.nameid);
     }
@@ -170,14 +170,14 @@ export class BookingComponent implements OnInit {
   editBookingDate() {
     var start = this.parserFormatter.format(this.bookingForm.get('pickUpDate').value);
     var end = this.parserFormatter.format(this.bookingForm.get('dropOffDate').value);
-    var initialEnd = moment(this.booking.vehicleBooking.endTime);
+    var initialEnd = moment(this.booking.vehicleBooking.endTime).startOf('days');
     var mend = moment(end);
     var mstart = moment(start);
     var diff = mend.diff(mstart, 'days') + 1;
     if (diff > 0 && diff <= 14) {
       this.price = this.getSelctedEquipmentPrice() + (diff * this.vehicle.type.pricePerDay);
       diff = mend.diff(initialEnd, 'days') + 1;
-      if (diff > 0) {
+      if (diff > 1) {
         this.edited = true;
       } else {
         this.edited = false;

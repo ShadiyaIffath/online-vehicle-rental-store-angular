@@ -16,6 +16,7 @@ import { BookingComponent } from './components/booking/booking.component';
 import { ManageEquipmentComponent } from './components/manageEquipment/manage-equipment.component';
 import { ManageUsersComponent } from './components/manageUsers/manage-users.component';
 import { ManageBookingComponent } from './components/manageBookings/manage-booking.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -57,6 +58,14 @@ const routes: Routes = [
     {
         path: 'components/booking',
         component: BookingComponent,
+        canActivate: [AuthGuard],
+        data: {
+            expectedRole: ['admin','customer']
+        }
+    },
+    {
+        path: 'components/profile',
+        component: ProfileComponent,
         canActivate: [AuthGuard],
         data: {
             expectedRole: ['admin','customer']

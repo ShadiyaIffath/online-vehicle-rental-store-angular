@@ -106,9 +106,9 @@
                         <div class="row">
                             <div class="col-sm-5">
                                 <label for="DrivingLicense">Can you drive?</label>
-                                <h6>Attach an image of your driving license</h6>
+                                <h6>Attach evidence of your driving license</h6>
                             </div>
-                            <div class="col-sm-5 offset-lg-1">
+                            <div class="col-sm-4">
                                 <div class="input-group form-group-no-border input-lg"
                                     [ngClass]="{'input-group-focus':focus1===true}">
                                     <div class="input-group-prepend">
@@ -127,6 +127,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-3">
+                                <div class="input-group form-group-no-border input-lg"
+                                    [ngClass]="{'input-group-focus':focus1===true}">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span>
+                                    </div>
+                                    <input type="text" placeholder="License ID" class="form-control" (focus)="focus1=true"
+                                        (blur)="focus1=false" title="Enter License Id" formControlName="licenseId"
+                                        [ngClass]="{ 'is-invalid': submitted && f.licenseId.errors }" style="height: 50px;"/>
+                                    <div *ngIf="submitted && f.licenseId.errors" class="invalid-feedback">
+                                        <div *ngIf="f.licenseId.errors.required">License Id is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
                             <div class="col-sm-5">
                                 <label for="Identity">Who are you?</label>
                                 <h6>Attach a utility bill(within 3 months) / council tax statement</h6>

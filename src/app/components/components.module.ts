@@ -30,6 +30,8 @@ import { ManageEquipmentComponent } from './manageEquipment/manage-equipment.com
 import { ManageUsersComponent } from './manageUsers/manage-users.component';
 import { MaterialModule } from 'app/shared/Material/material.module';
 import { ManageBookingComponent } from './manageBookings/manage-booking.component';
+import { ProfileComponent } from './profile/profile.component';
+import { HelpComponent } from './help/help.component';
 
 
 
@@ -72,7 +74,9 @@ export function tokenGetter() {
         BookingComponent,
         ManageEquipmentComponent,
         ManageUsersComponent,
-        ManageBookingComponent
+        ManageBookingComponent,
+        ProfileComponent,
+        HelpComponent
     ],
     exports: [ComponentsComponent],
     providers: [

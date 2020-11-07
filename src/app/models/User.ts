@@ -9,6 +9,7 @@ export class User {
     dob: string;
     age: any;
     activatedDate:string;
+    licenseId: string;
     drivingLicense: string|any;
     active:boolean;
     additionalIdentification: string|any;

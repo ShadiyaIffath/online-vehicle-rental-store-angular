@@ -105,6 +105,7 @@ export class RegisterComponent implements OnInit {
       password: ['', Validators.required],
       phone: ['', Validators.compose([Validators.pattern("[0-9 ]{10}"), Validators.required])],
       dob: ['', Validators.compose([Validators.required])],
+      licenseId: ['', Validators.required],
       drivingLicense: ['', Validators.required],
       additionalIdentification: ['', Validators.required],
     });
@@ -152,6 +153,7 @@ export class RegisterComponent implements OnInit {
     this.user.email = this.registerForm.get('email').value;
     this.user.phone = this.registerForm.get('phone').value;
     this.user.password = this.registerForm.get('password').value;
+    this.user.licenseId = this.registerForm.get('licenseId').value;
     this.user.dob = this.parserFormatter.format(this.registerForm.get('dob').value);
     this.user.active = true;
     this.user.activatedDate = this.parserFormatter.format(this.today);

@@ -34,7 +34,7 @@ export class ManageBookingComponent implements OnInit {
   currentIndex = -1;
   currentBooking = null;
   vehicleTypes: any[];
-  status = [{ id: 0, type: 'All' }, { id: 1, type: 'Confirmed' }, { id: 2, type: 'Cancelled' }, { id: 3, type: 'Abandoned' }, { id: 4, type: 'Completed' }];
+  status = [{ id: 0, type: 'All' }, { id: 1, type: 'Confirmed' }, { id: 2, type: 'Cancelled' }, { id: 3, type: 'Collected' }, { id: 4, type: 'Completed' }];
   activeStatus = [{ id: 1, type: 'Confirmed' }, { id: 2, type: 'Cancelled' }, { id: 3, type: 'Collected' }, { id: 4, type: 'Completed' }];
   booking: any[];
   selectedEquipment = [];
@@ -56,17 +56,29 @@ export class ManageBookingComponent implements OnInit {
 
     if (this.authenticationService.currentUserValue.role == 'admin') {
       this.adminControls = true;
+      this.bookingService.getAllBooking().subscribe((data: any[]) => {
+        this.booking = data;
+        this.filteredBookings = this.booking;
+        this.setFilterPagination();
+        this.noBookingFlag();
+        this.spinner.hide();
+      }, err => {
+        this.toastr.error('An error occured.');
+        this.router.navigate(['']);
+      });
+    }else{
+      this.bookingService.getUsersBookings(this.authenticationService.currentUserValue.nameid).subscribe((data: any[]) => {
+        this.booking = data;
+        this.filteredBookings = this.booking;
+        this.setFilterPagination();
+        this.noBookingFlag();
+        this.spinner.hide();
+      }, err => {
+        this.toastr.error('An error occured.');
+        this.router.navigate(['']);
+      });
     }
-    this.bookingService.getAllBooking().subscribe((data: any[]) => {
-      this.booking = data;
-      this.filteredBookings = this.booking;
-      this.setFilterPagination();
-      this.noBookingFlag();
-      this.spinner.hide();
-    }, err => {
-      this.toastr.error('An error occured.');
-      this.router.navigate(['']);
-    });
+    
 
     this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
       this.vehicleTypes = data;

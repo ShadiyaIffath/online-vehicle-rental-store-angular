@@ -1,2 +1,10 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<app-navbar (open)="sideBarToggle($event)"></app-navbar>
+<mat-drawer-container *ngIf="adminControls">
+    <mat-drawer mode="side" [opened]="sidebarOpen">
+        <app-sidebar></app-sidebar>
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>
+<router-outlet *ngIf="!adminControls"></router-outlet>

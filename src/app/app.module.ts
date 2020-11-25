@@ -12,11 +12,20 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './shared/Material/material.module';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {FlexLayoutModule} from '@angular/flex-layout'
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavbarComponent,
+        SidebarComponent
     ],
     imports: [
         NgbModule,
@@ -27,7 +36,14 @@ import { MaterialModule } from './shared/Material/material.module';
         ComponentsModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        MaterialModule
+        MaterialModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatListModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+        FlexLayoutModule
     ],
     providers: [],
     bootstrap: [AppComponent],

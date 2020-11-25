@@ -14,7 +14,7 @@ export const TOKEN_NAME: string = 'jwt_token';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  userLoggedIn: EventEmitter<any> = new EventEmitter<any>();
+  @Output() userLoggedIn: EventEmitter<any> = new EventEmitter<any>();
   private currentUserSubject: BehaviorSubject<TokenClaim>;
   public currentUser: Observable<TokenClaim>;
 

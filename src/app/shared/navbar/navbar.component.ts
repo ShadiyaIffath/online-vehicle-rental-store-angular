@@ -1,9 +1,10 @@
-import { Component, OnInit, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthenticationService } from 'app/services/authentication/authentication.service';
 import { ToastrService } from 'ngx-toastr';
+import { EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-navbar',
@@ -12,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavbarComponent implements OnInit {
     @Input() userLoggedIn: any =null;
+    @Output()open: EventEmitter<boolean> = new EventEmitter();
     private toggleButton: any;
     private sidebarVisible: boolean;
     adminControls: boolean = false;
@@ -75,7 +77,12 @@ export class NavbarComponent implements OnInit {
         this.authenticationService.logout();
         this.loggedIn = false;
         this.adminControls = false;
+        this.open.emit(false);
         this.toastr.success('Logged out', 'Successful');
+    }
+
+    toggleSidebar(){
+         this.open.emit();
     }
 
 }

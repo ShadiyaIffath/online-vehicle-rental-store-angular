@@ -35,6 +35,8 @@ import { HelpComponent } from './help/help.component';
 import { ManageInquiriesComponent } from './manageInquiries/manage-inquiries.component';
 import { FilterVehiclePipe } from 'app/pipes/vehicleFilterPipe';
 import { FilterVehicleTypePipe } from 'app/pipes/vehicleTypeFilterPipe';
+import { MatButtonModule } from '@angular/material/button';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -61,6 +63,7 @@ export function tokenGetter() {
         ToastContainerModule,
         NgxSpinnerModule,
         MaterialModule,
+        MatButtonModule,
     ],
     declarations: [
         ComponentsComponent,
@@ -80,7 +83,8 @@ export function tokenGetter() {
         HelpComponent,
         ManageInquiriesComponent,
         FilterVehiclePipe,
-        FilterVehicleTypePipe
+        FilterVehicleTypePipe,
+        DashboardComponent,
     ],
     exports: [ComponentsComponent],
     providers: [

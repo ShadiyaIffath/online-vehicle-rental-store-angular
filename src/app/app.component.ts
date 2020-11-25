@@ -5,6 +5,7 @@ import 'rxjs/add/operator/filter';
 import { DOCUMENT } from '@angular/common';
 import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { AuthenticationService } from './services/authentication/authentication.service';
 
 @Component({
     selector: 'app-root',
@@ -13,15 +14,37 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 })
 export class AppComponent implements OnInit {
     private _router: Subscription;
+    adminControls: boolean = false;
+    sidebarOpen: boolean = false;
+    token: string;
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
 
-    constructor( private renderer : Renderer2, private router: Router, @Inject(DOCUMENT,) private document: any, private element : ElementRef, public location: Location) {}
+    constructor(private authenticationService: AuthenticationService, private renderer: Renderer2,
+        private router: Router, @Inject(DOCUMENT,) private document: any,
+        private element: ElementRef, public location: Location) {
+        if (!this.authenticationService.isTokenExpired()) {
+            if (this.authenticationService.currentUserValue.role == 'admin') {
+                this.adminControls = true;
+            }
+        }
+    }
     ngOnInit() {
-        var navbar : HTMLElement = this.element.nativeElement.children[0].children[0];
+        this.authenticationService.getEmitter().subscribe((customObject) => {
+            if (!this.authenticationService.isTokenExpired()) {
+                if (customObject != null) {
+                    if (customObject.role == 'admin') {
+                        this.adminControls = true;
+                    }
+                }else{
+                    this.adminControls = false;
+                }
+            }
+        });
+        var navbar: HTMLElement = this.element.nativeElement.children[0].children[0];
         this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
             if (window.outerWidth > 991) {
                 window.document.children[0].scrollTop = 0;
-            }else{
+            } else {
                 window.document.activeElement.scrollTop = 0;
             }
             this.navbar.sidebarClose();
@@ -39,5 +62,13 @@ export class AppComponent implements OnInit {
                 }
             });
         });
+    }
+
+    sideBarToggle(event){
+        if(event == false){
+            this.sidebarOpen = false;
+        }else{
+        this.sidebarOpen = !this.sidebarOpen;
+        }
     }
 }

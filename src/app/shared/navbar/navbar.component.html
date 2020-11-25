@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent" color-on-scroll="500">
     <div class="container">
         <div class="navbar-translate">
+            <button mat-icon-button (click)="toggleSidebar()" *ngIf="adminControls">
+                <mat-icon>menu</mat-icon>
+            </button>
             <a class="navbar-brand" [routerLink]="['/index']" placement="bottom">
                 <h2 style="margin-bottom: 3%;">Banger & Co</h2>
             </a>
@@ -20,11 +23,11 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['/index']">
-                        <i class="now-ui-icons transportation_bus-front-12"></i>
-                        <p>Home</p>
+                        
+                        <p><i class="fas fa-home fa-2x"></i> Home</p>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf='loggedIn'>
+                <li class="nav-item" *ngIf='loggedIn && !adminControls'>
                     <a class="nav-link" [routerLink]="'/components/manage-bookings'">
                         <i class="now-ui-icons files_paper"></i>
                         <p>Bookings</p>
@@ -42,21 +45,6 @@
                         <p>Help</p>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf='loggedIn && adminControls'>
-                    <a class="nav-link" [routerLink]="['/components/manage-vehicles']">
-                        <p>Vehicle</p>
-                    </a>
-                </li>
-                <li class="nav-item" *ngIf='loggedIn && adminControls'>
-                    <a class="nav-link" [routerLink]="['/components/manage-equipment']">
-                        <p>Equipment</p>
-                    </a>
-                </li>
-                <li class="nav-item" *ngIf='loggedIn && adminControls'>
-                    <a class="nav-link" [routerLink]="['/components/manage-inquiries']">
-                        <p>Inquiries</p>
-                    </a>
-                </li>
                 <li class="nav-item" *ngIf='!loggedIn'>
                     <a class="nav-link" [routerLink]="'/components/login'">
                         <i class="now-ui-icons users_circle-08"> </i>
@@ -66,11 +54,6 @@
                 <li class="nav-item" *ngIf='!loggedIn'>
                     <a class="nav-link btn btn-neutral" [routerLink]="['/components/register']">
                         <p>Sign up</p>
-                    </a>
-                </li>
-                <li class="nav-item" *ngIf='loggedIn && adminControls'>
-                    <a class="nav-link" [routerLink]="['/components/manage-users']">
-                        <p>Users</p>
                     </a>
                 </li>
                 <li class="nav-item" *ngIf='loggedIn'>

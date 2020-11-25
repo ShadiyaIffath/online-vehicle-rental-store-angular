@@ -56,7 +56,7 @@ export class HelpComponent implements OnInit {
     this.inquiry.phone = this.inquiryForm.get('phone').value;
     this.inquiry.inquiry = this.inquiryForm.get('inquiry').value;
     this.inquiry.responded = false;
-    this.inquiry.createdOn = moment().format('yyyy-mm-dd');
+    this.inquiry.createdOn = moment().format("YYYY-MM-DD HH:mm:ss");
   }
 
 }

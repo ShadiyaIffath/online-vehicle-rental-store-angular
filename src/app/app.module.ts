@@ -4,8 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
-import { ToastrModule } from 'ngx-toastr';
-
 import { ComponentsModule } from './components/components.module';
 
 import { AppComponent } from './app.component';
@@ -20,14 +18,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {FlexLayoutModule} from '@angular/flex-layout'
 import { MatDividerModule } from '@angular/material/divider';
-import { AreaComponent } from './shared/widgets/area/area.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavbarComponent,
         SidebarComponent,
-        AreaComponent
     ],
     imports: [
         NgbModule,
@@ -49,6 +45,7 @@ import { AreaComponent } from './shared/widgets/area/area.component';
     ],
     providers: [],
     bootstrap: [AppComponent],
-    
+    exports: [
+    ]
 })
 export class AppModule { }

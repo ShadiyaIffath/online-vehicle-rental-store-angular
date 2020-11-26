@@ -2,6 +2,7 @@
   "name": "now-ui-kit-angular",
   "version": "1.2.0",
   "scripts": {
+    "postinstall": "ngcc",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

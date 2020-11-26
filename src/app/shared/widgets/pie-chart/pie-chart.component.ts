@@ -2,13 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
 
-
 @Component({
-  selector: 'app-widget-area',
-  templateUrl: './area.component.html',
-  styleUrls: ['./area.component.css']
+  selector: 'app-pie-chart',
+  templateUrl: './pie-chart.component.html',
+  styleUrls: ['./pie-chart.component.css']
 })
-export class AreaComponent implements OnInit {
+export class PieChartComponent implements OnInit {
   @Input() chartValues;
   chartOptions: {};
   Highcharts = Highcharts;
@@ -20,3 +19,4 @@ export class AreaComponent implements OnInit {
   }
 
 }
+

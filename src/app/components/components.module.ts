@@ -38,6 +38,15 @@ import { FilterVehicleTypePipe } from 'app/pipes/vehicleTypeFilterPipe';
 import { MatButtonModule } from '@angular/material/button';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DmvComponent } from './dmv/dmv.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { AreaComponent } from 'app/shared/widgets/area/area.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+import { PieChartComponent } from 'app/shared/widgets/pie-chart/pie-chart.component';
+import { CardComponent } from 'app/shared/widgets/card/card.component';
+import { BarChartComponent } from 'app/shared/widgets/bar-chart/bar-chart.component';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -65,6 +74,11 @@ export function tokenGetter() {
         NgxSpinnerModule,
         MaterialModule,
         MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+        HighchartsChartModule,
+        FlexLayoutModule,
+        MatCardModule
     ],
     declarations: [
         ComponentsComponent,
@@ -86,7 +100,11 @@ export function tokenGetter() {
         FilterVehiclePipe,
         FilterVehicleTypePipe,
         DashboardComponent,
-        DmvComponent
+        DmvComponent,
+        AreaComponent,
+        PieChartComponent,
+        CardComponent,
+        BarChartComponent
     ],
     exports: [ComponentsComponent],
     providers: [

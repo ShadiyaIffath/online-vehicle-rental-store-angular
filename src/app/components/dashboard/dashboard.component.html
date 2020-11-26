@@ -1,1 +1,26 @@
+<div class="wrapper">
+    <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#FFCCB3" type="ball-clip-rotate"
+        [fullScreen]="true">
+        <p style="color: #6e1005"> Loading... </p>
+    </ngx-spinner>
+    <div class="section"
+        style="background-color: #f96332; padding-top: 15%; padding-bottom: 5%; padding-left: 5%; padding-right: 5%;">
+        <app-widget-area *ngIf="areaChart" [chartValues]="areaChart"></app-widget-area>
+        <mat-divider></mat-divider>
+        <br>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" class="static-cards">
+            <mat-card fxFlex="30" *ngIf="donutChart">
+                <app-widget-card [chartValues]="donutChart"></app-widget-card>
+            </mat-card>
+            <mat-card fxFlex="30" *ngIf="barChart">
+                <app-bar-chart [chartValues]="barChart"></app-bar-chart>
+            </mat-card>
+            <mat-card fxFlex="30" *ngIf="pieChart">
+                <app-pie-chart [chartValues]="pieChart"></app-pie-chart>
+            </mat-card>
+        </div>
 
+    </div>
+    <footer class="footer" data-background-color="black">
+    </footer>
+</div>

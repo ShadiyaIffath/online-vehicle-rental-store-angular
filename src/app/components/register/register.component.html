@@ -138,6 +138,7 @@
                                         [ngClass]="{ 'is-invalid': submitted && f.licenseId.errors }" style="height: 50px;"/>
                                     <div *ngIf="submitted && f.licenseId.errors" class="invalid-feedback">
                                         <div *ngIf="f.licenseId.errors.required">License Id is required</div>
+                                        <div *ngIf="invalidLicense">Invalid driving license</div>
                                     </div>
                                 </div>
                             </div>

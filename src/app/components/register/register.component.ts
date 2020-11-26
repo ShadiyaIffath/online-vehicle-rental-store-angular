@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
   emailFailed = false;
+  invalidLicense = false;
   loading = false;
   returnUrl: string = '/components/login';
   error = '';
@@ -78,6 +79,8 @@ export class RegisterComponent implements OnInit {
         .subscribe(
           data => {
             this.toastr.success('Registration successful, Login', 'Successful');
+            this.emailFailed = false;
+            this.invalidLicense = false;
             this.router.navigate([this.returnUrl]);
           },
           error => {
@@ -87,10 +90,16 @@ export class RegisterComponent implements OnInit {
               this.error = 'Register failed! Sorry, your email is already in use.';
               this.registerForm.controls['email'].setErrors({ 'incorrect': true });
               this.emailFailed = true;
+              this.invalidLicense = false;
+            }
+            else if(error == "Forbidden"){
+              this.error = "Register failed! Your license has been reported by the DMV";
+              this.invalidLicense = true;
             }
             else {
               this.error = 'Register failed, please try again later.';
               this.emailFailed = false;
+              this.invalidLicense = false;
             }
             this.loading = false;
           });

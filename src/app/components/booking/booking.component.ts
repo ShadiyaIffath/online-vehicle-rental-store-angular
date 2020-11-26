@@ -20,6 +20,7 @@ import { User } from 'app/models/User';
 import { UsersService } from 'app/services/users/users.service';
 import { EquipmentBooking } from 'app/models/EquipmentBooking';
 import { Booking } from 'app/models/Booking';
+import { DmvService } from 'app/services/dmv/dmv.service';
 
 const now = new Date();
 
@@ -36,6 +37,7 @@ export class BookingComponent implements OnInit {
   loading = false;
   submitted = false;
   accountId: number;
+  validLicense: boolean = false;
   error = '';
   title: string = '';
   price: number; //this will be replaced with booking object
@@ -67,6 +69,7 @@ export class BookingComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UsersService,
     private inventoryService: InventoryService,
+    private dmvService: DmvService,
     private bookingService: BookingService,
     private equipmentService: EquipmentService,
     private toastr: ToastrService,
@@ -434,28 +437,30 @@ export class BookingComponent implements OnInit {
   }
 
   getAccountDetails() {
+    this.verifyLicense();
     this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
     this.vehicleBooking.accountId = this.accountId;
     this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
     this.account.age = moment().diff(this.account.dob, 'years');
-    this.verifyAge();
   }
 
-  verifyAge() {
-    if (this.account.age < 25) {
-      if (this.vehicle.type.type == 'Small town car') {
-        this.error = 'You are eligible to make this booking';
-        this.loading = false;
-      }
-      else {
-        this.error = 'Sorry, but you are not eligible to make this booking';
+  verifyLicense(){
+    this.spinner.show();
+    this.dmvService.validateLicense(this.account.licenseId, this.accountId).subscribe((data: any) => {
+      if(data == true){
+        this.toastr.error("Booking request rejected");
+        this.error = 'Sorry, but you are not eligible to make this booking. Your driving license has been reported as lost or suspended';
         this.loading = true;
+      }else{
+        this.loading = false;
+        this.error = 'You are eligible to make this booking';
       }
-    }
-    else {
-      this.loading = false;
-      this.error = 'You are eligible to make this booking';
-    }
+      this.spinner.hide();
+    },  err =>{
+    this.toastr.error ('There was a server error. Cannot process your request');
+    this.loading = true;
+    this.spinner.hide();
+    });
   }
 
   removeEquipment(remove) {

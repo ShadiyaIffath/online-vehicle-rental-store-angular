@@ -20,12 +20,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {FlexLayoutModule} from '@angular/flex-layout'
 import { MatDividerModule } from '@angular/material/divider';
+import { AreaComponent } from './shared/widgets/area/area.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavbarComponent,
-        SidebarComponent
+        SidebarComponent,
+        AreaComponent
     ],
     imports: [
         NgbModule,

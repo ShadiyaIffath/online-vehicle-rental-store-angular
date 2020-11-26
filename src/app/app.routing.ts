@@ -20,6 +20,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HelpComponent } from './components/help/help.component';
 import { ManageInquiriesComponent } from './components/manageInquiries/manage-inquiries.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DmvComponent } from './components/dmv/dmv.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -109,7 +110,15 @@ const routes: Routes = [
         data: {
             expectedRole: ['admin']
         }
-    }
+    },
+    {
+        path: 'components/dmv', 
+        component: DmvComponent,
+         canActivate: [AuthGuard],
+        data: {
+            expectedRole: ['admin']
+        }
+    },
 
 ];
 

@@ -1,6 +1,6 @@
 <mat-nav-list>
-    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['/index']">
-        <p><i class="fas fa-home"></i> Home</p>
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['/components/dashboard']">
+        <p><i class="fas fa-chart-line"></i> Dashboard</p>
     </a>
     <a mat-list-item routerLinkActive="list-item-active" [routerLink]="'/components/manage-bookings'">
         <p><i class="now-ui-icons files_paper"></i> Bookings</p>
@@ -20,5 +20,8 @@
     <a mat-list-item routerLinkActive="list-item-active"
         href="http://localhost:54787/main/admin/hangfire?access_token={{token}}" target="_blank">
         <p><i class="fas fa-stopwatch"></i> Hangfire</p>
+    </a>
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['/components/dmv']">
+        <p><i class="fas fa-user-secret"></i> DMV</p>
     </a>
 </mat-nav-list>

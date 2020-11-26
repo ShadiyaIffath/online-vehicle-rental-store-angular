@@ -37,6 +37,7 @@ import { FilterVehiclePipe } from 'app/pipes/vehicleFilterPipe';
 import { FilterVehicleTypePipe } from 'app/pipes/vehicleTypeFilterPipe';
 import { MatButtonModule } from '@angular/material/button';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DmvComponent } from './dmv/dmv.component';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -85,6 +86,7 @@ export function tokenGetter() {
         FilterVehiclePipe,
         FilterVehicleTypePipe,
         DashboardComponent,
+        DmvComponent
     ],
     exports: [ComponentsComponent],
     providers: [

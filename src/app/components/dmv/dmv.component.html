@@ -17,43 +17,41 @@
     <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#1010ee" type="ball-clip-rotate"
         [fullScreen]="true">
         <p style="color: #6e1005"> Loading... </p>
-</ngx-spinner>
-    <div class="section" style="background-color:#DCDCDC">
-        <div class="container" style="padding: 2%; background-color: #b92e34; ">
-            <div class="row d-flex justify-content-between">
-                <div class="col-lg-3 pb-2">
-                    <label style="color: blanchedalmond;"><b>Offense Type</b></label>
-                    <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
-                        style="height:auto; margin-bottom: 3%;border-color: tomato; background-color: blanchedalmond;"
-                        (change)="activeFilter($event)">
-                        <option *ngFor="let value of status" [ngValue]="value.id" class="text-primary">
-                            {{value.type}}
-                        </option>
-                    </select>
-                </div>
+    </ngx-spinner>
+    <div class="section" style="padding: 2%; background-color: #b92e34; ">
+        <div class="row d-flex justify-content-between">
+            <div class="col-lg-3 pb-2">
+                <label style="color: blanchedalmond;"><b>Offense Type</b></label>
+                <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
+                    style="height:auto; margin-bottom: 3%;border-color: tomato; background-color: blanchedalmond;"
+                    (change)="activeFilter($event)">
+                    <option *ngFor="let value of status" [ngValue]="value.id" class="text-primary">
+                        {{value.type}}
+                    </option>
+                </select>
             </div>
-            <h3 class="text-center text-uppercase" style="color: blanchedalmond;" *ngIf="noInquiries">There are no
-                inquiries</h3>
-            <div class="table-responsive" *ngIf="!noDMV">
-                <table class="table table-striped table-bordered table-hover table-warning">
-                    <thead class="thead-dark text-center">
-                        <tr>
-                            <th scope="col">#Id</th>
-                            <th scope="col">Drivine License</th>
-                            <th scope="col">Offense</th>
-                            <th scope="col">Date of Offense</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <tr *ngFor="let i of filteredDMV">
-                            <th scope="row">{{i.id}}</th>
-                            <td>{{i.drivingLicense}}</td>
-                            <td>{{i.type}}</td>
-                            <td>{{i.offenseDate | date:'MM/dd/yyyy'}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        </div>
+        <h3 class="text-center text-uppercase" style="color: blanchedalmond;" *ngIf="noInquiries">There are no
+            inquiries</h3>
+        <div class="table-responsive" *ngIf="!noDMV">
+            <table class="table table-striped table-bordered table-hover table-warning">
+                <thead class="thead-dark text-center">
+                    <tr>
+                        <th scope="col">#Id</th>
+                        <th scope="col">Drivine License</th>
+                        <th scope="col">Offense</th>
+                        <th scope="col">Date of Offense</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr *ngFor="let i of filteredDMV">
+                        <th scope="row">{{i.id}}</th>
+                        <td>{{i.drivingLicense}}</td>
+                        <td>{{i.type}}</td>
+                        <td>{{i.offenseDate | date:'MM/dd/yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <footer class="footer" data-background-color="black">

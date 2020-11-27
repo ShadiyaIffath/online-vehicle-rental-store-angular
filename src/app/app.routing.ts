@@ -21,6 +21,7 @@ import { HelpComponent } from './components/help/help.component';
 import { ManageInquiriesComponent } from './components/manageInquiries/manage-inquiries.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DmvComponent } from './components/dmv/dmv.component';
+import { CompetitorsComponent } from './components/competitors/competitors.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -118,7 +119,15 @@ const routes: Routes = [
         data: {
             expectedRole: ['admin']
         }
+    }, {
+        path: 'components/competitors', 
+        component: CompetitorsComponent,
+         canActivate: [AuthGuard],
+        data: {
+            expectedRole: ['admin']
+        }
     },
+
 
 ];
 

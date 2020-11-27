@@ -18,69 +18,66 @@
         [fullScreen]="true">
         <p style="color: #6e1005"> Loading... </p>
     </ngx-spinner>
-    <div class="section" style="background-color:#DCDCDC">
-        <div class="container" style="padding: 2%; background-color: #b92e34; ">
-            <div class="row d-flex justify-content-between">
-                <div class="col-lg-3 pb-2">
-                    <label style="color: blanchedalmond;"><b>Active</b></label>
-                    <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
-                        style="height:auto; margin-bottom: 3%;border-color: tomato; background-color: blanchedalmond;"
-                        (change)="activeFilter($event)">
-                        <option *ngFor="let value of availability" [ngValue]="value.id" class="text-primary">
-                            {{value.type}}
-                        </option>
-                    </select>
-                </div>
+    <div class="section" style="padding: 2%; background-color: #b92e34; ">
+        <div class="row d-flex justify-content-between">
+            <div class="col-lg-3 pb-2">
+                <label style="color: blanchedalmond;"><b>Active</b></label>
+                <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
+                    style="height:auto; margin-bottom: 3%;border-color: tomato; background-color: blanchedalmond;"
+                    (change)="activeFilter($event)">
+                    <option *ngFor="let value of availability" [ngValue]="value.id" class="text-primary">
+                        {{value.type}}
+                    </option>
+                </select>
             </div>
-            <h3 class="text-center text-uppercase" style="color: blanchedalmond;" *ngIf="noUsers">There are no
-                users available</h3>
-            <div class="table-responsive" *ngIf="!noUsers">
-                <table class="table table-striped table-bordered table-hover table-warning">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#Id</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Phone No.</th>
-                            <th scope="col">DOB</th>
-                            <th scope="col">Day added</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Active</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <tr *ngFor="let u of filteredUsers">
-                            <th scope="row">{{u.id}}</th>
-                            <td>{{u.firstName}}</td>
-                            <td>{{u.lastName}}</td>
-                            <td>{{u.email}}</td>
-                            <td>{{u.phone}}</td>
-                            <td>{{u.dob | date:'MM/dd/yyyy'}}</td>
-                            <td>{{u.activatedDate | date:'MM/dd/yyyy'}}</td>
-                            <td>
-                                <div *ngIf="u.typeId == 1">Admin</div>
-                                <div *ngIf="u.typeId == 2">User</div>
-                            </td>
-                            <td>{{u.active}}</td>
-                            <td>
-                                <div *ngIf="u.typeId == 2">
+        </div>
+        <h3 class="text-center text-uppercase" style="color: blanchedalmond;" *ngIf="noUsers">There are no
+            users available</h3>
+        <div class="table-responsive" *ngIf="!noUsers">
+            <table class="table table-striped table-bordered table-hover table-warning">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#Id</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Phone No.</th>
+                        <th scope="col">DOB</th>
+                        <th scope="col">Day added</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr *ngFor="let u of filteredUsers">
+                        <th scope="row">{{u.id}}</th>
+                        <td>{{u.firstName}}</td>
+                        <td>{{u.lastName}}</td>
+                        <td>{{u.email}}</td>
+                        <td>{{u.phone}}</td>
+                        <td>{{u.dob | date:'MM/dd/yyyy'}}</td>
+                        <td>{{u.activatedDate | date:'MM/dd/yyyy'}}</td>
+                        <td>
+                            <div *ngIf="u.typeId == 1">Admin</div>
+                            <div *ngIf="u.typeId == 2">User</div>
+                        </td>
+                        <td>{{u.active}}</td>
+                        <td>
+                            <div *ngIf="u.typeId == 2">
                                 <button class="btn btn-primary btn-sm" *ngIf="!u.active" title="Activate Account"
                                     (click)="updateUserStatus(u)">
                                     <i class="fa fa-check" aria-hidden="true"></i></button>
                                 <button class="btn btn-primary btn-sm" *ngIf="u.active" title="Blacklist Account"
                                     (click)="updateUserStatus(u)">
                                     <i class="fa fa-times" aria-hidden="true"></i></button>
-                                <button class="btn btn-primary btn-sm" title="Delete User"
-                                    (click)="deleteUser(u.id)">
+                                <button class="btn btn-primary btn-sm" title="Delete User" (click)="deleteUser(u.id)">
                                     <i class="fa fa-trash" aria-hidden="true"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <footer class="footer" data-background-color="black">

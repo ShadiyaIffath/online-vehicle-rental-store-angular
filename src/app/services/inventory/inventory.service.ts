@@ -39,6 +39,13 @@ export class InventoryService {
       }), shareReplay(1));
   }
 
+  getCompetitorData() {
+    return this.http.get<any>(`${environment.apiUrl}/api/competitors`)
+      .pipe(map(data => {
+        return data;
+      }), shareReplay(1));
+  }
+
   getVehicleById(id: number) {
     let index = id.toString();
     const params = new HttpParams().set('id', index);

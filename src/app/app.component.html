@@ -1,6 +1,10 @@
 <app-navbar (open)="sideBarToggle($event)"></app-navbar>
-<mat-drawer-container *ngIf="adminControls">
-    <mat-drawer mode="side" [opened]="sidebarOpen">
+<mat-drawer-container *ngIf="adminControls" autosize style="position: absolute;right: 0px;left: 0px;bottom: 0px;top: 0px;">
+    <mat-drawer 
+    class="sidenav mat-elevation-z1"
+    fixedInViewport="true"
+    (click)="drawer.close()"
+    [mode]="sidenavMode"[opened]="sidebarOpen">
         <app-sidebar></app-sidebar>
     </mat-drawer>
     <mat-drawer-content>

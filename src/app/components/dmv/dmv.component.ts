@@ -30,6 +30,9 @@ export class DmvComponent implements OnInit {
       this.total = this.dmv.length;
       this.noDMVTag();
       this.spinner.hide();
+    }, error=>{
+      this.toastr.error("Server error, try again later");
+      this.spinner.hide();
     });
   }
 

@@ -47,6 +47,7 @@ import { MatCardModule } from '@angular/material/card';
 import { PieChartComponent } from 'app/shared/widgets/pie-chart/pie-chart.component';
 import { CardComponent } from 'app/shared/widgets/card/card.component';
 import { BarChartComponent } from 'app/shared/widgets/bar-chart/bar-chart.component';
+import { CompetitorsComponent } from './competitors/competitors.component';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -104,7 +105,8 @@ export function tokenGetter() {
         AreaComponent,
         PieChartComponent,
         CardComponent,
-        BarChartComponent
+        BarChartComponent,
+        CompetitorsComponent
     ],
     exports: [ComponentsComponent],
     providers: [

@@ -36,9 +36,4 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.authenticationService.logout();
-    this.token = '';
-    this.toastr.success('Logged out', 'Successful');
-  }
 }

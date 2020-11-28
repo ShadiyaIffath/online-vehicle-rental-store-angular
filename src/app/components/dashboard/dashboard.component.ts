@@ -1,9 +1,11 @@
 import { Component, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { DashboardCardView } from 'app/models/DashboardCardView';
 import { InventoryService } from 'app/services/inventory/inventory.service';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,10 +20,13 @@ export class DashboardComponent implements OnInit {
 
   today;
   dayBookings = [0, 0, 0, 0, 0, 0, 0];
-  days: string[] = [];
+  days: any[] = [];
+  dayLabels: any[] = [];
   dashboardCardView: DashboardCardView;
 
   constructor(private inventoryService: InventoryService,
+    private router: Router,
+    private toastr: ToastrService,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
@@ -32,8 +37,14 @@ export class DashboardComponent implements OnInit {
       this.setUpDonutChart();
       this.setUpBarChart();
       this.createWeekDays();
+      this.createAreaChartData();
       this.setupAreaChart();
       this.spinner.hide();
+    }, error => {
+      this.spinner.hide();
+      console.log(error);
+      this.toastr.error('A server error occured, Try again later.');
+      this.router.navigate(['']);
     });
   }
 
@@ -104,7 +115,7 @@ export class DashboardComponent implements OnInit {
         plotShadow: false
       },
       title: {
-        text: '<b>Users (Total:'+this.dashboardCardView.accounts.length +')</b>',
+        text: '<b>Users (Total:' + this.dashboardCardView.accounts.length + ')</b>',
         align: 'center',
         verticalAlign: 'top',
       },
@@ -241,8 +252,6 @@ export class DashboardComponent implements OnInit {
   }
 
   setupAreaChart() {
-    this.bookingDate();
-    var date = moment().startOf('day');
     this.areaChart = {
       chart: {
         type: 'areaspline'
@@ -262,7 +271,7 @@ export class DashboardComponent implements OnInit {
           Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
       },
       xAxis: {
-        categories: this.days
+        categories: this.dayLabels
       },
       yAxis: {
         title: {
@@ -290,52 +299,44 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  bookingDate() {
-    var diff = 0;
-    var date = moment().startOf('day');
-    var last = moment().startOf('day').add(1, 'days');
-    if (this.dashboardCardView.vehicleBooking == null) {
-      this.dayBookings = [3,1,2,0,0,2,3]
-    } else {
-      this.dashboardCardView.vehicleBooking.forEach(element => {
-        var start = moment(element.startTime).startOf('day');
-        var end = moment(element.startTime).startOf('day');
-        if (start.isSameOrBefore(date)) {
-          if (end.isAfter(last)) {
-            this.dayBookings = this.dayBookings.map(function (item) {
-              return item + 1;
-            });
-          } else {
-            diff = end.diff(start);
-            for (var i = 0; i < diff; i++) {
-              this.dayBookings[i] = this.dayBookings[i] + 1;
-            }
-          }
+  createAreaChartData() {
+    this.dashboardCardView.vehicleBookings.forEach(element => {
+      var start = moment(element.startTime).startOf('day');
+      var end = moment(element.endTime).startOf('day');
+      while (start.isSameOrBefore(end)) {
+        if (start.isSame(this.days[0], 'days')) {
+          this.dayBookings[0] += 1;
         }
-        else {
-          if (end.isBefore(last)) {
-            var startIndex = start.diff(date);
-            diff = last.diff(end);
-            for (var i = startIndex; i < diff; i++) {
-              this.dayBookings[i] = this.dayBookings[i] + 1;
-            }
-          } else {
-            diff = last.diff(start);
-            for (var i = 6; i >= diff; i--) {
-              this.dayBookings[i] = this.dayBookings[i] + 1;
-            }
-          }
+        else if (start.isSame(this.days[1], 'days')) {
+          this.dayBookings[1] += 1;
         }
-      });
-    }
+        else if (start.isSame(this.days[2], 'days')) {
+          this.dayBookings[2] += 1;
+        }
+        else if (start.isSame(this.days[3], 'days')) {
+          this.dayBookings[3] += 1;
+        }
+        else if (start.isSame(this.days[4], 'days')) {
+          this.dayBookings[4] += 1;
+        }
+        else if (start.isSame(this.days[5], 'days')) {
+          this.dayBookings[5] += 1;
+        }
+        else if (start.isSame(this.days[6], 'days')) {
+          this.dayBookings[6] += 1;
+        }
+        start.add(1, 'days');
+      }
+    });
   }
 
-  createWeekDays(){
+  createWeekDays() {
     var currentDate = moment();
     var weekStart = currentDate.clone().startOf('day');
 
     for (var i = 0; i <= 6; i++) {
-        this.days.push(moment(weekStart).add(i, 'days').format("dddd")); 
+      this.days.push(moment(weekStart).add(i, 'days'));
+      this.dayLabels.push(moment(weekStart).add(i, 'days').format('Do ddd'));
     };
   }
 

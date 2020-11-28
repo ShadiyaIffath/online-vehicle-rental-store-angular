@@ -69,7 +69,12 @@ export class LoginComponent implements OnInit {
     .subscribe(
       data => {
         this.toastr.success('Successfully logged in','Successful');
-        this.router.navigate([this.returnUrl]);
+        if(this.authenticationService.currentUserValue.role == 'admin'){
+          this.router.navigate(['/components/dashboard']);
+        }else{
+          this.router.navigate([this.returnUrl]);
+        }
+        
       },
       error => {
         this.error = 'Login failed, please try again later';

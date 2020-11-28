@@ -467,7 +467,7 @@ export class BookingComponent implements OnInit {
     this.fraudLicenseService.validateLicense(this.account.licenseId).subscribe((data) =>{
       if(data == true){
         this.toastr.error("Booking request rejected");
-        this.error = 'Sorry, but you are not eligible to make this booking. Your driving license has been reported as lost or suspended';
+        this.error = 'Sorry, but you are not eligible to make this booking. Your driving license has been reported as fraudulent license.';
         this.loading = true;
       }else{
         this.loading = false;

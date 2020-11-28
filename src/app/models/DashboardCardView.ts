@@ -3,7 +3,7 @@ import { VehicleBooking } from './VehicleBooking';
 
 export class DashboardCardView{
     totalVehicles: number;
-    vehicleBookings: number;
+    bookings: number;
     completedBookins: number;
     cancelledBookings: number;
     collectedBookings: number;
@@ -14,5 +14,5 @@ export class DashboardCardView{
     estate: number;
     vans: number;
     accounts: User[];
-    vehicleBooking: VehicleBooking[];
+    vehicleBookings: VehicleBooking[];
 }

@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
 
   today;
   dayBookings = [0, 0, 0, 0, 0, 0, 0];
+  days: string[] = [];
   dashboardCardView: DashboardCardView;
 
   constructor(private inventoryService: InventoryService,
@@ -30,6 +31,7 @@ export class DashboardComponent implements OnInit {
       this.setUpPieChart();
       this.setUpDonutChart();
       this.setUpBarChart();
+      this.createWeekDays();
       this.setupAreaChart();
       this.spinner.hide();
     });
@@ -240,7 +242,7 @@ export class DashboardComponent implements OnInit {
 
   setupAreaChart() {
     this.bookingDate();
-    var date = moment();
+    var date = moment().startOf('day');
     this.areaChart = {
       chart: {
         type: 'areaspline'
@@ -260,15 +262,7 @@ export class DashboardComponent implements OnInit {
           Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
       },
       xAxis: {
-        categories: [
-          date.format('ddd'),
-          date.add(1, 'days').format('ddd'),
-          date.add(2, 'days').format('ddd'),
-          date.add(3, 'days').format('ddd'),
-          date.add(4, 'days').format('ddd'),
-          date.add(5, 'days').format('ddd'),
-          date.add(6, 'days').format('ddd')
-        ]
+        categories: this.days
       },
       yAxis: {
         title: {
@@ -334,6 +328,15 @@ export class DashboardComponent implements OnInit {
         }
       });
     }
+  }
+
+  createWeekDays(){
+    var currentDate = moment();
+    var weekStart = currentDate.clone().startOf('day');
+
+    for (var i = 0; i <= 6; i++) {
+        this.days.push(moment(weekStart).add(i, 'days').format("dddd")); 
+    };
   }
 
 }

@@ -22,6 +22,7 @@ import { ManageInquiriesComponent } from './components/manageInquiries/manage-in
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DmvComponent } from './components/dmv/dmv.component';
 import { CompetitorsComponent } from './components/competitors/competitors.component';
+import { FraudsComponent } from './components/frauds/frauds.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -122,6 +123,14 @@ const routes: Routes = [
     }, {
         path: 'components/competitors', 
         component: CompetitorsComponent,
+         canActivate: [AuthGuard],
+        data: {
+            expectedRole: ['admin']
+        }
+    },
+    {
+        path: 'components/frauds', 
+        component: FraudsComponent,
          canActivate: [AuthGuard],
         data: {
             expectedRole: ['admin']

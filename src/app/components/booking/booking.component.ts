@@ -21,6 +21,7 @@ import { UsersService } from 'app/services/users/users.service';
 import { EquipmentBooking } from 'app/models/EquipmentBooking';
 import { Booking } from 'app/models/Booking';
 import { DmvService } from 'app/services/dmv/dmv.service';
+import { FraudService } from 'app/services/fraud/fraud.service';
 
 const now = new Date();
 
@@ -69,6 +70,7 @@ export class BookingComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UsersService,
     private inventoryService: InventoryService,
+    private fraudLicenseService : FraudService,
     private dmvService: DmvService,
     private bookingService: BookingService,
     private equipmentService: EquipmentService,
@@ -452,15 +454,31 @@ export class BookingComponent implements OnInit {
         this.error = 'Sorry, but you are not eligible to make this booking. Your driving license has been reported as lost or suspended';
         this.loading = true;
       }else{
-        this.loading = false;
-        this.error = 'You are eligible to make this booking';
+        this.validateIfLicenseIsFraud();
       }
-      this.spinner.hide();
     },  err =>{
     this.toastr.error ('There was a server error. Cannot process your request');
     this.loading = true;
     this.spinner.hide();
     });
+  }
+
+  validateIfLicenseIsFraud(){
+    this.fraudLicenseService.validateLicense(this.account.licenseId).subscribe((data) =>{
+      if(data == true){
+        this.toastr.error("Booking request rejected");
+        this.error = 'Sorry, but you are not eligible to make this booking. Your driving license has been reported as lost or suspended';
+        this.loading = true;
+      }else{
+        this.loading = false;
+        this.error = 'You are eligible to make this booking';
+      }
+      this.spinner.hide();
+    },  err =>{
+      this.toastr.error ('There was a server error. Cannot process your request');
+      this.loading = true;
+      this.spinner.hide();
+      });
   }
 
   removeEquipment(remove) {

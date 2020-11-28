@@ -48,6 +48,7 @@ import { PieChartComponent } from 'app/shared/widgets/pie-chart/pie-chart.compon
 import { CardComponent } from 'app/shared/widgets/card/card.component';
 import { BarChartComponent } from 'app/shared/widgets/bar-chart/bar-chart.component';
 import { CompetitorsComponent } from './competitors/competitors.component';
+import { FraudsComponent } from './frauds/frauds.component';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -106,7 +107,8 @@ export function tokenGetter() {
         PieChartComponent,
         CardComponent,
         BarChartComponent,
-        CompetitorsComponent
+        CompetitorsComponent,
+        FraudsComponent
     ],
     exports: [ComponentsComponent],
     providers: [

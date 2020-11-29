@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -18,6 +18,10 @@ import { first } from 'rxjs/operators';
 export class ProfileComponent implements OnInit {
   confirmationCode: string ='';
   error: string ='';
+  drivingLicense:any;
+  identification:any;
+  licenseChanged: boolean = false;
+  identitfyChanged: boolean = false;
   mismatch: boolean = false;
   samePassword: boolean = false;
   changePassword: boolean = false;
@@ -26,6 +30,7 @@ export class ProfileComponent implements OnInit {
   passwordConfirm: FormGroup;
   accountForm: FormGroup;
   passwordForm: FormGroup;
+  licenseForm: FormGroup;
   loading = false;
   submitted = false;
   accountId: number;
@@ -35,6 +40,7 @@ export class ProfileComponent implements OnInit {
   constructor(private userService: UsersService,
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
+    private _cdr: ChangeDetectorRef,
     private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) { }
@@ -46,7 +52,6 @@ export class ProfileComponent implements OnInit {
       email: ['', Validators.required],
       phone: ['', Validators.required],
       dob: [{ value: '', disabled: true }, Validators.required],
-      licenseId : ['', Validators.required]
     });
     this.passwordForm = this.formBuilder.group({
       password: ['', Validators.required],
@@ -55,6 +60,12 @@ export class ProfileComponent implements OnInit {
     this.passwordConfirm = this.formBuilder.group({
       confirm: ['', Validators.required]
     });
+
+    this.licenseForm = this.formBuilder.group({
+      licenseId : ['', Validators.required], 
+      drivingLicense: ['', ],
+      additionalIdentification: ['', ],
+    })
 
     var body = document.getElementsByTagName('body')[0];
     body.classList.add('login-page');
@@ -71,6 +82,7 @@ export class ProfileComponent implements OnInit {
   getAccountDetails(){
     this.userService.getAccountDetails(this.accountId).subscribe((data) => {
       this.account = data;
+      console.log(this.account);
       this.loaded = Promise.resolve(true);
       this.createFormControls(data);
       this.spinner.hide();
@@ -88,13 +100,64 @@ export class ProfileComponent implements OnInit {
         lastName: new FormControl(this.account.lastName, [Validators.required, Validators.maxLength(25)]),
         email: new FormControl(this.account.email, Validators.compose([Validators.required, Validators.email])),
         phone: new FormControl(0 + '' + this.account.phone, Validators.compose([Validators.pattern("[0-9 ]{10}"), Validators.required])),
-        dob: new FormControl({ value: moment(dob).format('yyyy-MM-DD'), disabled: true }, [Validators.required]),
-        licenseId: new FormControl(this.account.licenseId, [Validators.required]),
+        dob: new FormControl({ value: moment(dob).format('yyyy-MM-DD'), disabled: true }, [Validators.required])
+        
       });
       this.passwordForm = new FormGroup({
         password: new FormControl('', [Validators.required]),
         repeat: new FormControl('', Validators.required)
       });
+      this.licenseForm = new FormGroup({
+        licenseId: new FormControl(this.account.licenseId, [Validators.required]),
+        drivingLicense: new FormControl('license.jpeg' ),
+        additionalIdentification: new FormControl('identity.jpeg'),
+      });
+    }
+  }
+
+  uploadDrivingLicenseFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(fileToUpload);
+    reader.onload = () => {
+      this.drivingLicense = {
+        filename: fileToUpload.name,
+        filetype: fileToUpload.type,
+        value: (<string>reader.result).split(',')[1]
+      }
+    };
+    // need to run CD since file load runs outside of zone
+    this._cdr.markForCheck();
+  }
+
+  uploadIdentityFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(fileToUpload);
+    reader.onload = (event: any) => {
+      this.identification = {
+        filename: fileToUpload.name,
+        filetype: fileToUpload.type,
+        value: (<string>reader.result).split(',')[1]
+      }
+    };
+    this.identitfyChanged = true;
+    // need to run CD since file load runs outside of zone
+    this._cdr.markForCheck();
+  }
+
+  OnIdChange(event){
+    if(event.target.Value != this.account.licenseId){
+      this.licenseChanged = true;
+    }
+    else{
+      this.licenseChanged = false;
     }
   }
 
@@ -102,6 +165,8 @@ export class ProfileComponent implements OnInit {
   get f() { return this.accountForm.controls; }
 
   get p() { return this.passwordForm.controls; }
+
+  get d() { return this.licenseForm.controls; }
 
   get v() {return this.passwordConfirm.controls; }
 
@@ -133,6 +198,10 @@ export class ProfileComponent implements OnInit {
           this.loading = false;
         });
     this.spinner.hide();
+  }
+
+  onIdentificationChangeSubmit(){
+
   }
 
   onPasswordChangeSubmit() {
@@ -217,7 +286,7 @@ export class ProfileComponent implements OnInit {
     this.account.lastName = this.accountForm.get('lastName').value;
     this.account.email = this.accountForm.get('email').value;
     this.account.phone = this.accountForm.get('phone').value;
-    this.account.licenseId = this.accountForm.get('licenseId').value;
+    // this.account.licenseId = this.accountForm.get('licenseId').value;
   }
 
   toggleFieldTextType() {

@@ -84,7 +84,6 @@ export class RegisterComponent implements OnInit {
             this.router.navigate([this.returnUrl]);
           },
           error => {
-            console.log(error);
             this.toastr.error('Registration failed', 'Failed');
             if (error == "Conflict") {
               this.error = 'Register failed! Sorry, your email is already in use.';

@@ -11,7 +11,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body card" style="background-color:  #FFCCB3; padding-top: 15%; padding-bottom: 15%;">
+        <div class="modal-body card shadow" style="background-color:  #FFCCB3; padding-top: 15%; padding-bottom: 15%;">
             <div class="row">
                 <div class="col">
                     <div class="card">
@@ -67,27 +67,33 @@
                 (click)="makereservation(vehicle.id, vehicle.type.type)"><i class="fas fa-car"> Book</i></button>
         </div>
     </ng-template>
-    <div class="col-auto mb-3">
-        <div class="card" style="width: 100%;">
-            <div class="card-header">
-                <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicleElement.image}}" alt="car image">
-            </div>
-            <div class="card-body">
-                <h5 class="card-title text-uppercase"> {{vehicleElement.model}}</h5>
-                <h5 class="card-title text-muted"> {{vehicleElement.type.type}}</h5>
-                <p class="card-text text-small text-muted">Engine: <span style="padding-left:52%;">{{vehicleElement.engine}}</span>
-                </p>
-                <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == true">Gear: <span
-                        style="padding-left:52%;">Automatic</span></p>
-                <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == false">Gear: <span
-                        style="padding-left:57%;">Manual</span></p>
-                <div class="text-center">
-                    <button class="btn btn-primary pull-left" title="View vehicle"
-                        (click)="openVehicleContent(vehicleContent, vehicleElement) ">
-                        <i class="fas fa-hand-point-up"> View</i></button>
-                    <button type="button" class="btn btn-primary pull-right"
-                        (click)="bookVehicle(vehicleElement.id, vehicleElement.type.type)">
-                        <i class="fas fa-car"> Book </i> </button>
+    <div class="container">
+        <div class="row">
+            <div class="col mx-auto my-5">
+                <div class="card h-100" style="width: 100%;">
+                    <div class="card-header">
+                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicleElement.image}}"
+                            alt="car image">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-uppercase"> {{vehicleElement.model}}</h5>
+                        <h5 class="card-title text-muted"> {{vehicleElement.type.type}}</h5>
+                        <p class="card-text text-small text-muted">Engine: <span
+                                style="padding-left:52%;">{{vehicleElement.engine}}</span>
+                        </p>
+                        <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == true">Gear: <span
+                                style="padding-left:52%;">Automatic</span></p>
+                        <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == false">Gear: <span
+                                style="padding-left:57%;">Manual</span></p>
+                        <div class="text-center">
+                            <button class="btn btn-primary pull-left" title="View vehicle"
+                                (click)="openVehicleContent(vehicleContent, vehicleElement) ">
+                                <i class="fas fa-hand-point-up"> View</i></button>
+                            <button type="button" class="btn btn-primary pull-right"
+                                (click)="bookVehicle(vehicleElement.id, vehicleElement.type.type)">
+                                <i class="fas fa-car"> Book </i> </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

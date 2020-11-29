@@ -1,5 +1,5 @@
 mat-stepper-horizontal {
-    margin-top: 8px;
+    margin-top: 0px;
   }
   
   .mat-form-field {
@@ -11,3 +11,8 @@ mat-stepper-horizontal {
   ::ng-deep .mat-horizontal-stepper-header{
     pointer-events: none !important;
 }
+
+.form-control-label{
+  font-family: 'Segoe UI';
+}
+

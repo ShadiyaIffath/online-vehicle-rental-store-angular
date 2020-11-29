@@ -49,6 +49,8 @@ import { CardComponent } from 'app/shared/widgets/card/card.component';
 import { BarChartComponent } from 'app/shared/widgets/bar-chart/bar-chart.component';
 import { CompetitorsComponent } from './competitors/competitors.component';
 import { FraudsComponent } from './frauds/frauds.component';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -75,6 +77,7 @@ export function tokenGetter() {
         ToastContainerModule,
         NgxSpinnerModule,
         MaterialModule,
+        MatStepperModule,
         MatButtonModule,
         MatIconModule,
         MatDividerModule,
@@ -114,6 +117,7 @@ export function tokenGetter() {
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        {provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false}},
         ChangesGuard,
         RoleGuardService],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

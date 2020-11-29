@@ -162,8 +162,8 @@ export class BookingComponent implements OnInit {
   get e() { return this.equipmentForm.controls }
 
   async changeDate(event: any) {
-    var end = moment({ year: this.endDate.year, month: this.endDate.month, day: this.endDate.day });
-    var start = moment({ year: this.startDate.year, month: this.startDate.month, day: this.startDate.day });
+    var end = moment(this.parserFormatter.format(this.bookingForm.get('dropOffDate').value));
+    var start = moment(this.parserFormatter.format(this.bookingForm.get('pickUpDate').value));
     var diff = end.diff(start, 'days') + 1;
     if (diff > 0 && diff <= 14) {
       if (await this.loaded == true) {

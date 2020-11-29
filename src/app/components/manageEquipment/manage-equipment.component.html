@@ -34,9 +34,9 @@
                 <button class="btn btn-primary" [routerLink]="'/components/equipment'">Add Equipment</button>
             </div>
         </div>
-        <h3 class="text-center text-uppercase" style="color: blanchedalmond;" *ngIf="noEquipment">There are no
+        <h3 class="text-center text-uppercase" style="color: blanchedalmond; margin: 5%;" *ngIf="noEquipment">There are no
             equipments available</h3>
-        <div class="table-responsive" *ngIf="!noEquipment">
+        <div class="table-responsive" *ngIf="!noEquipment" style="margin-top: 3%;">
             <table class="table table-striped table-bordered table-hover table-warning">
                 <thead class="thead-dark text-center">
                     <tr>

@@ -72,7 +72,7 @@ export class CarComponent implements OnInit {
     }
 
       this.vehicleForm = this.formBuilder.group({
-        carCode: ['', Validators.required],
+        make: ['', Validators.required],
         model: ['', Validators.required],
         engine: ['', Validators.required],
         gear: ['', Validators.required],
@@ -155,7 +155,7 @@ export class CarComponent implements OnInit {
   }
 
   extractFormValues(): void {
-    this.vehicle.carCode = this.vehicleForm.get('carCode').value;
+    this.vehicle.make = this.vehicleForm.get('make').value;
     this.vehicle.model = this.vehicleForm.get('model').value;
     this.vehicle.typeId = this.vehicleForm.get('type').value;
     this.vehicle.fuelConsumption = this.vehicleForm.get('fuelConsumption').value;
@@ -181,7 +181,7 @@ export class CarComponent implements OnInit {
   assignValuesToForm(){
     let gear = this.vehicle.automatic ==true ? 'automatic' : 'manual';
     this.vehicleForm = this.formBuilder.group({
-      carCode: [this.vehicle.carCode, Validators.required],
+      make: [this.vehicle.make, Validators.required],
       model: [this.vehicle.model, Validators.required],
       engine: [this.vehicle.engine, Validators.required],
       gear: [gear, Validators.required],

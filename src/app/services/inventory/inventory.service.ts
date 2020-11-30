@@ -59,7 +59,9 @@ export class InventoryService {
   createVehicle(vehicle: Vehicle) {
     return this.http.post<any>(`${environment.apiUrl}/api/vehicle/add-vehicle`, vehicle)
       .pipe(map(x => {
-        this.cars.push(x);
+        if (this.cars != null) {
+          this.cars.push(x);
+        }
         return x;
       }));
   }
@@ -76,7 +78,7 @@ export class InventoryService {
       }))
   }
 
-  deleteVehicle(id: number){
+  deleteVehicle(id: number) {
     let index = id.toString();
     const params = new HttpParams().set('id', index);
     const headers = new HttpHeaders().set('content-type', 'application/json');

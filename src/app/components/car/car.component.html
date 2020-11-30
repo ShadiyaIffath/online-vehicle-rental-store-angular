@@ -19,11 +19,11 @@
                         <div class="col">
                             <div class="input-group form-group-no-border input-lg"
                                 [ngClass]="{'input-group-focus':focus===true}">
-                                <input type="text" class="form-control" formControlName="carCode" placeholder="Car code"
+                                <input type="text" class="form-control" formControlName="make" placeholder="Car Make"
                                     (focus)="focus=true" (blur)="focus=false"
-                                    [ngClass]="{ 'is-invalid': submitted && f.carCode.errors }">
-                                <div *ngIf="submitted && f.carCode.errors" class="invalid-feedback">
-                                    <div *ngIf="f.carCode.errors.required">Car code is required</div>
+                                    [ngClass]="{ 'is-invalid': submitted && f.make.errors }">
+                                <div *ngIf="submitted && f.make.errors" class="invalid-feedback">
+                                    <div *ngIf="f.make.errors.required">Car make is required</div>
                                 </div>
                             </div>
                             <div class="input-group form-group-no-border input-lg"

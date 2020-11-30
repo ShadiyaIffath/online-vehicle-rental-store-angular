@@ -35,6 +35,7 @@ export class UsersService {
     const headers = new HttpHeaders().set('content-type', 'application/json');
     return this.http.delete<any>(`${environment.apiUrl}/api/account/delete-account`, { headers: headers, params: params })
       .pipe(map(data => {
+        return data;
       }));
   }
 
@@ -42,22 +43,30 @@ export class UsersService {
     user.active = !user.active;
     return this.http.patch<any>(`${environment.apiUrl}/api/account/update-account-status`, user)
       .pipe(map(data => {
+        return data;
       }));
   }
 
   updateAccount(user: User) {
     return this.http.patch<any>(`${environment.apiUrl}/api/account/update-account`, user)
       .pipe(map(data => {
+        return data;
       }));
   }
 
   requestPasswordUpdate(user: any) {
-    var headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.http.post<any>(`${environment.apiUrl}/api/account/request-change`,user, {responseType: 'text' as 'json' } );
   }
 
   updateAccountPassword(user: any){
     return this.http.patch<any>(`${environment.apiUrl}/api/account/update-password`, user)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
+  updateAccountIdentification(user: any){
+    return this.http.patch<any>(`${environment.apiUrl}/api/account/update-account-identity`, user)
       .pipe(map(data => {
         return data;
       }));

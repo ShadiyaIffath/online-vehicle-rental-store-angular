@@ -25,7 +25,8 @@
                                         [ngClass]="{'input-group-focus':focus===true}">
                                         <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
                                             name="dp1" [(ngModel)]="startDate" ngbDatepicker #d1="ngbDatepicker"
-                                            (click)="d1.toggle()" [minDate]="minDate" formControlName="pickUpDate" [disabled]="editBooking"
+                                            (click)="d1.toggle()" [minDate]="minDate" formControlName="pickUpDate"
+                                            [disabled]="editBooking"
                                             [ngClass]="{ 'is-invalid': submitted && f.pickUpDate.errors }"
                                             (ngModelChange)="changeDate($event)"
                                             style="overflow: visible !important;" />
@@ -76,7 +77,7 @@
                                 <div class="col">
                                     <label class="form-control-label">Drop off date<b class="text-danger">*</b>:</label>
                                 </div>
-                                <div class="col" *ngIf="!editBooking"> 
+                                <div class="col" *ngIf="!editBooking">
                                     <div class="input-group form-group-no-border input-lg"
                                         [ngClass]="{'input-group-focus':focus===true}">
                                         <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
@@ -89,7 +90,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col" *ngIf="editBooking"> 
+                                <div class="col" *ngIf="editBooking">
                                     <div class="input-group form-group-no-border input-lg"
                                         [ngClass]="{'input-group-focus':focus===true}">
                                         <input type="text" placeholder="yyyy-mm-dd" class="form-control datetimepicker"
@@ -107,26 +108,7 @@
                                 <div class="col">
                                     <label class="form-control-label">Drop off time<b class="text-danger">*</b>:</label>
                                 </div>
-                                <div class="col" *ngIf="!loyalty">
-                                    <div class="input-group form-group-no-border input-lg"
-                                    [ngClass]="{'input-group-focus':focus1===true}">
-
-                                    <select class="form-control" formControlName="dropOffTime" (focus)="focus1=true"
-                                        (blur)="focus1=false"
-                                        [ngClass]="{ 'is-invalid': submitted && f.dropOffTime.errors }"
-                                        style="height:auto;">
-                                        <option value="" disabled>Select drop off time</option>
-                                        <option *ngFor="let time of timeArray" [ngValue]="time"
-                                            style="color: orange;">
-                                            {{time}}
-                                        </option>
-                                    </select>
-                                    <div *ngIf="submitted && f.dropOffTime.errors" class="invalid-feedback">
-                                        <div *ngIf="f.dropOffTime.errors.required">Drop off time is required</div>
-                                    </div>
-                                </div>
-                                </div>
-                                <div class="col-3"  *ngIf="loyalty">
+                                <div class="col">
                                     <div class="input-group form-group-no-border input-lg"
                                         [ngClass]="{'input-group-focus':focus1===true}">
 
@@ -144,12 +126,6 @@
                                             <div *ngIf="f.dropOffTime.errors.required">Drop off time is required</div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-3" *ngIf="loyalty">
-                                    <button type="button" class="btn btn-info btn-round btn-lg btn-block pull-left"
-                                    style="margin-top: 0px;"
-                                     title="Request for late return">
-                                        Request late</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -196,7 +172,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="margin-top:2%; padding-left: 5%; padding-right: 5%;" *ngIf="!noEquipment">
+                            <div class="row" style="margin-top:2%; padding-left: 5%; padding-right: 5%;"
+                                *ngIf="!noEquipment">
                                 <div class="input-group form-group-no-border input-lg"
                                     [ngClass]="{'input-group-focus':focus1===true}">
                                     <select class="form-control" (focus)="focus1=true" (blur)="focus1=false"
@@ -211,7 +188,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row" style="margin-top: 2%; padding-left: 5%; padding-right: 5%;" *ngIf="equipEdit">
+                            <div class="row" style="margin-top: 2%; padding-left: 5%; padding-right: 5%;"
+                                *ngIf="equipEdit">
                                 <form [formGroup]="equipmentForm">
                                     <div class="row">
                                         <div class="col">
@@ -291,7 +269,7 @@
                                     <img class="card-img-top img-fluid"
                                         src="data:image/png;base64,{{account.drivingLicense}}" alt="driving license">
                                 </div>
-                                <div class="col" style="background-color:#E8E8E8; padding: 5%;">
+                                <div class="col" style="background-color: #6e1005; padding: 5%;">
                                     <div class="row">
                                         <div class="col">
                                             <h5 class="text-primary">Vehicle type: </h5>

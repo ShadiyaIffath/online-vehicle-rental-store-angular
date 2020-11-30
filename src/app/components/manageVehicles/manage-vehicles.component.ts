@@ -66,15 +66,17 @@ export class ManageVehiclesComponent implements OnInit {
 
   updateVehicleStatus(selected: Vehicle) {
     let car = selected;
+    selected.active = !selected.active;
     this.inventoryService.updateVehicleStatus(car).subscribe(x => {
       this.toastr.success('Vehicle status updated.', 'Successful');
-      this.total = !car.active == true ? this.total - 1 : this.total + 1;
-      car.active = !car.active;
+      this.total = car.active == true ? this.total - 1 : this.total + 1;
+      car.active = car.active;
       if (!car.active) {
         car.dayRemoved = this.parserFormatter.format(this.today);
       }
       selected = car;
     }, err => {
+      selected.active = !selected.active;
       this.toastr.error('Vehicle removal failed', 'Failed');
     });
   }

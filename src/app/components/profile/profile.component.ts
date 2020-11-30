@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
   accountForm: FormGroup;
   passwordForm: FormGroup;
   licenseForm: FormGroup;
+  enteredPassword: string ='';
   loading = false;
   submitted = false;
   accountId: number;
@@ -82,7 +83,6 @@ export class ProfileComponent implements OnInit {
   getAccountDetails(){
     this.userService.getAccountDetails(this.accountId).subscribe((data) => {
       this.account = data;
-      console.log(this.account);
       this.loaded = Promise.resolve(true);
       this.createFormControls(data);
       this.spinner.hide();
@@ -109,8 +109,8 @@ export class ProfileComponent implements OnInit {
       });
       this.licenseForm = new FormGroup({
         licenseId: new FormControl(this.account.licenseId, [Validators.required]),
-        drivingLicense: new FormControl('license.jpeg' ),
-        additionalIdentification: new FormControl('identity.jpeg'),
+        drivingLicense: new FormControl('' ),
+        additionalIdentification: new FormControl(''),
       });
     }
   }
@@ -129,6 +129,7 @@ export class ProfileComponent implements OnInit {
         value: (<string>reader.result).split(',')[1]
       }
     };
+    this.licenseChanged = true;
     // need to run CD since file load runs outside of zone
     this._cdr.markForCheck();
   }
@@ -187,12 +188,13 @@ export class ProfileComponent implements OnInit {
         },
         error => {
           console.log(error);
-          this.toastr.error('Account update failed', 'Failed');
           if (error == "Conflict") {
             this.accountForm.controls['email'].setErrors({ 'incorrect': true });
+            this.toastr.error('Email is used by another account', 'Failed');
             this.emailFailed = true;
           }
           else {
+            this.toastr.error('Account update failed', 'Failed');
             this.emailFailed = false;
           }
           this.loading = false;
@@ -201,7 +203,44 @@ export class ProfileComponent implements OnInit {
   }
 
   onIdentificationChangeSubmit(){
-
+    let user = {
+      id: this.account.id,
+      licenseId: '',
+      drivingLicense: {},
+      additionalIdentification: {}
+    };
+    if(this.licenseChanged){
+      if(this.drivingLicense == null){
+        this.toastr.info("To change the license id please submit an image of your new license");
+      }else{
+        user.licenseId = this.licenseForm.get('licenseId').value;
+        user.drivingLicense = this.drivingLicense;
+      }
+    }
+    if(this.identitfyChanged){
+      user.additionalIdentification = this.identification;
+    }
+    this.userService.updateAccountIdentification(user)
+    .subscribe( data=>{
+      this.toastr.success('Account update successful', 'Successful');
+      this.getAccountDetails();
+      this.identitfyChanged = false;
+      this.licenseChanged = false;
+    }, err =>{
+      console.log(err);
+      if(err == 'DMV'){
+        this.toastr.error('Your license has been reported as stolen or lost from the DMV');
+      }else if(err == "Fraud"){
+        this.toastr.error('Your license has been reported as fraudulent');
+      }else{
+        this.toastr.error('An error occured try again later');
+      }
+      this.createFormControls(this.account);
+      this.identitfyChanged = false;
+      this.licenseChanged = false;
+      this.drivingLicense= {};
+      this.identification = {};
+      });
   }
 
   onPasswordChangeSubmit() {
@@ -248,6 +287,7 @@ export class ProfileComponent implements OnInit {
     else{
       this.mismatch = false;
     }
+    this.enteredPassword = newPassword;
     return true;
   }
 
@@ -255,7 +295,7 @@ export class ProfileComponent implements OnInit {
     if(this.validateConfirmationCode){
       let user = {
         id : this.account.id,
-        password : this.passwordConfirm.get('confirm').value,
+        password : this.enteredPassword,
       }
       this.userService.updateAccountPassword(user)
       .pipe(first())

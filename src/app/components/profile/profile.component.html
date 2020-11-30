@@ -134,7 +134,7 @@
             </form>
         </div>
         <div class="card" style="width: 75%; padding: 3%;">
-            <form class="form" [formGroup]="licenseForm" (ngSubmit)="onPasswordChangeSubmit()">
+            <form class="form" [formGroup]="licenseForm" (ngSubmit)="onIdentificationChangeSubmit()">
                 <div class="card-header">
                     <h5 class="card-title">Change License and Identification Details</h5>
                 </div>
@@ -142,19 +142,19 @@
                     <div class="row">
                         <div class="col" *ngIf="!licenseChanged">
                             <img class="card-img-top img-fluid" src="data:image/png;base64,{{account.drivingLicense}}"
-                                alt="Driving license">
+                                alt="Driving license" style="height: 350px;">
                         </div>
                         <div class="col" *ngIf="licenseChanged">
                             <img class="card-img-top img-fluid"  src="data:image/png;base64,{{drivingLicense.value || drivingLicense.image}}"
-                                alt="Driving license">
+                                alt="Driving license" style="height: 350px;">
                         </div>
                         <div class="col" *ngIf="!identitfyChanged">
                             <img class="card-img-top img-fluid"
-                                src="data:image/png;base64,{{account.additionalIdentification}}" alt="Identification">
+                                src="data:image/png;base64,{{account.additionalIdentification}}" alt="Identification" style="height: 350px;">
                         </div>
                         <div class="col" *ngIf="identitfyChanged">
                             <img class="card-img-top img-fluid"
-                            src="data:image/png;base64,{{identification.value || identification.image}}" alt="Identification">
+                            src="data:image/png;base64,{{identification.value || identification.image}}" alt="Identification" style="height: 350px;">
                         </div>
                     </div>
                     <div class="row" >
@@ -244,7 +244,7 @@
                 <div class="footer">
                     <button type="button" class="btn btn-lg btn-light btn-round pull-left"
                         (click)="cancel()">Cancel</button>
-                    <button [disabled]="!identitfyChanged || !licenseChanged" class="btn btn-primary btn-round btn-lg pull-right" type="submit">
+                    <button [disabled]="!identitfyChanged && !licenseChanged" class="btn btn-primary btn-round btn-lg pull-right" type="submit">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                         Confirm
                     </button>
@@ -252,7 +252,7 @@
             </form>
         </div>
         <div class="card" style="width: 75%; padding: 3%;">
-            <form class="form" [formGroup]="passwordForm" (ngSubmit)="onPasswordChangeSubmit()">
+            <form class="form" [formGroup]="passwordForm" >
                 <div class="card-header">
                     <h5 class="card-title">Change Password</h5>
                 </div>
@@ -304,7 +304,8 @@
                     <div *ngIf="samePassword" class="text-danger">Please enter a new password</div>
                     <div *ngIf="mismatch" class="text-danger">Make sure confirm and new password are the same</div>
                     <p class="text-danger">{{error}}</p>
-                    <div class="row mt-3 text-center" *ngIf="changePassword">
+                    <div class="row mt-3" *ngIf="changePassword" style=" display: flex;
+                    justify-content: center;">
                         <form class="form text-center" [formGroup]="passwordConfirm">
                             <h3 class="card-title text-center">Enter confirmation code</h3>
                             <h5 class="text-center text-primary">An e-mail has been sent with the code</h5>
@@ -320,12 +321,12 @@
                 <div class="footer">
                     <button type="button" class="btn btn-lg btn-light btn-round pull-left"
                         (click)="cancel()">Cancel</button>
-                    <button [disabled]="loading || changePassword" class="btn btn-primary btn-round btn-lg pull-right"
-                        type="submit">
+                    <button [disabled]="loading || changePassword" class="btn btn-primary btn-round btn-lg"
+                        (click)="onPasswordChangeSubmit()">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                         Request Update
                     </button>
-                    <button [disabled]="!changePassword" class="btn btn-primary btn-round btn-lg pull-right"
+                    <button [disabled]="!changePassword" class="btn btn-primary btn-round btn-lg"
                         (click)="onConfirmation()">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                         Confirm Update

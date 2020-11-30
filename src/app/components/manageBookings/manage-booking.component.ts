@@ -66,7 +66,7 @@ export class ManageBookingComponent implements OnInit {
         this.toastr.error('An error occured.');
         this.router.navigate(['']);
       });
-    }else{
+    } else {
       this.bookingService.getUsersBookings(this.authenticationService.currentUserValue.nameid).subscribe((data: any[]) => {
         this.booking = data;
         this.filteredBookings = this.booking;
@@ -78,7 +78,6 @@ export class ManageBookingComponent implements OnInit {
         this.router.navigate(['']);
       });
     }
-    
 
     this.inventoryService.getVehicleTypes().subscribe((data: any[]) => {
       this.vehicleTypes = data;
@@ -186,12 +185,6 @@ export class ManageBookingComponent implements OnInit {
     }
   }
 
-  statusChanged(event) {
-    if (event.target.value != '0: Confirmed') {
-      this.disableEdit = true;
-    }
-  }
-
   banCustomer(selected: Booking) {
     if (this.bookingCollectedStatus(selected.vehicleBooking)) {
       this.userService.updateStatus(selected.vehicleBooking.account).subscribe(x => {
@@ -222,7 +215,7 @@ export class ManageBookingComponent implements OnInit {
   }
 
   bookingCollectedStatus(booking: VehicleBooking): boolean {
-    if (moment().isAfter(moment(booking.startTime)) && booking.status == 'Confirmed') {
+    if (moment().isAfter(moment(booking.startTime)) && (booking.status == 'Confirmed' || booking.status == 'Cancelled')) {
       return true;
     }
     return false;
@@ -243,6 +236,9 @@ export class ManageBookingComponent implements OnInit {
               this.filteredBookings = this.booking;
               this.setFilterPagination();
               this.noBookingFlag();
+              if (status == 'Cancelled' || status == 'Completed') {
+                this.disableEdit = true;
+              }
               this.modalService.dismissAll();
               this.spinner.hide();
             });
@@ -260,13 +256,13 @@ export class ManageBookingComponent implements OnInit {
   }
 
   navigateToEdit() {
-    if(this.expiredBooking){
+    if (this.expiredBooking) {
       this.toastr.info('The booking is already expired');
-    }else{
-    this.modalService.dismissAll();
-    this.bookingService.selectBooking(this.selectedBooking.vehicleBooking.id)
-    this.inventoryService.selectVehicle(this.selectedBooking.vehicleBooking.vehicleId);
-    this.router.navigate(['components/booking']);
+    } else {
+      this.modalService.dismissAll();
+      this.bookingService.selectBooking(this.selectedBooking.vehicleBooking.id)
+      this.inventoryService.selectVehicle(this.selectedBooking.vehicleBooking.vehicleId);
+      this.router.navigate(['components/booking']);
     }
   }
 }

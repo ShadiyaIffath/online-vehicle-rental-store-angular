@@ -51,7 +51,7 @@
                     <tr>
                         <th scope="col">#Id</th>
                         <th scope="col">Model</th>
-                        <th scope="col">Car code</th>
+                        <th scope="col">Make</th>
                         <th scope="col">Engine</th>
                         <th scope="col">Type</th>
                         <th scope="col">Automatic</th>
@@ -64,7 +64,7 @@
                     <tr *ngFor="let car of filteredCars">
                         <th scope="row">{{car.id}}</th>
                         <td>{{car.model}}</td>
-                        <td>{{car.carCode}}</td>
+                        <td>{{car.make}}</td>
                         <td>{{car.engine}}</td>
                         <td>{{car.type.type}}</td>
                         <td>{{car.automatic}}</td>

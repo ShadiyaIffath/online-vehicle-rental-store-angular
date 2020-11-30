@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
+    this.error ='';
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       this.toastr.error('Form is incomplete', 'Failed');
@@ -84,6 +84,7 @@ export class RegisterComponent implements OnInit {
             this.router.navigate([this.returnUrl]);
           },
           error => {
+            console.log(error);
             this.toastr.error('Registration failed', 'Failed');
             if (error == "Conflict") {
               this.error = 'Register failed! Sorry, your email is already in use.';
@@ -91,12 +92,18 @@ export class RegisterComponent implements OnInit {
               this.emailFailed = true;
               this.invalidLicense = false;
             }
-            else if(error == "Forbidden"){
+            else if(error == "DMV"){
               this.error = "Register failed! Your license has been reported by the DMV";
               this.invalidLicense = true;
+              this.emailFailed = false;
             }
-            else {
-              this.error = 'Register failed, please try again later.';
+            else if(error == "Frauds"){
+              this.error = 'Register failed! Your license has been reported fraudulent.';
+              this.emailFailed = false;
+              this.invalidLicense = true;
+            }
+            else{
+              this.error= 'Server error occured, try again later.'
               this.emailFailed = false;
               this.invalidLicense = false;
             }

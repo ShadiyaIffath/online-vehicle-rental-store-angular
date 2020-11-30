@@ -127,11 +127,15 @@ export class BookingComponent implements OnInit {
         this.generateTimeSlots();
         this.assignValuesToForm();
         this.accountId = this.booking.vehicleBooking.accountId;
+        this.account = this.booking.vehicleBooking.account;
       });
     } else {
       this.generateTimeSlots();
       this.title = 'Place your booking';
       this.accountId = Number(this.authenticationService.currentUserValue.nameid);
+      this.userService.getAccountDetails(this.accountId).subscribe((data) => {
+        this.account = data;
+      });
     }
 
     this.equipmentService.getEquipmentCategories().subscribe((data: any[]) => {
@@ -139,9 +143,6 @@ export class BookingComponent implements OnInit {
       this.spinner.hide();
     });
 
-    this.userService.getAccountDetails(this.accountId).subscribe((data) => {
-      this.account = data;
-    });
     this.spinner.hide();
   }
 

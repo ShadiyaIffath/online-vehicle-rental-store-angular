@@ -3,7 +3,7 @@ export class Vehicle {
     model: string;
     image: string | any;
     active: boolean;
-    carCode: string;
+    make: string;
     engine: string;
     automatic: boolean;
     type: any | string;

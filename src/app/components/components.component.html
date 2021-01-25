@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" style="width: 100%; margin: 0%; padding: 0%;">
   <div class="page-header" filter-color="orange">
     <div class="page-header-image rellax-header" data-rellax-speed="-7"
       style="background-image: url('assets/img/header.jpg');">
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="row" *ngIf="!noVehicles" style="margin:3%;">
-        <div class="card-columns" style="column-count: 4;">
+        <div class="card-columns">
           <app-fleet class="vehicleItem" *ngFor="let item of vehicleList | filterVehicle:searchText"
             [vehicleElement]="item" [index]="item.vehicleId"></app-fleet>
         </div>
@@ -40,6 +40,6 @@
       </div>
     </div>
   </div>
-  <footer class="footer" data-background-color="black">
-  </footer>
 </div>
+<footer class="footer" data-background-color="black">
+</footer>

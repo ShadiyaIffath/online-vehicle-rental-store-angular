@@ -1,95 +1,90 @@
-<div class="container" style="width:375px;">
-    <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#1010ee" type="ball-clip-rotate"
-        [fullScreen]="true">
-        <p style="color: #6e1005"> Loading... </p>
-    </ngx-spinner>
-    <ng-template #vehicleContent let-modal>
-        <div class="modal-header">
-            <h3 class="modal-title mb-3"><b>{{vehicle.model}} <i class="fas fa-users"></i>
-                    {{vehicle.type.passengers}}</b></h3>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body card shadow" style="background-color:  #FFCCB3; padding-top: 15%; padding-bottom: 15%;">
-            <div class="row">
-                <div class="col">
-                    <div class="card" style="height: 100%;">
-                        <div class="card-body">
-                            <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicle.image}}"
-                                alt="car image">
-                            <div class="row" style="margin-top: 3%;">
-                                <div class="col text-center">
-                                    <h6 class="text-muted" style="margin-top: 7%;">Car Maker: </h6>
-                                </div>
-                                <div class="col text-center">
-                                    <b class="card-title" style="font-size: medium;">{{vehicle.make}}</b>
-                                </div>
+
+<ng-template #vehicleContent let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title mb-3"><b>{{vehicle.model}} <i class="fas fa-users"></i>
+                {{vehicle.type.passengers}}</b></h3>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body card shadow" style="background-color:  #FFCCB3; padding-top: 15%; padding-bottom: 15%;">
+        <div class="row">
+            <div class="col">
+                <div class="card" style="height: 100%;">
+                    <div class="card-body">
+                        <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicle.image}}"
+                            alt="car image">
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col text-center">
+                                <h6 class="text-muted" style="margin-top: 7%;">Car Maker: </h6>
+                            </div>
+                            <div class="col text-center">
+                                <b class="card-title" style="font-size: medium;">{{vehicle.make}}</b>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card" style="height: 100%;">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h6 class="text-muted" style="margin-top: 15%;">Price Per Day</h6>
-                                </div>
-                                <div class="col">
-                                    <b class="card-title" style="font-size: xx-large;"><span
-                                            style="padding-left: 25%;">£
-                                            {{vehicle.type.pricePerDay}}</span></b>
-                                </div>
+            </div>
+            <div class="col">
+                <div class="card" style="height: 100%;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="text-muted" style="margin-top: 15%;">Price Per Day</h6>
                             </div>
-                            <p class="card-text text-small text-muted">Engine: <span
-                                    style="padding-left:52%;">{{vehicle.engine}}</span></p>
-                            <p class="card-text text-small text-muted" *ngIf="vehicle.automatic == true">Gear: <span
-                                    style="padding-left:52%;">Automatic</span></p>
-                            <p class="card-text text-small text-muted" *ngIf="vehicle.automatic == false">Gear: <span
-                                    style="padding-left:57%;">Manual</span></p>
-                            <p class="card-text text-small text-muted">Usage
-                                Duration:<span style="padding-left:32%;"> {{vehicle.duration}} days</span></p>
-                            <p class="card-text text-small text-muted">
-                                Fuel Consumption: <span style="padding-left:27%;">{{vehicle.fuelConsumption}} km/L
-                                </span></p>
-                            <p class="card-text text-small text-muted">
-                                Engine Capacity: <span style="padding-left:32%;">{{vehicle.engineCapacity}} CC
-                                </span></p>
+                            <div class="col">
+                                <b class="card-title" style="font-size: xx-large;"><span
+                                        style="padding-left: 25%;">£
+                                        {{vehicle.type.pricePerDay}}</span></b>
+                            </div>
                         </div>
+                        <p class="card-text text-small text-muted">Engine: <span
+                                style="padding-left:52%;">{{vehicle.engine}}</span></p>
+                        <p class="card-text text-small text-muted" *ngIf="vehicle.automatic == true">Gear: <span
+                                style="padding-left:52%;">Automatic</span></p>
+                        <p class="card-text text-small text-muted" *ngIf="vehicle.automatic == false">Gear: <span
+                                style="padding-left:57%;">Manual</span></p>
+                        <p class="card-text text-small text-muted">Usage
+                            Duration:<span style="padding-left:32%;"> {{vehicle.duration}} days</span></p>
+                        <p class="card-text text-small text-muted">
+                            Fuel Consumption: <span style="padding-left:27%;">{{vehicle.fuelConsumption}} km/L
+                            </span></p>
+                        <p class="card-text text-small text-muted">
+                            Engine Capacity: <span style="padding-left:32%;">{{vehicle.engineCapacity}} CC
+                            </span></p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-lg btn-light" (click)="modal.close('Close click')">Close</button>
-            <button type="button" class="btn btn-lg btn-primary"
-                (click)="makereservation(vehicle.id, vehicle.type.type)"><i class="fas fa-car"> Book</i></button>
-        </div>
-    </ng-template>
-    <div class="card" style="padding-bottom: 3%; margin: 2%;">
-        <div class="card-header">
-            <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicleElement.image}}"
-                style="height: 175px;" alt="car image">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title text-uppercase"> {{vehicleElement.model}}</h5>
-            <h5 class="card-title text-muted"> {{vehicleElement.type.type}}</h5>
-            <p class="card-text text-small text-muted">Engine: <span
-                    style="padding-left:52%;">{{vehicleElement.engine}}</span>
-            </p>
-            <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == true">Gear: <span
-                    style="padding-left:52%;">Automatic</span></p>
-            <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == false">Gear: <span
-                    style="padding-left:57%;">Manual</span></p>
-            <div class="text-center">
-                <button class="btn btn-primary pull-left" title="View vehicle"
-                    (click)="openVehicleContent(vehicleContent, vehicleElement) ">
-                    <i class="fas fa-hand-point-up"> View</i></button>
-                <button type="button" class="btn btn-primary pull-right"
-                    (click)="bookVehicle(vehicleElement.id, vehicleElement.type.type)">
-                    <i class="fas fa-car"> Book </i> </button>
-            </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-light" (click)="modal.close('Close click')">Close</button>
+        <button type="button" class="btn btn-lg btn-primary"
+            (click)="makereservation(vehicle.id, vehicle.type.type)"><i class="fas fa-car"> Book</i></button>
+    </div>
+</ng-template>
+<div class="card" style="padding-bottom: 3%; margin: 2%;">
+    <div class="card-header">
+        <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicleElement.image}}"
+            style="height: 175px;" alt="car image">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title text-uppercase"> {{vehicleElement.model}}</h5>
+        <h5 class="card-title text-muted"> {{vehicleElement.type.type}}</h5>
+        <p class="card-text text-small text-muted">Engine: <span
+                style="padding-left:52%;">{{vehicleElement.engine}}</span>
+        </p>
+        <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == true">Gear: <span
+                style="padding-left:52%;">Automatic</span></p>
+        <p class="card-text text-small text-muted" *ngIf="vehicleElement.automatic == false">Gear: <span
+                style="padding-left:57%;">Manual</span></p>
+        <div class="text-center">
+            <button class="btn btn-primary pull-left" title="View vehicle"
+                (click)="openVehicleContent(vehicleContent, vehicleElement) ">
+                <i class="fas fa-hand-point-up"> View</i></button>
+            <button type="button" class="btn btn-primary pull-right"
+                (click)="bookVehicle(vehicleElement.id, vehicleElement.type.type)">
+                <i class="fas fa-car"> Book </i> </button>
         </div>
     </div>
 </div>

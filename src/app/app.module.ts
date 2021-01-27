@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
+import {APP_BASE_HREF} from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
@@ -23,7 +24,7 @@ import { MatDividerModule } from '@angular/material/divider';
     declarations: [
         AppComponent,
         NavbarComponent,
-        SidebarComponent,
+        SidebarComponent
     ],
     imports: [
         NgbModule,
@@ -43,7 +44,7 @@ import { MatDividerModule } from '@angular/material/divider';
         MatDividerModule,
         FlexLayoutModule
     ],
-    providers: [],
+    providers: [{provide: APP_BASE_HREF, useValue: 'BangerAndCo/'}],
     bootstrap: [AppComponent],
     exports: [
     ]

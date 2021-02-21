@@ -46,7 +46,7 @@ export class FleetComponent implements OnInit {
         this.account = data;
         this.account.dob = moment(this.account.dob).format("YYYY-MM-DD");
         this.account.age = moment().diff(this.account.dob, 'years');
-        if (this.account.role != 'admin' && this.account.age < 25) {
+        if (this.account.role == 'user' && this.account.age < 25) {
           this.underAge = true;
         }
         console.log(this.underAge);

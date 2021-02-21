@@ -29,12 +29,12 @@
             placeholder="Search vehicle" style="height: 50px; margin-top:2.5%; background-color: #FFFFFF;">
         </div>
       </div>
-      <div class="row" *ngIf="!noVehicles" style="margin:3%;">
-        <div class="card-columns">
-          <app-fleet class="vehicleItem" *ngFor="let item of vehicleList | filterVehicle:searchText"
-            [vehicleElement]="item" [index]="item.vehicleId"></app-fleet>
+      <div class="content" style="margin: 5%;">
+        <div fxLayout="row wrap" fxLayoutGap="16px grid" *ngIf="!noVehicles">      
+            <app-fleet class="vehicleItem" *ngFor="let item of vehicleList | filterVehicle:searchText"
+              [vehicleElement]="item" [index]="item.vehicleId" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"></app-fleet>
         </div>
-      </div>
+     </div>
       <div *ngIf="noVehicles">
         <h4 class="text-primary text-center">Oops! Currently we have no vehicles</h4>
       </div>

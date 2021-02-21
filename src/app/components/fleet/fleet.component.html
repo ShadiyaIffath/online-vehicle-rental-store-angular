@@ -61,12 +61,10 @@
                 class="fas fa-car"> Book</i></button>
     </div>
 </ng-template>
-<div class="card" style="padding-bottom: 3%; margin: 2%;">
-    <div class="card-header">
-        <img class="card-img-top img-fluid" src="data:image/png;base64,{{vehicleElement.image}}" style="height: 175px;"
-            alt="car image">
-    </div>
-    <div class="card-body">
+<mat-card>
+    <img mat-card-image src="data:image/png;base64,{{vehicleElement.image}}" alt="car image"
+        style="margin: 0px 0px 3% 0px; padding: 0%; height: 175px;">
+    <mat-card-content>
         <h5 class="card-title text-uppercase text-center"> {{vehicleElement.model}}</h5>
         <h5 class="card-title text-muted text-center"> {{vehicleElement.type.type}}</h5>
         <div class="row card-text text-small text-muted text-center" style="padding-bottom: 3%; ">
@@ -78,13 +76,14 @@
             <div class="col" *ngIf="vehicleElement.automatic == true">Automatic</div>
             <div class="col" *ngIf="vehicleElement.automatic == false">Manual</div>
         </div>
-        <div class="text-center">
-            <button class="btn btn-primary pull-left" title="View vehicle"
+        <div class="row" style="margin: 3%;">
+            <button mat-button class="btn btn-primary col-sm-4" title="View vehicle"
                 (click)="openVehicleContent(vehicleContent, vehicleElement) ">
                 <i class="fas fa-hand-point-up"> View</i></button>
-            <button type="button" class="btn btn-primary pull-right"
+            <button mat-button class="btn btn-primary col-sm-4" style="margin-left:30%;"
                 (click)="bookVehicle(vehicleElement.id, vehicleElement.type.type)">
                 <i class="fas fa-car"> Book </i> </button>
         </div>
-    </div>
-</div>
+
+    </mat-card-content>
+</mat-card>

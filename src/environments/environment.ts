@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
+  baseHref: '/BangerAndCo/',
   apiUrl: 'http://localhost:54787'
 };

@@ -1,5 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -51,6 +51,9 @@ import { CompetitorsComponent } from './competitors/competitors.component';
 import { FraudsComponent } from './frauds/frauds.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { environment } from 'environments/environment';
+
 
 export function tokenGetter() {
     return localStorage.getItem("jwt");
@@ -72,12 +75,13 @@ export function tokenGetter() {
         ToastrModule.forRoot({
             timeOut: 3000,
             closeButton: true,
-            positionClass: 'toast-bottom-right'
+            positionClass: 'toast-bottom-left'
         }),
         ToastContainerModule,
         NgxSpinnerModule,
         MaterialModule,
         MatStepperModule,
+        MatToolbarModule,
         MatButtonModule,
         MatIconModule,
         MatDividerModule,
@@ -118,6 +122,7 @@ export function tokenGetter() {
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         {provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false}},
+        {provide: APP_BASE_HREF, useValue: environment.baseHref},
         ChangesGuard,
         RoleGuardService],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

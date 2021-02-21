@@ -44,7 +44,6 @@ import { MatDividerModule } from '@angular/material/divider';
         MatDividerModule,
         FlexLayoutModule
     ],
-    providers: [{provide: APP_BASE_HREF, useValue: 'BangerAndCo/'}],
     bootstrap: [AppComponent],
     exports: [
     ]

@@ -41,7 +41,7 @@
     "font-awesome": "^4.7.0",
     "highcharts": "^8.2.2",
     "highcharts-angular": "^2.8.2",
-    "jquery": "3.3.1",
+    "jquery": "3.5.0",
     "jw-bootstrap-switch-ng2": "2.0.5",
     "jwt-decode": "^3.0.0",
     "moment": "^2.27.0",

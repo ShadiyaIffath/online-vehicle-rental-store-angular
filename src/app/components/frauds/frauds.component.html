@@ -19,24 +19,41 @@
         <p style="color: #6e1005"> Loading... </p>
     </ngx-spinner>
     <div class="section" style="padding: 2%; background-color: #b92e34;">
-        <h3 class="text-center text-uppercase align-middle" style="color: blanchedalmond; margin-top: 15%;" *ngIf="noClaims">There are no
+        <h3 class="text-center text-uppercase align-middle" style="color: blanchedalmond; margin-top: 15%;"
+            *ngIf="noClaims">There are no
             users with fraud licenses</h3>
         <div class="table-responsive" *ngIf="!noClaims">
-            <table id="dtVerticalScrollExample" class="table table-striped table-bordered table-hover table-warning" cellspacing="0">
+            <table id="dtVerticalScrollExample" class="table table-striped table-bordered table-hover table-warning"
+                cellspacing="0">
                 <thead class="thead-dark text-center">
                     <tr>
                         <th scope="col">#Id</th>
                         <th scope="col">First Name</th>
                         <th scope="col">Last Name</th>
+                        <th scope="col">E-mail</th>
                         <th scope="col">Driving License</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <tr *ngFor="let i of fraudClaims">
-                        <th scope="row">{{i.insurerId}}</th>
-                        <td>{{i.firstName}}</td>
-                        <td>{{i.lastName}}</td>
-                        <td>{{i.drivingLicense}}</td>
+                    <tr *ngFor="let u of fraudClaims">
+                        <th scope="row">{{u.id}}</th>
+                        <td>{{u.firstName}}</td>
+                        <td>{{u.lastName}}</td>
+                        <td>{{u.email}}</td>
+                        <td>{{u.licenseId}}</td>
+                        <td>{{u.active}}</td>
+                        <td>
+                            <div *ngIf="u.typeId == 2">
+                                <button class="btn btn-primary btn-sm" *ngIf="!u.active" title="Activate Account"
+                                    (click)="updateUserStatus(u)">
+                                    <i class="fa fa-check" aria-hidden="true"></i></button>
+                                <button class="btn btn-primary btn-sm" *ngIf="u.active" title="Blacklist Account"
+                                    (click)="updateUserStatus(u)">
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FraudClaim } from 'app/models/FraudClaims';
+import { User } from 'app/models/User';
 import { FraudService } from 'app/services/fraud/fraud.service';
+import { UsersService } from 'app/services/users/users.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,7 +16,8 @@ export class FraudsComponent implements OnInit {
   noClaims: boolean = false;
   total : number = 0;
 
-  constructor(private fraudLicenseService: FraudService,
+  constructor(private userService: UsersService,
+    private fraudLicenseService: FraudService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) { }
 
@@ -28,6 +31,16 @@ export class FraudsComponent implements OnInit {
     }, error=>{
       this.toastr.error("Server error, try again later");
       this.spinner.hide();
+    });
+  }
+
+  updateUserStatus(selected: User) {
+    let user = selected;
+    this.userService.updateStatus(selected).subscribe(x => {
+      this.toastr.success('User status updated.', 'Successful');
+    }, err => {
+      console.log(err);
+      this.toastr.error('Status update failed', 'Failed');
     });
   }
 }

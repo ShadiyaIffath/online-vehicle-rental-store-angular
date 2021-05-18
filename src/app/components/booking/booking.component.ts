@@ -372,7 +372,7 @@ export class BookingComponent implements OnInit {
   }
 
   equipmentSelected(event: any) {
-    if (this.selectedEquipment.length <= 3) {
+    if (this.selectedEquipment.length < 3) {
       let name = event.target.value;
       if (this.verifyEquipmentSelected(name) == false) {
         for (var e of this.filteredEquipment) {

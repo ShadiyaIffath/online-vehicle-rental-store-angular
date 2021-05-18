@@ -145,17 +145,28 @@ export class ManageBookingComponent implements OnInit {
     this.bookingService.deleteBooking(id).subscribe(() => {
       this.toastr.success('Booking removed successfully', 'Deleted');
       this.spinner.show();
-      this.bookingService.getAllBooking().subscribe((data: any[]) => {
-        this.booking = data;
-        this.filteredBookings = this.booking;
-        this.setFilterPagination();
-        this.noBookingFlag();
-        this.modalService.dismissAll();
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-        this.toastr.error('Booking removal failed');
-      });
+      if (this.adminControls) {
+        this.bookingService.getAllBooking().subscribe((data: any[]) => {
+          this.booking = data;
+          this.filteredBookings = this.booking;
+          this.setFilterPagination();
+          this.noBookingFlag();
+          this.modalService.dismissAll();
+          this.spinner.hide();
+        }, err => {
+          this.spinner.hide();
+        });
+      }else{
+        this.bookingService.getUsersBookings(this.authenticationService.currentUserValue.nameid).subscribe((data: any[]) => {
+          this.booking = data;
+          this.filteredBookings = this.booking;
+          this.setFilterPagination();
+          this.noBookingFlag();
+          this.spinner.hide();
+        }, err => {
+          this.toastr.error('An error occured.');
+        });
+      }
     });
   }
 

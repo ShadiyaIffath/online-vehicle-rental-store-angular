@@ -19,7 +19,9 @@ export class FraudService {
       }), shareReplay(1));
   }
 
-  validateLicense(licenseId: string){
-    return this.http.post<any>(`${environment.apiUrl}/api/insurance/validate-fraud`, licenseId);
+  validateLicense(drivingLicense: string){
+    const formData = new FormData();
+    formData.append("drivingLicense", JSON.stringify(drivingLicense));
+    return this.http.post<any>(`${environment.apiUrl}/api/insurance/validate-fraud`, formData);
   }
 }

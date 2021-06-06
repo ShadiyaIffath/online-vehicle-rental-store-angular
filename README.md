@@ -5,37 +5,39 @@ A vehicle hire automated online frontend which will allow the users to search, v
 The application cannot display main functionality without a backend. The endpoints are defined in services folder, the original application utilized jwwt tokens for user authorization.
 
 ## Customer functionality
-    I. Create a reservation
+
+   1. Create a reservation
          During this process the account license will be validated against the DMV data and the fraudulent license claims
          Once a reservation is created an email will be sent to the respective user’s email address
-    II. Cancel and delete booking
-    III. Extend active booking
-    IV. Make inquiry [Additional]
-    V. Update account details
-    VI. Update login credentials
+   2. Cancel and delete booking
+   3. Extend active booking
+   4. Make inquiry [Additional]
+   5. Update account details
+   6. Update login credentials
          This will send a confirmation code to the users registered email [Additional]
-    VII. View bookings
-    VIII. Register
+   7. View bookings
+   8. Register
          During the registration process customer is required to submit license and an additional proof of identity, the license id will be cross validated with the data from           the DMV and external insurer database.
          A successful email will be sent to the user’s email address.
-    IX. Login
+   9. Login
          An existing blacklisted account will not be able to gain authorization to the system
+        
 ## Admin functionality
-    I. Dynamic dashboard with summarized system data [Additional]
-    II. Manage accounts - Ban customer, Delete customer
-         Upon banning an account all reservations under the account will be cancelled
-    III. Manage inquiries
-         When admin submits a response, an email with the response is sent to the customer registered or not [Additional]
-    IV. Manage bookings
-         If a booking has not been collected during the duration the customer will be banned by admin
-    V. Manage Vehicles
-    VI. Manage Equipment
-    VII. View all users registered in the system with fraudulent licenses [Additional]
-    VIII. Web scraping competition price rates
-         This is an automated weekly process [Additional]
-    IX. Hangfire integration
-         Admin can view the automated process details [Additional]
 
+   1. Dynamic dashboard with summarized system data [Additional]
+   2. Manage accounts - Ban customer, Delete customer
+         Upon banning an account all reservations under the account will be cancelled
+   3. Manage inquiries
+         When admin submits a response, an email with the response is sent to the customer registered or not [Additional]
+   4. Manage bookings
+         If a booking has not been collected during the duration the customer will be banned by admin
+   5. Manage Vehicles
+   6. Manage Equipment
+   7. View all users registered in the system with fraudulent licenses [Additional]
+   8. Web scraping competition price rates
+         This is an automated weekly process [Additional]
+   9. Hangfire integration
+         Admin can view the automated process details [Additional]
 ## Terminal Commands
 
 1. Install NodeJs from [NodeJs Official Page](https://nodejs.org/en).

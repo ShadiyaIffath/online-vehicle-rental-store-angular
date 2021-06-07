@@ -1,56 +1,80 @@
 <div class="wrapper">
-    <div class="page-header page-header-small" filter-color="orange">
-        <div class="page-header-image rellax-header" data-rellax-speed="-8"
-            style="background-image: url('assets/img/competitors.jpeg');">
-        </div>
-        <div class="container">
-
-        </div>
+  <div class="page-header page-header-small" filter-color="orange">
+    <div
+      class="page-header-image rellax-header"
+      data-rellax-speed="-8"
+      style="background-image: url('assets/img/competitors.jpeg')"
+    ></div>
+    <div class="container"></div>
+  </div>
+  <ngx-spinner
+    bdOpacity="0.9"
+    bdColor="#f4f4f9"
+    size="medium"
+    color="#1010ee"
+    type="ball-clip-rotate"
+    [fullScreen]="true"
+  >
+    <p style="color: #6e1005">Loading...</p>
+  </ngx-spinner>
+  <div class="section" style="padding: 2%; background-color: #b92e34">
+    <div class="row d-flex justify-content-between">
+      <div class="col-lg-3 pb-2">
+        <label style="color: blanchedalmond"><b>Active</b></label>
+        <select
+          class="form-control text-primary"
+          style="
+            height: auto;
+            margin-bottom: 3%;
+            border-color: tomato;
+            background-color: blanchedalmond;
+          "
+          (change)="typeFilter($event)"
+        >
+          <option
+            *ngFor="let value of vehicleTypes"
+            [ngValue]="value"
+            class="text-primary"
+          >
+            {{ value }}
+          </option>
+        </select>
+      </div>
     </div>
-    <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#1010ee" type="ball-clip-rotate"
-        [fullScreen]="true">
-        <p style="color: #6e1005;"> Loading... </p>
-    </ngx-spinner>
-    <div class="section" style="padding: 2%; background-color: #b92e34; ">
-        <div class="row d-flex justify-content-between">
-            <div class="col-lg-3 pb-2">
-                <label style="color: blanchedalmond;"><b>Active</b></label>
-                <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
-                    style="height:auto; margin-bottom: 3%;border-color: tomato; background-color: blanchedalmond;"
-                    (change)="typeFilter($event)">
-                    <option *ngFor="let value of vehicleTypes" [ngValue]="value" class="text-primary">
-                        {{value}}
-                    </option>
-                </select>
-            </div>
-        </div>
-        <h3 class="text-center text-uppercase" style="color: blanchedalmond;" *ngIf="noCompetitor">There are no
-            competitor data</h3>
-        <div class="table-responsive" *ngIf="!noCompetitor">
-            <table class="table table-striped table-bordered table-hover table-warning" style="margin: 3%;">
-                <thead class="thead-dark text-center">
-                    <tr>
-                        <th scope="col">#Id</th>
-                        <th scope="col">Car Category</th>
-                        <th scope="col">Model</th>
-                        <th scope="col">Rate Per Month (LkR)</th>
-                        <th scope="col">Rate Per Week (LkR)</th>
-                        <th scope="col">Excess Milleage Over 80km Per Day</th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    <tr *ngFor="let c of competitor">
-                        <th scope="row">{{c.id}}</th>
-                        <td>{{c.CarCategory}}</td>
-                        <td>{{c.Model}}</td>
-                        <td>{{c.RatePerMonth}}</td>
-                        <td>{{c.RatePerWeek}}</td>
-                        <td>{{c.Milleage}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <h3
+      class="text-center text-uppercase"
+      style="color: blanchedalmond"
+      *ngIf="noCompetitors"
+    >
+      There are no competitor data
+    </h3>
+    <div class="table-responsive" *ngIf="!noCompetitors">
+      <table
+        class="table table-striped table-bordered table-hover table-warning"
+        style="margin: 3%"
+      >
+        <thead class="thead-dark text-center">
+          <tr>
+            <th scope="col">#Id</th>
+            <th scope="col">Car Category</th>
+            <th scope="col">Model</th>
+            <th scope="col">Rate Per Month (LkR)</th>
+            <th scope="col">Rate Per Week (LkR)</th>
+            <th scope="col">Excess Milleage Over 80km Per Day</th>
+          </tr>
+        </thead>
+        <tbody class="text-center">
+          <tr *ngFor="let c of competitor">
+            <th scope="row">{{ c.id }}</th>
+            <td>{{ c.CarCategory }}</td>
+            <td>{{ c.Model }}</td>
+            <td>{{ c.RatePerMonth }}</td>
+            <td>{{ c.RatePerWeek }}</td>
+            <td>{{ c.Milleage }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <footer class="footer" data-background-color="black">
-    </footer>
+  </div>
+  <footer class="footer" data-background-color="black"></footer>
 </div>

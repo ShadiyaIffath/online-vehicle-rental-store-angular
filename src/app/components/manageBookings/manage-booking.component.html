@@ -26,7 +26,7 @@
                 *ngIf="!adminControls">{{selectedBooking.vehicleBooking.status}}</label>
             <form [formGroup]="statusForm" style="text-align: center; margin-right: 10%;" *ngIf="adminControls">
                 <select class="form-control text-center" formControlName="bookStatus"
-                    style="height:auto; margin-right: 5%;" (focus)="focus1=true" (blur)="focus1=false"
+                    style="height:auto; margin-right: 5%;" 
                     [ngClass]="{ 'is-invalid': submitted && f.bookStatus.errors }">
                     <option *ngFor="let e of activeStatus" [ngValue]="e.type" style="color: orange;">{{e.type}}</option>
                 </select>
@@ -163,7 +163,7 @@
         <div class="row d-flex justify-content-between">
             <div class="col-lg-3 pb-2">
                 <label style="color: blanchedalmond;"><b>Active</b></label>
-                <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
+                <select class="form-control text-primary" 
                     style="height:auto; margin-bottom: 3%;border-color: tomato; background-color: blanchedalmond;"
                     (change)="statusFilter($event)">
                     <option *ngFor="let value of status" [ngValue]="value.id" class="text-primary">
@@ -173,7 +173,7 @@
             </div>
             <div class="col-lg-3  pb-2">
                 <label style="color: blanchedalmond;"><b> Car Type</b></label>
-                <select class="form-control text-primary" (focus)="focus1=true" (blur)="focus1=false"
+                <select class="form-control text-primary" 
                     style="height:auto; margin-bottom: 3%; border-color: tomato; background-color: blanchedalmond;"
                     (change)="typeFilter($event)">
                     <option *ngFor="let type of vehicleTypes" [ngValue]="car" class="text-primary">{{type.type}}

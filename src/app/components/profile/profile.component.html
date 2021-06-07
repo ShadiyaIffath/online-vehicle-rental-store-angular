@@ -1,338 +1,532 @@
 <div class="wrapper">
-    <div class="page-header page-header-small" filter-color="orange">
-        <div class="page-header-image rellax-header" data-rellax-speed="-8"
-            style="background-image: url('assets/img/profile.jpeg') ;">
+  <div class="page-header page-header-small" filter-color="orange">
+    <div
+      class="page-header-image rellax-header"
+      data-rellax-speed="-8"
+      style="background-image: url('assets/img/profile.jpeg')"
+    ></div>
+    <div class="container">
+      <div class="content-center">
+        <div class="content">
+          <div class="text-center">
+            <h2>{{ account.firstName }} {{ account.lastName }}</h2>
+          </div>
         </div>
-        <div class="container">
-            <div class="content-center">
-                <div class="content">
-                    <div class="text-center">
-                        <h2>{{account.firstName}} {{account.lastName}}</h2>
-                    </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner
+    bdOpacity="0.9"
+    bdColor="#f4f4f9"
+    size="medium"
+    color="#1010ee"
+    type="ball-clip-rotate"
+    [fullScreen]="true"
+  >
+    <p style="color: #6e1005">Loading...</p>
+  </ngx-spinner>
+  <div class="section text-center" style="background-color: #b92e34">
+    <div class="card" style="width: 75%; padding: 3%">
+      <form class="form" [formGroup]="accountForm" (ngSubmit)="onAccountEdit()">
+        <div class="card-header">
+          <h5 class="card-title">About you</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">First Name</div>
+            <div class="col">
+              <div
+                class="input-group form-group-no-border input-lg text-center"
+              >
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="now-ui-icons users_circle-08"></i
+                  ></span>
                 </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="First Name..."
+                  title="Enter First Name"
+                  formControlName="firstName"
+                  [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
+                />
+                <div
+                  *ngIf="submitted && f.firstName.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.firstName.errors.required">
+                    First name is required
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="row">
+            <div class="col">Last Name</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="now-ui-icons text_caps-small"></i
+                  ></span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Last Name..."
+                  class="form-control"
+                  title="Enter Last Name"
+                  formControlName="lastName"
+                  [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
+                />
+                <div
+                  *ngIf="submitted && f.lastName.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.lastName.errors.required">
+                    Last name is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">Date of Birth</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="now-ui-icons ui-1_calendar-60"></i
+                  ></span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Date Of Birth"
+                  class="form-control"
+                  title="If age is below 25 you will be restricted from booking certain vehicles"
+                  formControlName="dob"
+                  [ngClass]="{ 'is-invalid': submitted && f.dob.errors }"
+                />
+                <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+                  <div *ngIf="f.dob.errors.required">
+                    Date of birth is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">E-mail</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="now-ui-icons ui-1_email-85"></i
+                  ></span>
+                </div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  class="form-control"
+                  title="Enter your Email"
+                  formControlName="email"
+                  [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                />
+                <div
+                  *ngIf="submitted && f.email.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.email.errors.required">Email is required</div>
+                  <div *ngIf="f.email.errors.email">
+                    Email must be a valid email address
+                  </div>
+                  <div *ngIf="emailFailed">Email is in use</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">Contact Number</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="now-ui-icons tech_mobile"></i
+                  ></span>
+                </div>
+                <input
+                  type="tel"
+                  placeholder="Contact Number"
+                  class="form-control"
+                  title="Enter your contact number"
+                  maxlength="10"
+                  formControlName="phone"
+                  [ngClass]="{ 'is-invalid': submitted && f.phone.errors }"
+                />
+                <div
+                  *ngIf="submitted && f.phone.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.phone.errors.required">
+                    Contact number is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="footer">
+          <button
+            type="button"
+            class="btn btn-lg btn-light btn-round pull-left"
+            (click)="cancel()"
+          >
+            Cancel
+          </button>
+          <button
+            [disabled]="loading"
+            class="btn btn-primary btn-round btn-lg pull-right"
+            type="submit"
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm mr-1"
+            ></span>
+            Edit Profile
+          </button>
+        </div>
+      </form>
     </div>
-    <ngx-spinner bdOpacity=0.9 bdColor="#f4f4f9" size="medium" color="#1010ee" type="ball-clip-rotate"
-        [fullScreen]="true">
-        <p style="color: #6e1005"> Loading... </p>
-    </ngx-spinner>
-    <div class="section text-center" style="background-color:#b92e34;">
-        <div class="card" style="width: 75%; padding: 3%;">
-            <form class="form" [formGroup]="accountForm" (ngSubmit)="onAccountEdit()">
-                <div class="card-header">
-                    <h5 class="card-title">About you</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            First Name
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg text-center"
-                                [ngClass]="{'input-group-focus':focus===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="now-ui-icons users_circle-08"></i></span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="First Name..." (focus)="focus=true"
-                                    (blur)="focus=false" title="Enter First Name" formControlName="firstName"
-                                    [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
-                                <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-                                    <div *ngIf="f.firstName.errors.required">First name is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Last Name
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span>
-                                </div>
-                                <input type="text" placeholder="Last Name..." class="form-control" (focus)="focus1=true"
-                                    (blur)="focus1=false" title="Enter Last Name" formControlName="lastName"
-                                    [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-                                <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-                                    <div *ngIf="f.lastName.errors.required">Last name is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Date of Birth
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="now-ui-icons ui-1_calendar-60"></i></span>
-                                </div>
-                                <input type="text" placeholder="Date Of Birth" class="form-control"
-                                    title="If age is below 25 you will be restricted from booking certain vehicles"
-                                    formControlName="dob" [ngClass]="{ 'is-invalid': submitted && f.dob.errors }" />
-                                <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
-                                    <div *ngIf="f.dob.errors.required">Date of birth is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            E-mail
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="now-ui-icons ui-1_email-85"></i></span>
-                                </div>
-                                <input type="email" placeholder="Email" class="form-control" (focus)="focus1=true"
-                                    (blur)="focus1=false" title="Enter your Email" formControlName="email"
-                                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                    <div *ngIf="f.email.errors.required">Email is required</div>
-                                    <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
-                                    <div *ngIf="emailFailed">Email is in use</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Contact Number
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="now-ui-icons tech_mobile"></i></span>
-                                </div>
-                                <input type="tel" placeholder="Contact Number" class="form-control"
-                                    (focus)="focus1=true" (blur)="focus1=false" title="Enter your contact number"
-                                    maxlength="10" formControlName="phone"
-                                    [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
-                                <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
-                                    <div *ngIf="f.phone.errors.required">Contact number is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <button type="button" class="btn btn-lg btn-light btn-round pull-left"
-                        (click)="cancel()">Cancel</button>
-                    <button [disabled]="loading" class="btn btn-primary btn-round btn-lg pull-right" type="submit">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Edit Profile
-                    </button>
-                </div>
-            </form>
+    <div class="card" style="width: 75%; padding: 3%">
+      <form
+        class="form"
+        [formGroup]="licenseForm"
+        (ngSubmit)="onIdentificationChangeSubmit()"
+      >
+        <div class="card-header">
+          <h5 class="card-title">Change License and Identification Details</h5>
         </div>
-        <div class="card" style="width: 75%; padding: 3%;">
-            <form class="form" [formGroup]="licenseForm" (ngSubmit)="onIdentificationChangeSubmit()">
-                <div class="card-header">
-                    <h5 class="card-title">Change License and Identification Details</h5>
+        <div class="card-body">
+          <div class="row">
+            <div class="col" *ngIf="!licenseChanged">
+              <img
+                class="card-img-top img-fluid"
+                src="data:image/png;base64,{{ account.drivingLicense }}"
+                alt="Driving license"
+                style="height: 350px"
+              />
+            </div>
+            <div class="col" *ngIf="licenseChanged">
+              <img
+                class="card-img-top img-fluid"
+                src="data:image/png;base64,{{
+                  drivingLicense.value || drivingLicense.image
+                }}"
+                alt="Driving license"
+                style="height: 350px"
+              />
+            </div>
+            <div class="col" *ngIf="!identitfyChanged">
+              <img
+                class="card-img-top img-fluid"
+                src="data:image/png;base64,{{
+                  account.additionalIdentification
+                }}"
+                alt="Identification"
+                style="height: 350px"
+              />
+            </div>
+            <div class="col" *ngIf="identitfyChanged">
+              <img
+                class="card-img-top img-fluid"
+                src="data:image/png;base64,{{
+                  identification.value || identification.image
+                }}"
+                alt="Identification"
+                style="height: 350px"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h4
+                style="
+                  font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                    'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+                    sans-serif;
+                "
+              >
+                Driving License
+              </h4>
+            </div>
+            <div class="col">
+              <h4
+                style="
+                  font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                    'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+                    sans-serif;
+                "
+              >
+                Additional Identification
+              </h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">License Id</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="now-ui-icons text_caps-small"></i
+                  ></span>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col" *ngIf="!licenseChanged">
-                            <img class="card-img-top img-fluid" src="data:image/png;base64,{{account.drivingLicense}}"
-                                alt="Driving license" style="height: 350px;">
-                        </div>
-                        <div class="col" *ngIf="licenseChanged">
-                            <img class="card-img-top img-fluid"  src="data:image/png;base64,{{drivingLicense.value || drivingLicense.image}}"
-                                alt="Driving license" style="height: 350px;">
-                        </div>
-                        <div class="col" *ngIf="!identitfyChanged">
-                            <img class="card-img-top img-fluid"
-                                src="data:image/png;base64,{{account.additionalIdentification}}" alt="Identification" style="height: 350px;">
-                        </div>
-                        <div class="col" *ngIf="identitfyChanged">
-                            <img class="card-img-top img-fluid"
-                            src="data:image/png;base64,{{identification.value || identification.image}}" alt="Identification" style="height: 350px;">
-                        </div>
-                    </div>
-                    <div class="row" >
-                        <div class="col">
-                            <h4
-                                style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                Driving License
-                            </h4>
-                        </div>
-                        <div class="col">
-                            <h4
-                                style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                Additional Identification
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            License Id
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span>
-                                </div>
-                                <input type="text" placeholder="License ID" class="form-control" (focus)="focus1=true"
-                                    (blur)="focus1=false" title="Enter License Id" formControlName="licenseId"
-                                    [ngClass]="{ 'is-invalid': submitted && d.licenseId.errors }" (change)="OnIdChange($event)"
-                                    style="height: 50px;" />
-                                <div *ngIf="submitted && d.licenseId.errors" class="invalid-feedback">
-                                    <div *ngIf="d.licenseId.errors.required">License Id is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="licenseChanged">
-                        <div class="col">
-                            Driving License
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-id-card-o"
-                                            aria-hidden="true"></i></span>
-                                </div>
-                                <input type="file" placeholder="Driving licence" #license class="form-control"
-                                    (focus)="focus1=true" (blur)="focus1=false"
-                                    (change)="uploadDrivingLicenseFile(license.files)"
-                                    title="Attach your driving license" accept="image/*"
-                                    formControlName="drivingLicense"
-                                    [ngClass]="{ 'is-invalid': submitted && d.drivingLicense.errors }" />
-                                <div *ngIf="submitted && d.drivingLicense.errors" class="invalid-feedback">
-                                    <div *ngIf="d.drivingLicense.errors.required">Driving license is required
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Additional Identification
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-file-pdf-o"
-                                            aria-hidden="true"></i></span>
-                                </div>
-                                <input type="file" placeholder="Identity" #identity class="form-control"
-                                    (focus)="focus1=true" (blur)="focus1=false"
-                                    (change)="uploadIdentityFile(identity.files)"
-                                    title="Attach evidence of your identity" accept="image/*"
-                                    formControlName="additionalIdentification"
-                                    [ngClass]="{ 'is-invalid': submitted && d.additionalIdentification.errors }" />
-                                <div *ngIf="submitted && d.additionalIdentification.errors" class="invalid-feedback">
-                                    <div *ngIf="d.additionalIdentification.errors.required">Additional identity
-                                        proof
-                                        is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <input
+                  type="text"
+                  placeholder="License ID"
+                  class="form-control"
+                  title="Enter License Id"
+                  formControlName="licenseId"
+                  [ngClass]="{ 'is-invalid': submitted && d.licenseId.errors }"
+                  (change)="OnIdChange($event)"
+                  style="height: 50px"
+                />
+                <div
+                  *ngIf="submitted && d.licenseId.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="d.licenseId.errors.required">
+                    License Id is required
+                  </div>
                 </div>
-                <div class="footer">
-                    <button type="button" class="btn btn-lg btn-light btn-round pull-left"
-                        (click)="cancel()">Cancel</button>
-                    <button [disabled]="!identitfyChanged && !licenseChanged" class="btn btn-primary btn-round btn-lg pull-right" type="submit">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Confirm
-                    </button>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="licenseChanged">
+            <div class="col">Driving License</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="fa fa-id-card-o" aria-hidden="true"></i
+                  ></span>
                 </div>
-            </form>
+                <input
+                  type="file"
+                  placeholder="Driving licence"
+                  #license
+                  class="form-control"
+                  (change)="uploadDrivingLicenseFile(license.files)"
+                  title="Attach your driving license"
+                  accept="image/*"
+                  formControlName="drivingLicense"
+                  [ngClass]="{
+                    'is-invalid': submitted && d.drivingLicense.errors
+                  }"
+                />
+                <div
+                  *ngIf="submitted && d.drivingLicense.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="d.drivingLicense.errors.required">
+                    Driving license is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">Additional Identification</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="fa fa-file-pdf-o" aria-hidden="true"></i
+                  ></span>
+                </div>
+                <input
+                  type="file"
+                  placeholder="Identity"
+                  #identity
+                  class="form-control"
+                  (change)="uploadIdentityFile(identity.files)"
+                  title="Attach evidence of your identity"
+                  accept="image/*"
+                  formControlName="additionalIdentification"
+                  [ngClass]="{
+                    'is-invalid': submitted && d.additionalIdentification.errors
+                  }"
+                />
+                <div
+                  *ngIf="submitted && d.additionalIdentification.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="d.additionalIdentification.errors.required">
+                    Additional identity proof is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card" style="width: 75%; padding: 3%;">
-            <form class="form" [formGroup]="passwordForm" >
-                <div class="card-header">
-                    <h5 class="card-title">Change Password</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row" *ngIf="!changePassword">
-                        <div class="col">
-                            New Password
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa" [ngClass]="{
-                                          'fa-eye-slash': !fieldTextType,
-                                          'fa-eye': fieldTextType }" (click)="toggleFieldTextType()"></i></span>
-                                </div>
-                                <input [type]="fieldTextType ? 'text' : 'password'" placeholder="Password"
-                                    class="form-control" (focus)="focus1=true" (blur)="focus1=false"
-                                    title="Enter a strong password" maxlength="25" formControlName="password"
-                                    [ngClass]="{ 'is-invalid': submitted && p.password.errors }" />
-                                <div *ngIf="submitted && p.password.errors" class="invalid-feedback">
-                                    <div *ngIf="p.password.errors.required">Password is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="!changePassword">
-                        <div class="col">
-                            Confirm Password
-                        </div>
-                        <div class="col">
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa" [ngClass]="{
-                                          'fa-eye-slash': !fieldTextType,
-                                          'fa-eye': fieldTextType }" (click)="toggleFieldTextType()"></i></span>
-                                </div>
-                                <input [type]="fieldTextType ? 'text' : 'password'" placeholder="Confirm Password"
-                                    class="form-control" (focus)="focus1=true" (blur)="focus1=false"
-                                    title="Enter a strong password" maxlength="25" formControlName="repeat"
-                                    [ngClass]="{ 'is-invalid': submitted && p.repeat.errors }" />
-                                <div *ngIf="submitted && p.repeat.errors" class="invalid-feedback">
-                                    <div *ngIf="p.repeat.errors.required">This is required</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="samePassword" class="text-danger">Please enter a new password</div>
-                    <div *ngIf="mismatch" class="text-danger">Make sure confirm and new password are the same</div>
-                    <p class="text-danger">{{error}}</p>
-                    <div class="row mt-3" *ngIf="changePassword" style=" display: flex;
-                    justify-content: center;">
-                        <form class="form text-center" [formGroup]="passwordConfirm">
-                            <h3 class="card-title text-center">Enter confirmation code</h3>
-                            <h5 class="text-center text-primary">An e-mail has been sent with the code</h5>
-                            <div class="input-group form-group-no-border input-lg"
-                                [ngClass]="{'input-group-focus':focus1===true}">
-                                <input type="text" placeholder="Confirmation code" class="form-control"
-                                    formControlName="confirm"
-                                    [ngClass]="{ 'is-invalid': submitted && v.confirm.errors }" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="footer">
-                    <button type="button" class="btn btn-lg btn-light btn-round pull-left"
-                        (click)="cancel()">Cancel</button>
-                    <button [disabled]="loading || changePassword" class="btn btn-primary btn-round btn-lg"
-                        (click)="onPasswordChangeSubmit()">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Request Update
-                    </button>
-                    <button [disabled]="!changePassword" class="btn btn-primary btn-round btn-lg"
-                        (click)="onConfirmation()">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Confirm Update
-                    </button>
-                </div>
-            </form>
+        <div class="footer">
+          <button
+            type="button"
+            class="btn btn-lg btn-light btn-round pull-left"
+            (click)="cancel()"
+          >
+            Cancel
+          </button>
+          <button
+            [disabled]="!identitfyChanged && !licenseChanged"
+            class="btn btn-primary btn-round btn-lg pull-right"
+            type="submit"
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm mr-1"
+            ></span>
+            Confirm
+          </button>
         </div>
+      </form>
     </div>
+    <div class="card" style="width: 75%; padding: 3%">
+      <form class="form" [formGroup]="passwordForm">
+        <div class="card-header">
+          <h5 class="card-title">Change Password</h5>
+        </div>
+        <div class="card-body">
+          <div class="row" *ngIf="!changePassword">
+            <div class="col">New Password</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i
+                      class="fa"
+                      [ngClass]="{
+                        'fa-eye-slash': !fieldTextType,
+                        'fa-eye': fieldTextType
+                      }"
+                      (click)="toggleFieldTextType()"
+                    ></i
+                  ></span>
+                </div>
+                <input
+                  [type]="fieldTextType ? 'text' : 'password'"
+                  placeholder="Password"
+                  class="form-control"
+                  title="Enter a strong password"
+                  maxlength="25"
+                  formControlName="password"
+                  [ngClass]="{ 'is-invalid': submitted && p.password.errors }"
+                />
+                <div
+                  *ngIf="submitted && p.password.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="p.password.errors.required">
+                    Password is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="!changePassword">
+            <div class="col">Confirm Password</div>
+            <div class="col">
+              <div class="input-group form-group-no-border input-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i
+                      class="fa"
+                      [ngClass]="{
+                        'fa-eye-slash': !fieldTextType,
+                        'fa-eye': fieldTextType
+                      }"
+                      (click)="toggleFieldTextType()"
+                    ></i
+                  ></span>
+                </div>
+                <input
+                  [type]="fieldTextType ? 'text' : 'password'"
+                  placeholder="Confirm Password"
+                  class="form-control"
+                  title="Enter a strong password"
+                  maxlength="25"
+                  formControlName="repeat"
+                  [ngClass]="{ 'is-invalid': submitted && p.repeat.errors }"
+                />
+                <div
+                  *ngIf="submitted && p.repeat.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="p.repeat.errors.required">This is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="samePassword" class="text-danger">
+            Please enter a new password
+          </div>
+          <div *ngIf="mismatch" class="text-danger">
+            Make sure confirm and new password are the same
+          </div>
+          <p class="text-danger">{{ error }}</p>
+          <div
+            class="row mt-3"
+            *ngIf="changePassword"
+            style="display: flex; justify-content: center"
+          >
+            <form class="form text-center" [formGroup]="passwordConfirm">
+              <h3 class="card-title text-center">Enter confirmation code</h3>
+              <h5 class="text-center text-primary">
+                An e-mail has been sent with the code
+              </h5>
+              <div class="input-group form-group-no-border input-lg">
+                <input
+                  type="text"
+                  placeholder="Confirmation code"
+                  class="form-control"
+                  formControlName="confirm"
+                  [ngClass]="{ 'is-invalid': submitted && v.confirm.errors }"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="footer">
+          <button
+            type="button"
+            class="btn btn-lg btn-light btn-round pull-left"
+            (click)="cancel()"
+          >
+            Cancel
+          </button>
+          <button
+            [disabled]="loading || changePassword"
+            class="btn btn-primary btn-round btn-lg"
+            (click)="onPasswordChangeSubmit()"
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm mr-1"
+            ></span>
+            Request Update
+          </button>
+          <button
+            [disabled]="!changePassword"
+            class="btn btn-primary btn-round btn-lg"
+            (click)="onConfirmation()"
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm mr-1"
+            ></span>
+            Confirm Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

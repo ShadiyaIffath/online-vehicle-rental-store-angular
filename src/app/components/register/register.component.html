@@ -1,193 +1,320 @@
-<div class="page-header" filter-color="orange" style="height:100%; margin: 0px;">
-    <div class="page-header-image"
-        style="background-image:url(assets/img/register.jpg); vertical-align: middle;"></div>
-    <div class="container" style="height: 100%;">
-        <div class="card card-plain d-flex justify-content-between">
-            <form class="form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                <div class="header header-primary text-center">
-                    <div class="logo-container">
-                        <img src="assets/img/now-logo.png" alt="" style="height: 100px; margin-top: 10%;">
-                    </div>
-                    <h3 class="h3-seo"><b>Lets get started</b></h3>
-                    <h4>About You</h4>
-                </div>
-                <div class="content">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="input-group form-group-no-border input-lg text-center"
-                            [ngClass]="{'input-group-focus':focus===true}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="now-ui-icons users_circle-08"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="First Name..." (focus)="focus=true"
-                                (blur)="focus=false" maxlength="25" title="Enter First Name" formControlName="firstName"
-                                [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
-                            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-                                <div *ngIf="f.firstName.errors.required">First name is required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="input-group form-group-no-border input-lg"
-                            [ngClass]="{'input-group-focus':focus1===true}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span>
-                            </div>
-                            <input type="text" placeholder="Last Name..." class="form-control" (focus)="focus1=true"
-                                (blur)="focus1=false" maxlength="25" title="Enter Last Name" formControlName="lastName"
-                                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-                            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-                                <div *ngIf="f.lastName.errors.required">Last name is required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="input-group form-group-no-border input-lg"
-                            [ngClass]="{'input-group-focus':focus1===true}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="now-ui-icons ui-1_calendar-60"></i></span>
-                            </div>
-                            <input type="text" placeholder="Date Of Birth" class="form-control datetimepicker" name="dp"
-                                [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"
-                                [maxDate]="maxDate" [minDate]="minDate"
-                                title="If age is below 25 you will be restricted from booking certain vehicles"
-                                formControlName="dob" [ngClass]="{ 'is-invalid': submitted && f.dob.errors }" />
-                            <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
-                                <div *ngIf="f.dob.errors.required">Date of birth is required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="input-group form-group-no-border input-lg"
-                            [ngClass]="{'input-group-focus':focus1===true}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="now-ui-icons tech_mobile"></i></span>
-                            </div>
-                            <input type="tel" placeholder="Contact Number" class="form-control" (focus)="focus1=true"
-                                (blur)="focus1=false" title="Enter your contact number" maxlength="10"
-                                formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
-                            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
-                                <div *ngIf="f.phone.errors.required">Contact number is required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="input-group form-group-no-border input-lg"
-                            [ngClass]="{'input-group-focus':focus1===true}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="now-ui-icons ui-1_email-85"></i></span>
-                            </div>
-                            <input type="email" placeholder="Email" class="form-control" (focus)="focus1=true"
-                                (blur)="focus1=false" title="Enter your Email" formControlName="email"
-                                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                <div *ngIf="f.email.errors.required">Email is required</div>
-                                <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
-                                <div *ngIf="emailFailed">Email is in use</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="input-group form-group-no-border input-lg"
-                            [ngClass]="{'input-group-focus':focus1===true}">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="now-ui-icons ui-1_lock-circle-open"></i></span>
-                            </div>
-                            <input type="password" placeholder="Password" class="form-control" (focus)="focus1=true"
-                                (blur)="focus1=false" title="Enter a strong password" maxlength="25"
-                                formControlName="password"
-                                [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                                <div *ngIf="f.password.errors.required">Password is required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <h4>Security</h4>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <label for="DrivingLicense">Can you drive?</label>
-                                <h6>Attach evidence of your driving license</h6>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="input-group form-group-no-border input-lg"
-                                    [ngClass]="{'input-group-focus':focus1===true}">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-id-card-o"
-                                                aria-hidden="true"></i></span>
-                                    </div>
-                                    <input type="file" placeholder="Driving licence" #license class="form-control"
-                                        (focus)="focus1=true" (blur)="focus1=false"
-                                        (change)="uploadDrivingLicenseFile(license.files)"
-                                        title="Attach your driving license" accept="image/*"
-                                        formControlName="drivingLicense"
-                                        [ngClass]="{ 'is-invalid': submitted && f.drivingLicense.errors }" />
-                                    <div *ngIf="submitted && f.drivingLicense.errors" class="invalid-feedback">
-                                        <div *ngIf="f.drivingLicense.errors.required">Driving license is required
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="input-group form-group-no-border input-lg"
-                                    [ngClass]="{'input-group-focus':focus1===true}">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span>
-                                    </div>
-                                    <input type="text" placeholder="License ID" class="form-control" (focus)="focus1=true"
-                                        (blur)="focus1=false" title="Enter License Id" formControlName="licenseId"
-                                        [ngClass]="{ 'is-invalid': submitted && f.licenseId.errors }" style="height: 50px;"/>
-                                    <div *ngIf="submitted && f.licenseId.errors" class="invalid-feedback">
-                                        <div *ngIf="f.licenseId.errors.required">License Id is required</div>
-                                        <div *ngIf="invalidLicense">Invalid driving license</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-5">
-                                <label for="Identity">Who are you?</label>
-                                <h6>Attach a utility bill(within 3 months) / council tax statement</h6>
-                            </div>
-                            <div class="col-sm-5 offset-lg-1">
-                                <div class="input-group form-group-no-border input-lg"
-                                    [ngClass]="{'input-group-focus':focus1===true}">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-file-pdf-o"
-                                                aria-hidden="true"></i></span>
-                                    </div>
-                                    <input type="file" placeholder="Identity" #identity class="form-control"
-                                        (focus)="focus1=true" (blur)="focus1=false"
-                                        (change)="uploadIdentityFile(identity.files)"
-                                        title="Attach evidence of your identity" accept="image/*"
-                                        formControlName="additionalIdentification"
-                                        [ngClass]="{ 'is-invalid': submitted && f.additionalIdentification.errors }" />
-                                    <div *ngIf="submitted && f.additionalIdentification.errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="f.additionalIdentification.errors.required">Additional identity
-                                            proof
-                                            is required</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer col-lg-4 offset-lg-4">
-                        <button [disabled]="loading" class="btn btn-primary btn-round btn-lg btn-block" type="submit">
-                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                            Create account
-                        </button>
-                        <div *ngIf="error" class="text-warning">{{error}}</div>
-                    </div>
-                    <div class="pull-center text-center">
-                        <h6>
-                            <a [routerLink]="'/components/login'" class="link">Already have an
-                                account? <p>Login</p></a>
-                        </h6>
-                    </div>
-                </div>
-            </form>
+<div
+  class="page-header"
+  filter-color="orange"
+  style="height: 100%; margin: 0px"
+>
+  <div
+    class="page-header-image"
+    style="
+      background-image: url(assets/img/register.jpg);
+      vertical-align: middle;
+    "
+  ></div>
+  <div class="container" style="height: 100%">
+    <div class="card card-plain d-flex justify-content-between">
+      <form class="form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="header header-primary text-center">
+          <div class="logo-container">
+            <img
+              src="assets/img/now-logo.png"
+              alt=""
+              style="height: 100px; margin-top: 10%"
+            />
+          </div>
+          <h3 class="h3-seo"><b>Lets get started</b></h3>
+          <h4>About You</h4>
         </div>
+        <div class="content">
+          <div class="col-lg-6 offset-lg-3">
+            <div class="input-group form-group-no-border input-lg text-center">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="now-ui-icons users_circle-08"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="First Name..."
+                maxlength="25"
+                title="Enter First Name"
+                formControlName="firstName"
+                [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
+              />
+              <div
+                *ngIf="submitted && f.firstName.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f.firstName.errors.required">
+                  First name is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 offset-lg-3">
+            <div class="input-group form-group-no-border input-lg">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="now-ui-icons text_caps-small"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                placeholder="Last Name..."
+                class="form-control"
+                maxlength="25"
+                title="Enter Last Name"
+                formControlName="lastName"
+                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
+              />
+              <div
+                *ngIf="submitted && f.lastName.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f.lastName.errors.required">
+                  Last name is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 offset-lg-3">
+            <div class="input-group form-group-no-border input-lg">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="now-ui-icons ui-1_calendar-60"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                placeholder="Date Of Birth"
+                class="form-control datetimepicker"
+                name="dp"
+                [(ngModel)]="model"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                (click)="d.toggle()"
+                [maxDate]="maxDate"
+                [minDate]="minDate"
+                title="If age is below 25 you will be restricted from booking certain vehicles"
+                formControlName="dob"
+                [ngClass]="{ 'is-invalid': submitted && f.dob.errors }"
+              />
+              <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+                <div *ngIf="f.dob.errors.required">
+                  Date of birth is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 offset-lg-3">
+            <div class="input-group form-group-no-border input-lg">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="now-ui-icons tech_mobile"></i
+                ></span>
+              </div>
+              <input
+                type="tel"
+                placeholder="Contact Number"
+                class="form-control"
+                title="Enter your contact number"
+                maxlength="10"
+                formControlName="phone"
+                [ngClass]="{ 'is-invalid': submitted && f.phone.errors }"
+              />
+              <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                <div *ngIf="f.phone.errors.required">
+                  Contact number is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 offset-lg-3">
+            <div class="input-group form-group-no-border input-lg">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="now-ui-icons ui-1_email-85"></i
+                ></span>
+              </div>
+              <input
+                type="email"
+                placeholder="Email"
+                class="form-control"
+                title="Enter your Email"
+                formControlName="email"
+                [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+              />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">Email is required</div>
+                <div *ngIf="f.email.errors.email">
+                  Email must be a valid email address
+                </div>
+                <div *ngIf="emailFailed">Email is in use</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 offset-lg-3">
+            <div class="input-group form-group-no-border input-lg">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="now-ui-icons ui-1_lock-circle-open"></i
+                ></span>
+              </div>
+              <input
+                type="password"
+                placeholder="Password"
+                class="form-control"
+                title="Enter a strong password"
+                maxlength="25"
+                formControlName="password"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+              />
+              <div
+                *ngIf="submitted && f.password.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f.password.errors.required">
+                  Password is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <h4>Security</h4>
+            <div class="row">
+              <div class="col-sm-5">
+                <label for="DrivingLicense">Can you drive?</label>
+                <h6>Attach evidence of your driving license</h6>
+              </div>
+              <div class="col-sm-4">
+                <div class="input-group form-group-no-border input-lg">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="fa fa-id-card-o" aria-hidden="true"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="file"
+                    placeholder="Driving licence"
+                    #license
+                    class="form-control"
+                    (change)="uploadDrivingLicenseFile(license.files)"
+                    title="Attach your driving license"
+                    accept="image/*"
+                    formControlName="drivingLicense"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.drivingLicense.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submitted && f.drivingLicense.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.drivingLicense.errors.required">
+                      Driving license is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="input-group form-group-no-border input-lg">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="now-ui-icons text_caps-small"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="License ID"
+                    class="form-control"
+                    title="Enter License Id"
+                    formControlName="licenseId"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.licenseId.errors
+                    }"
+                    style="height: 50px"
+                  />
+                  <div
+                    *ngIf="submitted && f.licenseId.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.licenseId.errors.required">
+                      License Id is required
+                    </div>
+                    <div *ngIf="invalidLicense">Invalid driving license</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-sm-5">
+                <label for="Identity">Who are you?</label>
+                <h6>
+                  Attach a utility bill(within 3 months) / council tax statement
+                </h6>
+              </div>
+              <div class="col-sm-5 offset-lg-1">
+                <div class="input-group form-group-no-border input-lg">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="fa fa-file-pdf-o" aria-hidden="true"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="file"
+                    placeholder="Identity"
+                    #identity
+                    class="form-control"
+                    (change)="uploadIdentityFile(identity.files)"
+                    title="Attach evidence of your identity"
+                    accept="image/*"
+                    formControlName="additionalIdentification"
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && f.additionalIdentification.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submitted && f.additionalIdentification.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.additionalIdentification.errors.required">
+                      Additional identity proof is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer col-lg-4 offset-lg-4">
+            <button
+              [disabled]="loading"
+              class="btn btn-primary btn-round btn-lg btn-block"
+              type="submit"
+            >
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+              Create account
+            </button>
+            <div *ngIf="error" class="text-warning">{{ error }}</div>
+          </div>
+          <div class="pull-center text-center">
+            <h6>
+              <a [routerLink]="'/components/login'" class="link"
+                >Already have an account?
+                <p>Login</p></a
+              >
+            </h6>
+          </div>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
-<footer class="footer" data-background-color="black" style="height: 100%; margin: 0px;">
-</footer>
+<footer
+  class="footer"
+  data-background-color="black"
+  style="height: 100%; margin: 0px"
+></footer>

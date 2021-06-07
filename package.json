@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -52,8 +52,8 @@
     "rxjs-compat": "6.5.4",
     "tslib": "1.11.1",
     "zone.js": "0.10.2",
-    "express":"*",
-    "body-parser":"*"
+    "express": "*",
+    "body-parser": "*"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.900.6",

@@ -14,7 +14,6 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import {NgxPaginationModule} from 'ngx-pagination';
 
 import { ComponentsComponent } from './components.component';
-import { NotificationComponent } from './notification/notification.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { FleetComponent } from './fleet/fleet.component';
@@ -91,7 +90,6 @@ export function tokenGetter() {
     ],
     declarations: [
         ComponentsComponent,
-        NotificationComponent,
         NgbdModalBasic,
         RegisterComponent,
         LoginComponent,

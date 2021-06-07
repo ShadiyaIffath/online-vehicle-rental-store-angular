@@ -20,6 +20,7 @@ export class ComponentsComponent implements OnInit, OnDestroy {
     vehicleList;
     vehicles;
     noVehicles: boolean = false;
+    searchText;
     constructor(private renderer: Renderer2,
         private inventoryService: InventoryService,
         private spinner: NgxSpinnerService) { }

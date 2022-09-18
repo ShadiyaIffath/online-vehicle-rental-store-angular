@@ -28,7 +28,7 @@
     "@angular/platform-server": "9.0.6",
     "@angular/router": "9.0.6",
     "@ng-bootstrap/ng-bootstrap": "6.0.0",
-    "ajv": "6.10.0",
+    "ajv": "6.12.3",
     "ajv-keywords": "3.4.0",
     "bootstrap": "4.3.1",
     "copy-webpack-plugin": "5.0.1",

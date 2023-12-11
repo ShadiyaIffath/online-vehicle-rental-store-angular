@@ -1,4 +1,4 @@
-# [Online vehicle rental store]
+# Online vehicle rental store
 
 A vehicle hire automated online frontend which will allow the users to search, view vehicles and make reservations online and administrator to access inventory data, reservation and competitor information with better ease and improved security. Developed using Angular 9 to provide dynamic dashboard with summarized system data provided angular component based plug and play, was used to develop this system. This application supports 2 user roles, Admin and Customer. There are 2 navigation bars, A top navigation for the customer and side navigation for Admins upon successful authorization.
 
